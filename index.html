@@ -1,295 +1,287 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>NormGAMLSS — Normative Modeling with GAMLSS</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
-  <style>
-  :root {
-    --bg:      #05050b;
-    --bg2:     #08080f;
-    --bg3:     #0d0d1a;
-    --surf:    rgba(255,255,255,0.04);
-    --bord:    rgba(255,255,255,0.07);
-    --text:    #eeeef4;
-    --muted:   #5e5e78;
-    --blue:    #2979ff;
-    --teal:    #00bfa5;
-    --green:   #43a047;
-    --amber:   #fb8c00;
-    --orange:  #f4511e;
-    --grad:    linear-gradient(90deg,#2979ff,#00bfa5,#43a047,#fb8c00,#f4511e);
-    --r:       14px;
-    --fh:      'Syne',sans-serif;
-    --fb:      'DM Sans',sans-serif;
-    --fm:      'JetBrains Mono',monospace;
-  }
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.65;overflow-x:hidden}
-  a{color:inherit;text-decoration:none}
-  img{max-width:100%}
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NormGAMLSS — Normative Modeling with GAMLSS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root {
+  --bg:    #04040c;
+  --bg2:   #070710;
+  --bg3:   #0b0b18;
+  --surf:  rgba(255,255,255,0.04);
+  --bord:  rgba(255,255,255,0.07);
+  --text:  #eeeef5;
+  --muted: #5a5a75;
+  --blue:  #2979ff;
+  --teal:  #00bfa5;
+  --green: #43a047;
+  --amber: #fb8c00;
+  --orange:#f4511e;
+  --grad:  linear-gradient(90deg,#2979ff,#00bfa5,#43a047,#fb8c00,#f4511e);
+  --r:     14px;
+  --fh:    'Syne', sans-serif;
+  --fb:    'DM Sans', sans-serif;
+  --fm:    'JetBrains Mono', monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);font-size:16px;line-height:1.65;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%}
 
-  /* noise grain */
-  body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:999;
-    opacity:.025;
-    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
+/* grain */
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  opacity:.022;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E")}
 
-  /* ── NAV ── */
-  nav{position:fixed;top:0;left:0;right:0;z-index:200;
-    display:flex;align-items:center;justify-content:space-between;
-    padding:0 52px;height:62px;
-    background:rgba(5,5,11,.82);backdrop-filter:blur(24px);
-    border-bottom:1px solid var(--bord);transition:background .3s}
-  .nl{font-family:var(--fh);font-weight:700;font-size:1.05rem;letter-spacing:-.02em}
-  .nl .n{color:var(--teal)}
-  .nl .g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .nr{display:flex;gap:32px;align-items:center}
-  .nr a{font-size:.85rem;color:var(--muted);transition:color .2s}
-  .nr a:hover{color:var(--text)}
-  .ncta{padding:7px 18px;border-radius:8px;background:var(--surf);border:1px solid var(--bord);
-    font-size:.83rem;font-weight:500;color:var(--text)!important;transition:all .2s}
-  .ncta:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 52px;height:60px;
+  background:rgba(4,4,12,.85);backdrop-filter:blur(28px);
+  border-bottom:1px solid var(--bord);transition:background .4s}
+.nl{font-family:var(--fh);font-weight:800;font-size:1.05rem;letter-spacing:-.03em;display:flex;align-items:center;gap:6px}
+.nl-n{color:var(--teal)}
+.nl-g{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nr{display:flex;gap:28px;align-items:center}
+.nr a{font-size:.83rem;color:var(--muted);transition:color .2s;letter-spacing:.01em}
+.nr a:hover{color:var(--text)}
+.ncta{padding:7px 18px;border-radius:8px;background:var(--surf);border:1px solid var(--bord);
+  font-size:.82rem;font-weight:500;color:var(--text)!important;transition:all .2s}
+.ncta:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15)}
 
-  /* ── HERO ── */
-  #hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
-    align-items:center;justify-content:center;text-align:center;
-    padding:100px 24px 80px;overflow:hidden}
+/* ── HERO ── */
+#hero{position:relative;min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;
+  padding:90px 24px 80px;overflow:hidden}
 
-  .hbg{position:absolute;inset:0;z-index:0}
-  .hbg img{width:100%;height:100%;object-fit:cover;object-position:center;opacity:.45}
-  .hbg::after{content:'';position:absolute;inset:0;
-    background:linear-gradient(to bottom,rgba(5,5,11,.55) 0%,rgba(5,5,11,.72) 60%,rgba(5,5,11,.95) 100%)}
+.hbg{position:absolute;inset:0;z-index:0}
+.hbg img{width:100%;height:100%;object-fit:cover;object-position:center 30%;opacity:.42}
+.hbg::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(4,4,12,.5) 0%,rgba(4,4,12,.68) 55%,rgba(4,4,12,.96) 100%)}
 
-  #pc{position:absolute;inset:0;z-index:1;pointer-events:none}
+#pc{position:absolute;inset:0;z-index:1;pointer-events:none}
 
-  .hc{position:relative;z-index:2;max-width:820px}
+.hc{position:relative;z-index:2;max-width:860px;width:100%;margin:0 auto}
 
-  .badge{display:inline-flex;align-items:center;gap:8px;
-    padding:5px 16px;border-radius:999px;
-    border:1px solid rgba(0,191,165,.35);background:rgba(0,191,165,.08);
-    font-size:.73rem;font-weight:600;letter-spacing:.07em;text-transform:uppercase;
-    color:var(--teal);margin-bottom:28px;
-    animation:fu .8s ease both}
-  .badge::before{content:'';width:6px;height:6px;border-radius:50%;
-    background:var(--teal);box-shadow:0 0 10px var(--teal);
-    animation:blp 2s ease infinite}
-  @keyframes blp{0%,100%{opacity:1}50%{opacity:.3}}
+.badge{display:inline-flex;align-items:center;gap:8px;padding:5px 16px;
+  border-radius:999px;border:1px solid rgba(0,191,165,.35);background:rgba(0,191,165,.08);
+  font-size:.72rem;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--teal);margin-bottom:32px;animation:fu .8s ease both}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--teal);
+  box-shadow:0 0 10px var(--teal);animation:blp 2s ease infinite}
+@keyframes blp{0%,100%{opacity:1}50%{opacity:.25}}
 
-  .hlogo{max-width:min(460px,88vw);margin:0 auto 24px;
-    filter:drop-shadow(0 0 48px rgba(0,191,165,.22));
-    animation:fu .9s .08s ease both}
+/* HERO LOGO — centered, no left/right drift */
+.hlogo-wrap{display:flex;justify-content:center;align-items:center;
+  margin:0 auto 28px;width:100%;animation:fu .9s .08s ease both}
+.hlogo-wrap img{max-width:min(500px,82vw);width:100%;height:auto;display:block;
+  filter:drop-shadow(0 0 60px rgba(0,191,165,.25)) drop-shadow(0 8px 32px rgba(0,0,0,.6))}
 
-  .htag{font-size:clamp(1.05rem,2.4vw,1.4rem);font-weight:300;
-    color:rgba(238,238,244,.72);letter-spacing:.01em;margin-bottom:12px;
-    animation:fu 1s .18s ease both}
-  .hsub{font-size:clamp(.9rem,1.7vw,1.05rem);color:var(--muted);
-    max-width:540px;margin:0 auto 44px;animation:fu 1s .28s ease both}
+.htag{font-size:clamp(1.1rem,2.5vw,1.45rem);font-weight:300;
+  color:rgba(238,238,245,.78);letter-spacing:.01em;margin-bottom:10px;
+  animation:fu 1s .18s ease both}
+.hsub{font-size:clamp(.88rem,1.6vw,1.02rem);color:var(--muted);
+  max-width:560px;margin:0 auto 46px;animation:fu 1s .28s ease both}
 
-  .hbtns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;
-    animation:fu 1s .38s ease both}
-  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 28px;
-    border-radius:10px;font-family:var(--fb);font-size:.92rem;font-weight:500;
-    cursor:pointer;transition:all .25s;border:none;line-height:1}
-  .bp{background:var(--teal);color:#000;box-shadow:0 0 28px rgba(0,191,165,.3)}
-  .bp:hover{background:#00d9be;transform:translateY(-2px);box-shadow:0 0 44px rgba(0,191,165,.5)}
-  .bg{background:var(--surf);color:var(--text);border:1px solid var(--bord)}
-  .bg:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.14);transform:translateY(-2px)}
-  .bdim{opacity:.45;cursor:default!important}
-  .bdim:hover{transform:none!important;box-shadow:none!important}
+.hbtns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;animation:fu 1s .38s ease both}
+.btn{display:inline-flex;align-items:center;gap:7px;padding:13px 26px;
+  border-radius:10px;font-family:var(--fb);font-size:.9rem;font-weight:500;
+  cursor:pointer;transition:all .25s;border:none;line-height:1;letter-spacing:.01em}
+.bp{background:var(--teal);color:#000;box-shadow:0 0 32px rgba(0,191,165,.28)}
+.bp:hover{background:#00d8be;transform:translateY(-2px);box-shadow:0 0 52px rgba(0,191,165,.5)}
+.bg2{background:var(--surf);color:var(--text);border:1px solid var(--bord)}
+.bg2:hover{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.15);transform:translateY(-2px)}
+.bdim{opacity:.42;cursor:default!important;pointer-events:none}
 
-  .hscroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
-    display:flex;flex-direction:column;align-items:center;gap:7px;
-    color:var(--muted);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;
-    z-index:2;animation:fu 1s .7s ease both}
-  .hscline{width:1px;height:36px;
-    background:linear-gradient(var(--teal),transparent);
-    animation:sl 2s ease infinite}
-  @keyframes sl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
-  @keyframes fu{from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:none}}
+.hscroll{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);
+  display:flex;flex-direction:column;align-items:center;gap:7px;
+  color:var(--muted);font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;
+  z-index:2;animation:fu 1s .8s ease both}
+.hscline{width:1px;height:38px;background:linear-gradient(var(--teal),transparent);
+  animation:scl 2s ease infinite}
+@keyframes scl{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+@keyframes fu{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
 
-  /* ── STATS ── */
-  #stats{border-top:1px solid var(--bord);border-bottom:1px solid var(--bord);background:var(--bg2);padding:34px 0}
-  .sg{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
-  .si{padding:0 20px}
-  .si+.si{border-left:1px solid var(--bord)}
-  .sn{font-family:var(--fh);font-size:2rem;font-weight:700;
-    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
-  .sl2{font-size:.78rem;color:var(--muted);margin-top:5px}
+/* ── STATS ── */
+#stats{background:var(--bg2);border-top:1px solid var(--bord);border-bottom:1px solid var(--bord);padding:36px 0}
+.ctr{max-width:1120px;margin:0 auto;padding:0 28px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.si{padding:0 18px}
+.si+.si{border-left:1px solid var(--bord)}
+.sn{font-family:var(--fh);font-size:2.1rem;font-weight:800;line-height:1;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sl{font-size:.77rem;color:var(--muted);margin-top:5px;letter-spacing:.02em}
 
-  /* ── SHARED SECTION SHELL ── */
-  section{position:relative;z-index:1}
-  .ctr{max-width:1100px;margin:0 auto;padding:0 24px}
-  .sp{padding:112px 0}
-  .slabel{font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
-  .stitle{font-family:var(--fh);font-size:clamp(1.9rem,3.8vw,2.9rem);
-    font-weight:700;letter-spacing:-.03em;line-height:1.1;margin-bottom:18px}
-  .ssub{font-size:1rem;color:var(--muted);max-width:560px}
-  .gt{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+/* ── SECTION SHELL ── */
+section{position:relative;z-index:1}
+.sp{padding:116px 0}
+.slabel{font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);margin-bottom:14px}
+.stitle{font-family:var(--fh);font-size:clamp(1.95rem,3.9vw,3rem);
+  font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:18px}
+.ssub{font-size:.97rem;color:var(--muted);max-width:560px}
+.gt{background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 
-  /* reveal */
-  .rv{opacity:0;transform:translateY(28px);transition:opacity .65s ease,transform .65s ease}
-  .rv.on{opacity:1;transform:none}
-  .d1{transition-delay:.08s}.d2{transition-delay:.16s}.d3{transition-delay:.24s}
-  .d4{transition-delay:.32s}.d5{transition-delay:.40s}.d6{transition-delay:.48s}
+/* reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
+.rv.on{opacity:1;transform:none}
+.d1{transition-delay:.09s}.d2{transition-delay:.18s}.d3{transition-delay:.27s}
+.d4{transition-delay:.36s}.d5{transition-delay:.45s}.d6{transition-delay:.54s}
 
-  /* ── FEATURES ── */
-  #features{background:var(--bg)}
-  .fhdr{text-align:center;margin-bottom:64px}
-  .fhdr .ssub{margin:0 auto}
-  .fg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-  .fc{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
-    padding:30px 26px;transition:all .3s;position:relative;overflow:hidden}
-  .fc::before{content:'';position:absolute;inset:0;
-    background:linear-gradient(135deg,rgba(0,191,165,.04),rgba(41,121,255,.04));
-    opacity:0;transition:opacity .3s}
-  .fc:hover{border-color:rgba(0,191,165,.3);transform:translateY(-4px);
-    box-shadow:0 16px 48px rgba(0,0,0,.5);cursor:default}
-  .fc:hover::before{opacity:1}
-  .fi{width:42px;height:42px;border-radius:10px;margin-bottom:18px;
-    display:flex;align-items:center;justify-content:center}
-  .fi svg{width:22px;height:22px}
-  .ib{background:rgba(41,121,255,.14)} .it{background:rgba(0,191,165,.14)}
-  .ig{background:rgba(67,160,71,.14)}  .ia{background:rgba(251,140,0,.14)}
-  .io{background:rgba(244,81,30,.14)}  .ip{background:rgba(156,39,176,.14)}
-  .ft{font-family:var(--fh);font-size:1rem;font-weight:600;margin-bottom:9px;letter-spacing:-.01em}
-  .fd{font-size:.88rem;color:var(--muted);line-height:1.65}
+/* gradient line */
+.gl{height:1px;background:linear-gradient(90deg,transparent 0%,var(--teal) 30%,var(--orange) 70%,transparent 100%);opacity:.2}
 
-  /* ── DEMO ── */
-  #demo{background:var(--bg2)}
-  .dg{display:grid;grid-template-columns:1fr 1fr;gap:52px;align-items:center}
-  .cw{border-radius:var(--r);overflow:hidden;border:1px solid var(--bord);
-    box-shadow:0 24px 80px rgba(0,0,0,.65)}
-  .ctb{background:rgba(255,255,255,.045);padding:11px 16px;
-    display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--bord)}
-  .cd{width:11px;height:11px;border-radius:50%}
-  .cdr{background:#ff5f57}.cdy{background:#febc2e}.cdg{background:#28c840}
-  .cfn{margin-left:8px;font-family:var(--fm);font-size:.72rem;color:var(--muted)}
-  .cb{background:#060612;padding:26px 22px;font-family:var(--fm);font-size:.78rem;
-    line-height:1.85;min-height:310px}
-  .kw{color:#8b7cf8}.fn{color:#00d9be}.st{color:#79c0ff}
-  .cm{color:#3a3a5c}.vr{color:#ffa657}
-  .cur{display:inline-block;width:2px;height:.9em;background:var(--teal);
-    vertical-align:text-bottom;animation:bk 1s step-end infinite}
-  @keyframes bk{50%{opacity:0}}
+/* ── FEATURES ── */
+#features{background:var(--bg)}
+.fhdr{text-align:center;margin-bottom:72px}
+.fhdr .ssub{margin:0 auto}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.fc{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:32px 28px;transition:all .35s;position:relative;overflow:hidden}
+.fc::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(0,191,165,.05),rgba(41,121,255,.04));
+  opacity:0;transition:opacity .35s}
+.fc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;
+  background:var(--grad);opacity:0;transition:opacity .35s}
+.fc:hover{border-color:rgba(0,191,165,.28);transform:translateY(-5px);
+  box-shadow:0 20px 60px rgba(0,0,0,.55)}
+.fc:hover::before,.fc:hover::after{opacity:1}
+.fi{width:44px;height:44px;border-radius:11px;margin-bottom:20px;
+  display:flex;align-items:center;justify-content:center}
+.fi svg{width:22px;height:22px}
+.ib{background:rgba(41,121,255,.14)}.it{background:rgba(0,191,165,.14)}
+.ig{background:rgba(67,160,71,.14)}.ia{background:rgba(251,140,0,.14)}
+.io{background:rgba(244,81,30,.14)}.ip{background:rgba(156,39,176,.14)}
+.ft{font-family:var(--fh);font-size:1.02rem;font-weight:700;margin-bottom:10px;letter-spacing:-.02em}
+.fd{font-size:.87rem;color:var(--muted);line-height:1.7}
 
-  .cp{border-radius:var(--r);overflow:hidden;border:1px solid var(--bord);background:#04040e;
-    box-shadow:0 24px 80px rgba(0,0,0,.65)}
-  .cph{padding:13px 18px;border-bottom:1px solid var(--bord);
-    font-size:.75rem;color:var(--muted);font-family:var(--fm);
-    display:flex;justify-content:space-between;align-items:center}
-  .cph span:first-child{color:var(--teal);font-weight:500}
-  #cc{display:block;width:100%}
+/* ── DEMO (typing code) ── */
+#demo{background:var(--bg2)}
+.dg{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:start}
 
-  /* ── MODALITIES ── */
-  #modalities{background:var(--bg)}
-  .mhdr{text-align:center;margin-bottom:60px}
-  .mhdr .ssub{margin:0 auto}
-  .mg{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
-  .mc{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
-    padding:28px 16px;text-align:center;transition:all .3s;cursor:default;position:relative;overflow:hidden}
-  .mc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .3s;
-    background:radial-gradient(ellipse at 50% 0%,rgba(0,191,165,.1),transparent 70%)}
-  .mc:hover{border-color:rgba(0,191,165,.3);transform:translateY(-6px);
-    box-shadow:0 20px 60px rgba(0,0,0,.45)}
-  .mc:hover::before{opacity:1}
-  .micon{width:48px;height:48px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
-  .micon svg{width:100%;height:100%}
-  .mn{font-family:var(--fh);font-size:.88rem;font-weight:600;margin-bottom:5px;letter-spacing:-.01em}
-  .md{font-size:.72rem;color:var(--muted);line-height:1.5}
-  /* Plus card */
-  .mcplus{border-style:dashed;border-color:rgba(0,191,165,.25)}
-  .mcplus .mn{color:var(--teal)}
+/* Code window */
+.cw{border-radius:var(--r);overflow:hidden;border:1px solid var(--bord);
+  box-shadow:0 28px 90px rgba(0,0,0,.7)}
+.ctb{background:rgba(255,255,255,.04);padding:12px 18px;
+  display:flex;align-items:center;gap:7px;border-bottom:1px solid var(--bord)}
+.cd{width:11px;height:11px;border-radius:50%}
+.cdr{background:#ff5f57}.cdy{background:#febc2e}.cdg{background:#28c840}
+.cfn{margin-left:10px;font-family:var(--fm);font-size:.72rem;color:var(--muted)}
+.cb{background:#060610;padding:26px 24px 28px;font-family:var(--fm);font-size:.79rem;
+  line-height:1.9;min-height:340px;position:relative}
+.kw{color:#c792ea}.fn{color:#00d9be}.st{color:#89ddff}
+.cm{color:#3d3d60}.vr{color:#ffcb6b}.op{color:#89ddff;opacity:.8}
+.cur-blink{display:inline-block;width:2px;height:.88em;background:var(--teal);
+  vertical-align:text-bottom;animation:bk 1s step-end infinite}
+@keyframes bk{50%{opacity:0}}
+.line-num{color:#2a2a45;user-select:none;display:inline-block;width:20px;text-align:right;margin-right:14px;font-size:.71rem}
 
-  /* gradient line */
-  .gl{height:1px;background:linear-gradient(90deg,transparent,var(--teal),var(--orange),transparent);opacity:.25}
+/* Chart panel */
+.cp{border-radius:var(--r);overflow:hidden;border:1px solid var(--bord);background:#030310;
+  box-shadow:0 28px 90px rgba(0,0,0,.7)}
+.cph{padding:14px 20px;border-bottom:1px solid var(--bord);
+  font-size:.74rem;color:var(--muted);font-family:var(--fm);
+  display:flex;justify-content:space-between;align-items:center}
+.cph span:first-child{color:var(--teal);font-weight:600}
+.chart-tabs{display:flex;gap:0;border-bottom:1px solid var(--bord)}
+.ctab{flex:1;padding:10px;text-align:center;font-size:.76rem;font-family:var(--fm);
+  color:var(--muted);cursor:pointer;transition:all .2s;border:none;background:transparent}
+.ctab.active{color:var(--teal);background:rgba(0,191,165,.06);
+  border-bottom:2px solid var(--teal)}
+#cc,#czs{display:block;width:100%}
 
-  /* ── COUNTDOWN ── */
-  #countdown{background:var(--bg2);position:relative;overflow:hidden}
-  #countdown::before{content:'';position:absolute;inset:0;pointer-events:none;
-    background:radial-gradient(ellipse 80% 55% at 50% 50%,rgba(0,191,165,.065),transparent 70%)}
-  .cdi{text-align:center;position:relative;z-index:1}
-  .cdey{font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;
-    color:var(--teal);font-weight:600;margin-bottom:18px}
-  .cdt{font-family:var(--fh);font-size:clamp(1.9rem,3.8vw,3rem);
-    font-weight:700;letter-spacing:-.03em;margin-bottom:10px}
-  .cds{color:var(--muted);font-size:.97rem;margin-bottom:52px}
-  .clk{display:flex;gap:20px;justify-content:center;flex-wrap:wrap;margin-bottom:68px}
-  .cu{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
-    padding:26px 32px;min-width:120px;text-align:center;
-    box-shadow:0 8px 32px rgba(0,0,0,.4);transition:border-color .3s}
-  .cu:hover{border-color:rgba(0,191,165,.3)}
-  .cn{font-family:var(--fh);font-size:3.2rem;font-weight:700;line-height:1;
-    background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-  .ck{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-top:7px}
+/* ── MODALITIES ── */
+#modalities{background:var(--bg)}
+.mhdr{text-align:center;margin-bottom:64px}
+.mhdr .ssub{margin:0 auto}
+.mg{display:grid;grid-template-columns:repeat(6,1fr);gap:14px}
+.mc{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:30px 16px;text-align:center;transition:all .35s;cursor:default;position:relative;overflow:hidden}
+.mc::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity .35s;
+  background:radial-gradient(ellipse at 50% 0%,rgba(0,191,165,.12),transparent 70%)}
+.mc:hover{border-color:rgba(0,191,165,.32);transform:translateY(-7px);
+  box-shadow:0 22px 64px rgba(0,0,0,.5)}
+.mc:hover::before{opacity:1}
+.micon{width:50px;height:50px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.micon svg{width:100%;height:100%}
+.mn{font-family:var(--fh);font-size:.88rem;font-weight:700;margin-bottom:5px;letter-spacing:-.01em}
+.md{font-size:.71rem;color:var(--muted);line-height:1.55}
+.mcplus{border-style:dashed;border-color:rgba(0,191,165,.28)}
+.mcplus .mn{color:var(--teal)}
 
-  /* papers */
-  .plbl{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;
-    color:var(--teal);font-weight:600;margin-bottom:26px;text-align:center}
-  .pg{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:44px}
-  .pc2{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
-    padding:22px;transition:all .3s}
-  .pc2:hover{border-color:rgba(0,191,165,.28);transform:translateY(-3px)}
-  .ptag{display:inline-block;padding:3px 10px;border-radius:6px;
-    font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;margin-bottom:11px}
-  .tprep{background:rgba(251,140,0,.15);color:var(--amber)}
-  .tcite{background:rgba(0,191,165,.15);color:var(--teal)}
-  .ptit{font-size:.92rem;font-weight:500;margin-bottom:5px;line-height:1.4}
-  .pau{font-size:.78rem;color:var(--muted);margin-bottom:8px}
-  .pmod{font-size:.72rem;color:var(--teal);opacity:.8}
-  .plink{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;
-    color:var(--muted);margin-top:10px;padding:4px 11px;border-radius:6px;
-    border:1px solid var(--bord);opacity:.55}
+/* ── COUNTDOWN ── */
+#countdown{background:var(--bg2);position:relative;overflow:hidden}
+#countdown::before{content:'';position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 80% 55% at 50% 50%,rgba(0,191,165,.07),transparent 70%)}
+.cdi{text-align:center;position:relative;z-index:1}
+.cdey{font-size:.7rem;letter-spacing:.16em;text-transform:uppercase;color:var(--teal);font-weight:700;margin-bottom:20px}
+.cdt{font-family:var(--fh);font-size:clamp(2rem,4vw,3.1rem);font-weight:800;letter-spacing:-.04em;margin-bottom:10px}
+.cds-txt{color:var(--muted);font-size:.96rem;margin-bottom:56px}
+.clk{display:flex;gap:18px;justify-content:center;flex-wrap:wrap;margin-bottom:72px}
+.cu{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:28px 34px;min-width:120px;text-align:center;
+  box-shadow:0 8px 32px rgba(0,0,0,.4);transition:border-color .3s}
+.cu:hover{border-color:rgba(0,191,165,.3)}
+.cn{font-family:var(--fh);font-size:3.4rem;font-weight:800;line-height:1;
+  background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.ck{font-size:.67rem;letter-spacing:.11em;text-transform:uppercase;color:var(--muted);margin-top:8px}
 
-  .dcta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
+/* papers */
+.plbl{font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--teal);font-weight:700;margin-bottom:28px;text-align:center}
+.pg{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:48px}
+.pc2{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);
+  padding:24px;transition:all .3s;position:relative;overflow:hidden}
+.pc2::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:var(--grad);opacity:.6}
+.pc2:hover{border-color:rgba(0,191,165,.28);transform:translateY(-3px)}
+.ptag{display:inline-block;padding:3px 10px;border-radius:6px;
+  font-size:.67rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:12px}
+.tprep{background:rgba(251,140,0,.15);color:var(--amber)}
+.ptit{font-size:.93rem;font-weight:500;margin-bottom:5px;line-height:1.4}
+.pau{font-size:.78rem;color:var(--muted);margin-bottom:8px}
+.pmod{font-size:.72rem;color:var(--teal);opacity:.85}
+.plink{display:inline-flex;align-items:center;gap:5px;font-size:.74rem;
+  color:var(--muted);margin-top:11px;padding:4px 12px;border-radius:6px;
+  border:1px solid var(--bord);opacity:.5}
 
-  /* ── ACK ── */
-  #ack{background:var(--bg);border-top:1px solid var(--bord)}
-  .ag{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;margin-bottom:0}
-  .ac{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);padding:22px}
-  .at{font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:7px;
-    letter-spacing:.07em;text-transform:uppercase}
-  .ab{font-size:.87rem;line-height:1.65}
-  .ab a{color:var(--teal);border-bottom:1px solid rgba(0,191,165,.28);padding-bottom:1px}
-  .ab a:hover{border-color:var(--teal)}
+.dcta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap}
 
-  /* ── FOOTER ── */
-  footer{background:var(--bg2);border-top:1px solid var(--bord);padding:36px 0;text-align:center}
-  .flogo{font-family:var(--fh);font-size:1.2rem;font-weight:700;margin-bottom:7px}
-  .fsub{font-size:.8rem;color:var(--muted);margin-bottom:22px}
-  .flinks{display:flex;gap:22px;justify-content:center;flex-wrap:wrap}
-  .flinks a{font-size:.82rem;color:var(--muted);transition:color .2s}
-  .flinks a:hover{color:var(--text)}
-  .fcopy{margin-top:22px;font-size:.72rem;color:rgba(94,94,120,.45)}
+/* ── ACK ── */
+#ack{background:var(--bg);border-top:1px solid var(--bord)}
+.ag{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ac{background:var(--surf);border:1px solid var(--bord);border-radius:var(--r);padding:24px}
+.at{font-size:.73rem;font-weight:700;color:var(--muted);margin-bottom:8px;letter-spacing:.09em;text-transform:uppercase}
+.ab{font-size:.87rem;line-height:1.7}
+.ab a{color:var(--teal);border-bottom:1px solid rgba(0,191,165,.28);padding-bottom:1px}
+.ab a:hover{border-color:var(--teal)}
 
-  /* ── RESPONSIVE ── */
-  @media(max-width:960px){
-    nav{padding:0 24px}
-    .fg{grid-template-columns:repeat(2,1fr)}
-    .dg{grid-template-columns:1fr}
-    .mg{grid-template-columns:repeat(3,1fr)}
-    .pg{grid-template-columns:1fr}
-    .ag{grid-template-columns:1fr}
-    .sg{grid-template-columns:repeat(2,1fr);gap:24px}
-    .si+.si{border-left:none}
-  }
-  @media(max-width:600px){
-    .fg{grid-template-columns:1fr}
-    .mg{grid-template-columns:repeat(2,1fr)}
-    .nr .hm{display:none}
-    .clk{gap:10px}
-    .cu{padding:18px 18px;min-width:80px}
-    .cn{font-size:2.4rem}
-  }
-  </style>
+/* ── FOOTER ── */
+footer{background:var(--bg2);border-top:1px solid var(--bord);padding:38px 0;text-align:center}
+.flogo{font-family:var(--fh);font-size:1.25rem;font-weight:800;margin-bottom:8px;letter-spacing:-.03em}
+.fsub{font-size:.8rem;color:var(--muted);margin-bottom:24px}
+.flinks{display:flex;gap:24px;justify-content:center;flex-wrap:wrap}
+.flinks a{font-size:.82rem;color:var(--muted);transition:color .2s}
+.flinks a:hover{color:var(--text)}
+.fcopy{margin-top:24px;font-size:.71rem;color:rgba(94,94,120,.4)}
+
+/* outlier tooltip */
+.outlier-tooltip{position:absolute;background:rgba(10,10,22,.92);border:1px solid rgba(244,81,30,.4);
+  border-radius:8px;padding:8px 12px;font-family:var(--fm);font-size:.71rem;pointer-events:none;
+  opacity:0;transition:opacity .2s;white-space:nowrap;z-index:10}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1000px){nav{padding:0 24px}.fg{grid-template-columns:repeat(2,1fr)}.dg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(3,1fr)}.pg{grid-template-columns:1fr}.ag{grid-template-columns:1fr}.sg{grid-template-columns:repeat(2,1fr);gap:24px}.si+.si{border-left:none}}
+@media(max-width:600px){.fg{grid-template-columns:1fr}.mg{grid-template-columns:repeat(2,1fr)}.nr .hm{display:none}.clk{gap:10px}.cu{padding:18px 18px;min-width:80px}.cn{font-size:2.5rem}}
+</style>
 </head>
 <body>
 
 <!-- ── NAV ── -->
 <nav id="mnav">
-  <div class="nl"><span class="n">Norm</span><span class="g">GAMLSS</span></div>
+  <div class="nl"><span class="nl-n">Norm</span><span class="nl-g">GAMLSS</span></div>
   <div class="nr">
     <a href="#features" class="hm">Features</a>
     <a href="#demo" class="hm">Demo</a>
@@ -299,50 +291,47 @@
   </div>
 </nav>
 
-
 <!-- ── HERO ── -->
 <section id="hero">
   <div class="hbg">
     <img src="images/slide1_background.png" alt=""/>
   </div>
   <canvas id="pc"></canvas>
-
   <div class="hc">
-    <div class="badge">Presenting at OHBM 2026 · June 13–18</div>
+    <div class="badge"><div class="badge-dot"></div>Presenting at OHBM 2026 · June 13–18</div>
 
-    <img class="hlogo" src="images/logo.png"
-         onerror="this.style.display='none';document.getElementById('logofb').style.display='block'"
-         alt="NormGAMLSS"/>
-    <div id="logofb" style="display:none;font-family:var(--fh);font-size:clamp(2.8rem,8vw,5.5rem);
-         font-weight:800;letter-spacing:-.04em;line-height:1;margin-bottom:20px">
-      <span style="color:var(--teal)">Norm</span><span class="gt">GAMLSS</span>
+    <div class="hlogo-wrap">
+      <img src="images/logo.png"
+           onerror="this.style.display='none';document.getElementById('logofb').style.display='block'"
+           alt="NormGAMLSS"/>
+      <div id="logofb" style="display:none;font-family:var(--fh);font-size:clamp(3rem,9vw,6rem);font-weight:800;letter-spacing:-.04em;line-height:1">
+        <span style="color:var(--teal)">Norm</span><span class="gt">GAMLSS</span>
+      </div>
     </div>
 
     <p class="htag">Go beyond the mean. Model the norm.</p>
     <p class="hsub">Full distributional normative modeling — μ, σ, ν, τ as smooth functions of covariates. Built-in site transfer. No retraining required.</p>
 
     <div class="hbtns">
-      <a href="#countdown" class="btn bp">📅 Paper &amp; package — July 15</a>
-      <a href="#demo" class="btn bg">See it in action ↓</a>
-      <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="btn bg">⭐ GitHub</a>
+      <a href="#countdown" class="btn bp">📅 Paper & package — July 15</a>
+      <a href="#demo" class="btn bg2">See it in action ↓</a>
+      <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="btn bg2">⭐ GitHub</a>
     </div>
   </div>
   <div class="hscroll"><div class="hscline"></div>scroll</div>
 </section>
 
-
 <!-- ── STATS ── -->
 <div id="stats">
   <div class="ctr">
     <div class="sg">
-      <div class="si rv"><div class="sn">5+</div><div class="sl2">Modalities validated</div></div>
-      <div class="si rv d1"><div class="sn">4</div><div class="sl2">Papers in preparation</div></div>
-      <div class="si rv d2"><div class="sn">μ σ ν τ</div><div class="sl2">Full distribution modeled</div></div>
-      <div class="si rv d3"><div class="sn">100+</div><div class="sl2">Distribution families</div></div>
+      <div class="si rv"><div class="sn">5+</div><div class="sl">Modalities validated</div></div>
+      <div class="si rv d1"><div class="sn">4</div><div class="sl">Papers in preparation</div></div>
+      <div class="si rv d2"><div class="sn">μ σ ν τ</div><div class="sl">Full distribution modeled</div></div>
+      <div class="si rv d3"><div class="sn">100+</div><div class="sl">Distribution families</div></div>
     </div>
   </div>
 </div>
-
 
 <!-- ── FEATURES ── -->
 <section id="features" class="sp">
@@ -353,142 +342,87 @@
       <p class="ssub rv d2">Built for multi-site neuroimaging, clinical measurements, and any continuous variable that refuses to behave normally.</p>
     </div>
     <div class="fg">
-
       <div class="fc rv">
-        <div class="fi it">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#00bfa5" stroke-width="1.8" stroke-linecap="round">
-            <path d="M2 11 Q5 4 8 11 Q11 18 14 11 Q17 4 20 11"/>
-            <ellipse cx="11" cy="11" rx="4" ry="7" opacity=".3"/>
-          </svg>
-        </div>
+        <div class="fi it"><svg viewBox="0 0 22 22" fill="none" stroke="#00bfa5" stroke-width="1.8" stroke-linecap="round"><path d="M2 11 Q5 4 8 11 Q11 18 14 11 Q17 4 20 11"/><ellipse cx="11" cy="11" rx="4" ry="7" opacity=".28"/></svg></div>
         <div class="ft">Full distributional modeling</div>
         <p class="fd">Model μ, σ, ν, τ simultaneously — location, scale, skewness, and kurtosis as smooth covariate functions. Not just the mean.</p>
       </div>
-
       <div class="fc rv d1">
-        <div class="fi ib">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#2979ff" stroke-width="1.8" stroke-linecap="round">
-            <circle cx="6" cy="11" r="3"/><circle cx="16" cy="11" r="3"/>
-            <path d="M9 11h4M3 7l-1-3M3 15l-1 3M19 7l1-3M19 15l1 3"/>
-            <path d="M6 8V5M6 17v-3M16 8V5M16 17v-3" opacity=".5"/>
-          </svg>
-        </div>
+        <div class="fi ib"><svg viewBox="0 0 22 22" fill="none" stroke="#2979ff" stroke-width="1.8" stroke-linecap="round"><circle cx="6" cy="11" r="3"/><circle cx="16" cy="11" r="3"/><path d="M9 11h4M3 7l-1-3M3 15l-1 3M19 7l1-3M19 15l1 3"/><path d="M6 8V5M6 17v-3M16 8V5M16 17v-3" opacity=".45"/></svg></div>
         <div class="ft">Site transfer — zero retraining</div>
         <p class="fd">Transfer a trained model to an unseen site using a small calibration sample. A capability unique to NormGAMLSS.</p>
       </div>
-
       <div class="fc rv d2">
-        <div class="fi ig">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#43a047" stroke-width="1.8" stroke-linecap="round">
-            <polyline points="1,15 5,9 8,13 11,5 14,13 17,9 21,15"/>
-            <line x1="1" y1="18" x2="21" y2="18" stroke-width="1.2" opacity=".4"/>
-          </svg>
-        </div>
-        <div class="ft">Centile curves &amp; Z-scores</div>
-        <p class="fd">Age-dependent reference bands and individual deviation scores. Publication-quality plots built in.</p>
+        <div class="fi ig"><svg viewBox="0 0 22 22" fill="none" stroke="#43a047" stroke-width="1.8" stroke-linecap="round"><polyline points="1,15 5,9 8,13 11,5 14,13 17,9 21,15"/><line x1="1" y1="18" x2="21" y2="18" stroke-width="1.2" opacity=".35"/></svg></div>
+        <div class="ft">Centile curves & Z-scores</div>
+        <p class="fd">Age-dependent reference bands and individual deviation scores. Publication-quality plots and outlier detection built in.</p>
       </div>
-
       <div class="fc rv d3">
-        <div class="fi ia">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#fb8c00" stroke-width="1.8" stroke-linecap="round">
-            <path d="M11 2C6 2 2 6 2 11s4 9 9 9 9-4 9-9-4-9-9-9z"/>
-            <path d="M11 6v5l3 3" stroke-width="2"/>
-            <path d="M7 11h1M14 11h1M11 7v1M11 14v1" opacity=".5" stroke-width="1.2"/>
-          </svg>
-        </div>
+        <div class="fi ia"><svg viewBox="0 0 22 22" fill="none" stroke="#fb8c00" stroke-width="1.8" stroke-linecap="round"><path d="M11 2C6 2 2 6 2 11s4 9 9 9 9-4 9-9-4-9-9-9z"/><path d="M11 6v5l3 3" stroke-width="2"/><path d="M7 11h1M14 11h1M11 7v1M11 14v1" opacity=".45" stroke-width="1.2"/></svg></div>
         <div class="ft">100+ distribution families</div>
         <p class="fd">SHASH, BCT, BCCGo, NO, GA and the full GAMLSS catalogue. Match the distribution to your data.</p>
       </div>
-
       <div class="fc rv d4">
-        <div class="fi io">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#f4511e" stroke-width="1.8" stroke-linecap="round">
-            <circle cx="5" cy="11" r="2"/><circle cx="11" cy="5" r="2"/>
-            <circle cx="17" cy="11" r="2"/><circle cx="11" cy="17" r="2"/>
-            <line x1="7" y1="11" x2="9" y2="11"/>
-            <line x1="13" y1="11" x2="15" y2="11"/>
-            <line x1="11" y1="7" x2="11" y2="9"/>
-            <line x1="11" y1="13" x2="11" y2="15"/>
-            <circle cx="11" cy="11" r="2.5" fill="rgba(244,81,30,.2)" stroke="#f4511e"/>
-          </svg>
-        </div>
-        <div class="ft">Random effects &amp; splines</div>
+        <div class="fi io"><svg viewBox="0 0 22 22" fill="none" stroke="#f4511e" stroke-width="1.8" stroke-linecap="round"><circle cx="5" cy="11" r="2"/><circle cx="11" cy="5" r="2"/><circle cx="17" cy="11" r="2"/><circle cx="11" cy="17" r="2"/><line x1="7" y1="11" x2="9" y2="11"/><line x1="13" y1="11" x2="15" y2="11"/><line x1="11" y1="7" x2="11" y2="9"/><line x1="11" y1="13" x2="11" y2="15"/><circle cx="11" cy="11" r="2.5" fill="rgba(244,81,30,.2)" stroke="#f4511e"/></svg></div>
+        <div class="ft">Random effects & splines</div>
         <p class="fd">Proper multi-site modeling with shrinkage. Non-linear trajectories with penalized splines — all native.</p>
       </div>
-
       <div class="fc rv d5">
-        <div class="fi ip">
-          <svg viewBox="0 0 22 22" fill="none" stroke="#ab47bc" stroke-width="1.8" stroke-linecap="round">
-            <path d="M4 4l5 5M13 4l5 5M4 13l5 5M13 13l5 5"/>
-            <rect x="7" y="7" width="8" height="8" rx="2" fill="rgba(171,71,188,.15)"/>
-            <circle cx="4" cy="4" r="1.5" fill="#ab47bc"/>
-            <circle cx="18" cy="4" r="1.5" fill="#ab47bc"/>
-            <circle cx="4" cy="18" r="1.5" fill="#ab47bc"/>
-            <circle cx="18" cy="18" r="1.5" fill="#ab47bc"/>
-          </svg>
-        </div>
+        <div class="fi ip"><svg viewBox="0 0 22 22" fill="none" stroke="#ab47bc" stroke-width="1.8" stroke-linecap="round"><path d="M4 4l5 5M13 4l5 5M4 13l5 5M13 13l5 5"/><rect x="7" y="7" width="8" height="8" rx="2" fill="rgba(171,71,188,.15)"/><circle cx="4" cy="4" r="1.5" fill="#ab47bc"/><circle cx="18" cy="4" r="1.5" fill="#ab47bc"/><circle cx="4" cy="18" r="1.5" fill="#ab47bc"/><circle cx="18" cy="18" r="1.5" fill="#ab47bc"/></svg></div>
         <div class="ft">Python-native workflow</div>
         <p class="fd">Fits into your pandas/numpy pipeline. Save, load, compare models. Parallel processing and caching built in.</p>
       </div>
-
     </div>
   </div>
 </section>
 
 <div class="gl"></div>
 
-
 <!-- ── DEMO ── -->
 <section id="demo" class="sp">
   <div class="ctr">
+    <div style="text-align:center;margin-bottom:64px">
+      <div class="slabel rv">Live demo</div>
+      <h2 class="stitle rv d1">Fit, predict,<br/><span class="gt">transfer</span></h2>
+      <p class="ssub rv d2" style="margin:0 auto">A few lines of Python. The full power of GAMLSS underneath — watch it type.</p>
+    </div>
     <div class="dg">
-      <div>
-        <div class="slabel rv">How it works</div>
-        <h2 class="stitle rv d1">Fit, predict,<br/><span class="gt">transfer</span></h2>
-        <p class="ssub rv d2" style="margin-bottom:28px">
-          A few lines of Python. The full power of GAMLSS underneath.
-        </p>
-        <div class="cw rv d3">
+      <!-- Code window with typing animation -->
+      <div class="rv d1">
+        <div class="cw" id="code-window">
           <div class="ctb">
             <div class="cd cdr"></div><div class="cd cdy"></div><div class="cd cdg"></div>
             <span class="cfn">normative_model.py</span>
           </div>
-          <div class="cb">
-<span class="cm"># ── fit ─────────────────────────────</span><br/>
-<span class="kw">from</span> <span class="fn">normgamlss</span> <span class="kw">import</span> <span class="vr">Gamlss</span><br/><br/>
-<span class="vr">model</span> = <span class="fn">Gamlss</span>(<span class="st">'brain_norm'</span>,<br/>
-&nbsp;&nbsp;x_vals=[<span class="st">'age'</span>,<span class="st">'sex'</span>,<span class="st">'site'</span>],<br/>
-&nbsp;&nbsp;y_val=<span class="st">'cortical_thickness'</span>)<br/><br/>
-<span class="vr">model</span>.<span class="fn">fit</span>(r_code=<span class="st">"""<br/>
-&nbsp;&nbsp;model &lt;- gamlss(<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;y ~ pb(age) + re(~1|site),<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;sigma.formula = ~ pb(age),<br/>
-&nbsp;&nbsp;&nbsp;&nbsp;family = SHASH(), method = RS(50))<br/>
-"""</span>, data=train_df)<br/><br/>
-<span class="cm"># ── z-scores &amp; centiles ────────────</span><br/>
-<span class="vr">z</span> = <span class="vr">model</span>.<span class="fn">z_score</span>(test_df, train_df)<br/>
-<span class="vr">model</span>.<span class="fn">plot_centiles</span>(test_df, train_df)<br/><br/>
-<span class="cm"># ── site transfer ───────────────────</span><br/>
-<span class="kw">from</span> <span class="fn">normgamlss</span> <span class="kw">import</span> <span class="vr">site_transfer</span><br/>
-<span class="vr">site_transfer</span>(<span class="vr">model</span>,<br/>
-&nbsp;&nbsp;new_site=<span class="st">'SITE_X'</span>, sample_size=<span class="st">0.1</span>)<span class="cur"></span>
-          </div>
+          <div class="cb" id="code-body"></div>
         </div>
       </div>
 
+      <!-- Chart panel with tab switching -->
       <div class="rv d2">
         <div class="cp">
           <div class="cph">
-            <span>Centile chart — Cortical Thickness</span>
-            <span>SHASH · n=21 351</span>
+            <span id="chart-title">Centile curves — Cortical Thickness</span>
+            <span id="chart-meta">SHASH · n = 21 351</span>
           </div>
-          <canvas id="cc" height="340"></canvas>
+          <div class="chart-tabs">
+            <button class="ctab active" id="tab-cent" onclick="switchTab('cent')">Centiles</button>
+            <button class="ctab" id="tab-zscore" onclick="switchTab('zscore')">Z-scores</button>
+          </div>
+          <canvas id="cc" height="320"></canvas>
+          <canvas id="czs" height="320" style="display:none"></canvas>
+        </div>
+        <div id="chart-legend" style="margin-top:14px;padding:12px 16px;background:var(--surf);border:1px solid var(--bord);border-radius:10px;font-size:.78rem;color:var(--muted);line-height:1.7">
+          <span style="color:var(--teal)">●</span> Normal range &nbsp;·&nbsp;
+          <span style="color:var(--orange)">●</span> Outliers (|Z| &gt; 2) &nbsp;·&nbsp;
+          <span style="color:#ff4444">◆</span> Clinical disorder cohort
         </div>
       </div>
     </div>
   </div>
 </section>
 
+<div class="gl"></div>
 
 <!-- ── MODALITIES ── -->
 <section id="modalities" class="sp">
@@ -499,136 +433,49 @@
       <p class="ssub rv d2">Developed and validated across imaging and non-imaging data by the Laboratory for Mental Health Mapping — <em>MHM-Lab</em>.</p>
     </div>
     <div class="mg">
-
-      <!-- MRI -->
       <div class="mc rv">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <ellipse cx="24" cy="26" rx="18" ry="14" stroke="#2979ff" stroke-width="1.8"/>
-            <path d="M8 24 Q12 16 18 20 Q22 23 24 20 Q27 16 32 20 Q38 24 40 24" stroke="#2979ff" stroke-width="1.6" fill="none" stroke-linecap="round"/>
-            <path d="M10 28 Q14 22 20 25 Q24 27 28 24 Q33 21 38 26" stroke="#2979ff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/>
-            <path d="M14 32 Q20 28 26 30 Q31 32 36 30" stroke="#2979ff" stroke-width="1" fill="none" stroke-linecap="round" opacity=".4"/>
-            <ellipse cx="24" cy="20" rx="6" ry="4" fill="rgba(41,121,255,.12)"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="26" rx="18" ry="14" stroke="#2979ff" stroke-width="1.8"/><path d="M8 24 Q12 16 18 20 Q22 23 24 20 Q27 16 32 20 Q38 24 40 24" stroke="#2979ff" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M10 28 Q14 22 20 25 Q24 27 28 24 Q33 21 38 26" stroke="#2979ff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".6"/><ellipse cx="24" cy="20" rx="6" ry="4" fill="rgba(41,121,255,.12)"/></svg></div>
         <div class="mn">Structural MRI</div>
         <div class="md">Cortical thickness, subcortical volumes, surface area</div>
       </div>
-
-      <!-- EEG — proper trace icon -->
       <div class="mc rv d1">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <!-- EEG baseline with spikes -->
-            <polyline points="2,24 8,24 10,24 12,10 14,38 16,24 20,24 22,16 24,32 26,24 30,24 32,14 34,34 36,24 46,24"
-              stroke="#00bfa5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <!-- electrode dots top -->
-            <circle cx="12" cy="6" r="2" fill="#00bfa5" opacity=".7"/>
-            <circle cx="24" cy="4" r="2" fill="#00bfa5" opacity=".7"/>
-            <circle cx="36" cy="6" r="2" fill="#00bfa5" opacity=".7"/>
-            <line x1="12" y1="8" x2="12" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/>
-            <line x1="24" y1="6" x2="24" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/>
-            <line x1="36" y1="8" x2="36" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><polyline points="2,24 8,24 10,24 12,10 14,38 16,24 20,24 22,16 24,32 26,24 30,24 32,14 34,34 36,24 46,24" stroke="#00bfa5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="12" cy="6" r="2" fill="#00bfa5" opacity=".7"/><circle cx="24" cy="4" r="2" fill="#00bfa5" opacity=".7"/><circle cx="36" cy="6" r="2" fill="#00bfa5" opacity=".7"/><line x1="12" y1="8" x2="12" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/><line x1="24" y1="6" x2="24" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/><line x1="36" y1="8" x2="36" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/></svg></div>
         <div class="mn">EEG</div>
         <div class="md">Spectral power, connectivity, event-related potentials</div>
       </div>
-
-      <!-- fMRI — BOLD signal + activation -->
       <div class="mc rv d2">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <!-- brain outline -->
-            <ellipse cx="24" cy="25" rx="17" ry="13" stroke="#43a047" stroke-width="1.6"/>
-            <!-- activation blobs -->
-            <circle cx="18" cy="22" r="5" fill="rgba(67,160,71,.35)" stroke="#43a047" stroke-width="1.2"/>
-            <circle cx="30" cy="26" r="4" fill="rgba(67,160,71,.2)" stroke="#43a047" stroke-width="1" opacity=".7"/>
-            <circle cx="22" cy="30" r="3" fill="rgba(251,140,0,.35)" stroke="#fb8c00" stroke-width="1.2"/>
-            <!-- BOLD signal line below -->
-            <polyline points="4,40 9,40 11,36 13,44 15,38 17,42 19,40 23,40 25,35 27,45 29,40 35,40 37,37 39,40 44,40"
-              stroke="#43a047" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".8"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="25" rx="17" ry="13" stroke="#43a047" stroke-width="1.6"/><circle cx="18" cy="22" r="5" fill="rgba(67,160,71,.35)" stroke="#43a047" stroke-width="1.2"/><circle cx="30" cy="26" r="4" fill="rgba(67,160,71,.2)" stroke="#43a047" stroke-width="1" opacity=".7"/><circle cx="22" cy="30" r="3" fill="rgba(251,140,0,.35)" stroke="#fb8c00" stroke-width="1.2"/><polyline points="4,40 9,40 11,36 13,44 15,38 17,42 19,40 23,40 25,35 27,45 29,40 35,40 37,37 39,40 44,40" stroke="#43a047" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".8"/></svg></div>
         <div class="mn">fMRI</div>
         <div class="md">BOLD signal, resting-state networks, functional connectivity</div>
       </div>
-
-      <!-- PET -->
       <div class="mc rv d3">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <!-- scanner ring -->
-            <circle cx="24" cy="24" r="18" stroke="#fb8c00" stroke-width="1.8" stroke-dasharray="4 2.5"/>
-            <circle cx="24" cy="24" r="12" stroke="#fb8c00" stroke-width="1.4" opacity=".6"/>
-            <!-- detector segments -->
-            <circle cx="24" cy="7" r="2.5" fill="#fb8c00" opacity=".8"/>
-            <circle cx="24" cy="41" r="2.5" fill="#fb8c00" opacity=".8"/>
-            <circle cx="7" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/>
-            <circle cx="41" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/>
-            <circle cx="13" cy="11" r="2" fill="#fb8c00" opacity=".5"/>
-            <circle cx="35" cy="11" r="2" fill="#fb8c00" opacity=".5"/>
-            <circle cx="13" cy="37" r="2" fill="#fb8c00" opacity=".5"/>
-            <circle cx="35" cy="37" r="2" fill="#fb8c00" opacity=".5"/>
-            <!-- tracer hotspot -->
-            <circle cx="24" cy="24" r="5" fill="rgba(251,140,0,.3)" stroke="#fb8c00" stroke-width="1.2"/>
-            <circle cx="24" cy="24" r="2" fill="#fb8c00"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fb8c00" stroke-width="1.8" stroke-dasharray="4 2.5"/><circle cx="24" cy="24" r="12" stroke="#fb8c00" stroke-width="1.4" opacity=".6"/><circle cx="24" cy="7" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="24" cy="41" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="7" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="41" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="24" cy="24" r="5" fill="rgba(251,140,0,.3)" stroke="#fb8c00" stroke-width="1.2"/><circle cx="24" cy="24" r="2" fill="#fb8c00"/></svg></div>
         <div class="mn">PET</div>
         <div class="md">Tracer uptake, metabolic maps, receptor binding</div>
       </div>
-
-      <!-- Cognitive -->
       <div class="mc rv d4">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <!-- nodes -->
-            <circle cx="24" cy="10" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/>
-            <circle cx="10" cy="32" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/>
-            <circle cx="38" cy="32" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/>
-            <circle cx="24" cy="28" r="3.5" fill="rgba(244,81,30,.5)" stroke="#f4511e" stroke-width="1.6"/>
-            <!-- edges -->
-            <line x1="24" y1="14" x2="24" y2="24.5" stroke="#f4511e" stroke-width="1.4" opacity=".7"/>
-            <line x1="21" y1="26" x2="13.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".7"/>
-            <line x1="27" y1="26" x2="34.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".7"/>
-            <line x1="13" y1="29" x2="35" y2="29" stroke="#f4511e" stroke-width="1" opacity=".3"/>
-            <!-- score bar below -->
-            <rect x="8" y="41" width="32" height="3" rx="1.5" fill="rgba(244,81,30,.15)" stroke="#f4511e" stroke-width="1" opacity=".4"/>
-            <rect x="8" y="41" width="22" height="3" rx="1.5" fill="rgba(244,81,30,.55)"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/><circle cx="10" cy="32" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/><circle cx="38" cy="32" r="4" fill="rgba(244,81,30,.3)" stroke="#f4511e" stroke-width="1.6"/><circle cx="24" cy="28" r="3.5" fill="rgba(244,81,30,.5)" stroke="#f4511e" stroke-width="1.6"/><line x1="24" y1="14" x2="24" y2="24.5" stroke="#f4511e" stroke-width="1.4" opacity=".7"/><line x1="21" y1="26" x2="13.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".7"/><line x1="27" y1="26" x2="34.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".7"/><rect x="8" y="41" width="32" height="3" rx="1.5" fill="rgba(244,81,30,.15)" stroke="#f4511e" stroke-width="1" opacity=".4"/><rect x="8" y="41" width="22" height="3" rx="1.5" fill="rgba(244,81,30,.55)"/></svg></div>
         <div class="mn">Cognitive</div>
         <div class="md">Neuropsychological scores, reaction time, memory</div>
       </div>
-
-      <!-- + More -->
       <div class="mc mcplus rv d5">
-        <div class="micon">
-          <svg viewBox="0 0 48 48" fill="none">
-            <circle cx="24" cy="24" r="18" stroke="#00bfa5" stroke-width="1.6" stroke-dasharray="3 3" opacity=".5"/>
-            <line x1="24" y1="13" x2="24" y2="35" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/>
-            <line x1="13" y1="24" x2="35" y2="24" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/>
-          </svg>
-        </div>
+        <div class="micon"><svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#00bfa5" stroke-width="1.6" stroke-dasharray="3 3" opacity=".5"/><line x1="24" y1="13" x2="24" y2="35" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/><line x1="13" y1="24" x2="35" y2="24" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/></svg></div>
         <div class="mn">And more</div>
         <div class="md">Any continuous measurement with a distribution can be modeled</div>
       </div>
-
     </div>
   </div>
 </section>
 
 <div class="gl"></div>
 
-
 <!-- ── COUNTDOWN ── -->
 <section id="countdown" class="sp">
   <div class="ctr">
     <div class="cdi">
-      <div class="cdey rv">Paper &amp; package release</div>
+      <div class="cdey rv">Paper & package release</div>
       <h2 class="cdt rv d1">Coming <span class="gt">July 15, 2026</span></h2>
-      <p class="cds rv d2">PyPI package, full documentation, and preprints — all on the same day.</p>
+      <p class="cds-txt rv d2">PyPI package, full documentation, and preprints — all on the same day.</p>
 
       <div class="clk rv d3">
         <div class="cu"><div class="cn" id="cdd">--</div><div class="ck">Days</div></div>
@@ -639,7 +486,6 @@
 
       <div class="plbl rv">Publications — please cite</div>
       <div class="pg rv d1">
-
         <div class="pc2">
           <span class="ptag tprep">In Preparation</span>
           <div class="ptit">NormGAMLSS: A Python framework for distributional normative modeling</div>
@@ -647,7 +493,6 @@
           <div class="pmod">📦 Main package paper</div>
           <div class="plink">Preprint · coming July 15, 2026</div>
         </div>
-
         <div class="pc2">
           <span class="ptag tprep">In Preparation</span>
           <div class="ptit">Normative modeling of EEG measures across the lifespan</div>
@@ -655,7 +500,6 @@
           <div class="pmod">⚡ EEG application — tested by MHM-Lab</div>
           <div class="plink">Preprint · coming 2026</div>
         </div>
-
         <div class="pc2">
           <span class="ptag tprep">In Preparation</span>
           <div class="ptit">Distributional normative modeling for neuroimaging biomarkers</div>
@@ -663,7 +507,6 @@
           <div class="pmod">🧠 Structural MRI application</div>
           <div class="plink">Preprint · coming 2026</div>
         </div>
-
         <div class="pc2">
           <span class="ptag tprep">In Preparation</span>
           <div class="ptit">Site transfer for GAMLSS-based normative models</div>
@@ -671,61 +514,37 @@
           <div class="pmod">🔁 Multi-site methodology</div>
           <div class="plink">Preprint · coming 2026</div>
         </div>
-
       </div>
 
       <div class="dcta rv d2">
-        <a class="btn bp bdim" title="Available July 15, 2026">
-          📦 pip install normgamlss &nbsp;<small style="opacity:.55">(July 15)</small>
-        </a>
-        <a class="btn bg bdim" title="Available July 15, 2026">
-          📖 Documentation &nbsp;<small style="opacity:.55">(July 15)</small>
-        </a>
-        <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="btn bg">
-          ⭐ Star on GitHub
-        </a>
+        <a class="btn bp bdim" title="Available July 15, 2026">📦 pip install normgamlss <small style="opacity:.5">(July 15)</small></a>
+        <a class="btn bg2 bdim" title="Available July 15, 2026">📖 Documentation <small style="opacity:.5">(July 15)</small></a>
+        <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="btn bg2">⭐ Star on GitHub</a>
       </div>
     </div>
   </div>
 </section>
 
-
-<!-- ── ACKNOWLEDGEMENTS ── -->
+<!-- ── ACK ── -->
 <section id="ack" class="sp">
   <div class="ctr">
-    <div class="slabel rv" style="text-align:center;margin-bottom:44px">
-      Built on the shoulders of giants
-    </div>
+    <div class="slabel rv" style="text-align:center;margin-bottom:46px">Built on the shoulders of giants</div>
     <div class="ag">
       <div class="ac rv">
         <div class="at">Statistical engine</div>
-        <div class="ab">
-          <strong>GAMLSS (R package)</strong><br/>
-          Rigby R.A. &amp; Stasinopoulos D.M. (2005).
-          Generalized additive models for location, scale and shape.
-          <em>Applied Statistics</em>, 54(3), 507–554.<br/>
-          <a href="https://www.gamlss.com" target="_blank">gamlss.com ↗</a>
-        </div>
+        <div class="ab"><strong>GAMLSS (R package)</strong><br/>Rigby R.A. & Stasinopoulos D.M. (2005). Generalized additive models for location, scale and shape. <em>Applied Statistics</em>, 54(3), 507–554.<br/><a href="https://www.gamlss.com" target="_blank">gamlss.com ↗</a></div>
       </div>
       <div class="ac rv d1">
         <div class="at">R–Python bridge</div>
-        <div class="ab">
-          <strong>rpy2</strong><br/>
-          Seamless use of the full R GAMLSS ecosystem within a Python workflow — no switching environments.<br/>
-          <a href="https://rpy2.github.io" target="_blank">rpy2.github.io ↗</a>
-        </div>
+        <div class="ab"><strong>rpy2</strong><br/>Seamless use of the full R GAMLSS ecosystem within a Python workflow — no switching environments.<br/><a href="https://rpy2.github.io" target="_blank">rpy2.github.io ↗</a></div>
       </div>
       <div class="ac rv d2">
         <div class="at">Lab</div>
-        <div class="ab">
-          <strong>Laboratory for Mental Health Mapping</strong><br/>
-          MHM-Lab — developed and validated across MRI, EEG, fMRI, PET, and cognitive data across multiple sites and clinical populations.
-        </div>
+        <div class="ab"><strong>Laboratory for Mental Health Mapping</strong><br/>MHM-Lab — developed and validated across MRI, EEG, fMRI, PET, and cognitive data across multiple sites and clinical populations.</div>
       </div>
     </div>
   </div>
 </section>
-
 
 <!-- ── FOOTER ── -->
 <footer>
@@ -744,228 +563,468 @@
   </div>
 </footer>
 
-
 <script>
-/* ── 1. Particle + floating-curve hero canvas ─── */
+/* ══════════════════════════════════════════
+   1. PARTICLE + CURVE HERO CANVAS
+══════════════════════════════════════════ */
 (function(){
   const cv=document.getElementById('pc'),cx=cv.getContext('2d');
   let W,H,pts=[],cvs=[];
   const C=['#2979ff','#00bfa5','#43a047','#fb8c00','#f4511e'];
   function resize(){W=cv.width=cv.offsetWidth;H=cv.height=cv.offsetHeight}
-  function initP(){
-    pts=[];
-    const n=Math.floor(W*H/12000);
-    for(let i=0;i<n;i++)pts.push({
-      x:Math.random()*W,y:Math.random()*H,
-      r:Math.random()*1.4+0.3,
-      vx:(Math.random()-.5)*.15,vy:(Math.random()-.5)*.15,
-      a:Math.random()*.35+.08,c:C[Math.floor(Math.random()*C.length)]
-    });
-  }
-  function initC(){
-    cvs=[];
-    for(let i=0;i<7;i++)cvs.push({
-      y0:H*(.1+.12*i),amp:25+Math.random()*55,
-      freq:.0025+Math.random()*.004,
-      phase:Math.random()*Math.PI*2,
-      spd:.0018+Math.random()*.003,
-      c:C[i%C.length],a:.04+Math.random()*.04,w:1+Math.random()*.9
-    });
-  }
+  function initP(){pts=[];const n=Math.floor(W*H/10000);for(let i=0;i<n;i++)pts.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.5+.3,vx:(Math.random()-.5)*.14,vy:(Math.random()-.5)*.14,a:Math.random()*.3+.07,c:C[Math.floor(Math.random()*C.length)]})}
+  function initC(){cvs=[];for(let i=0;i<8;i++)cvs.push({y0:H*(.08+.11*i),amp:22+Math.random()*55,freq:.002+Math.random()*.004,phase:Math.random()*Math.PI*2,spd:.0015+Math.random()*.003,c:C[i%C.length],a:.035+Math.random()*.04,w:.8+Math.random()})}
   let f=0;
   function draw(){
     cx.clearRect(0,0,W,H);
-    // curves
-    cvs.forEach(c=>{
-      cx.beginPath();cx.strokeStyle=c.c;cx.globalAlpha=c.a;cx.lineWidth=c.w;
-      for(let x=0;x<=W;x+=5){
-        const y=c.y0+c.amp*Math.sin(c.freq*x+c.phase+f*c.spd);
-        x===0?cx.moveTo(x,y):cx.lineTo(x,y);
-      }
-      cx.stroke();cx.globalAlpha=1;
-    });
-    // particles
-    pts.forEach(p=>{
-      cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);
-      cx.fillStyle=p.c;cx.globalAlpha=p.a;cx.fill();cx.globalAlpha=1;
-      p.x+=p.vx;p.y+=p.vy;
-      if(p.x<0)p.x=W;if(p.x>W)p.x=0;
-      if(p.y<0)p.y=H;if(p.y>H)p.y=0;
-    });
+    cvs.forEach(c=>{cx.beginPath();cx.strokeStyle=c.c;cx.globalAlpha=c.a;cx.lineWidth=c.w;for(let x=0;x<=W;x+=4){const y=c.y0+c.amp*Math.sin(c.freq*x+c.phase+f*c.spd);x===0?cx.moveTo(x,y):cx.lineTo(x,y)}cx.stroke();cx.globalAlpha=1});
+    pts.forEach(p=>{cx.beginPath();cx.arc(p.x,p.y,p.r,0,Math.PI*2);cx.fillStyle=p.c;cx.globalAlpha=p.a;cx.fill();cx.globalAlpha=1;p.x+=p.vx;p.y+=p.vy;if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0});
     f++;requestAnimationFrame(draw);
   }
   window.addEventListener('resize',()=>{resize();initP();initC()});
   resize();initP();initC();draw();
 })();
 
-
-/* ── 2. Centile chart ─── */
+/* ══════════════════════════════════════════
+   2. TYPING CODE ANIMATION
+══════════════════════════════════════════ */
 (function(){
-  const cv=document.getElementById('cc');
-  if(!cv)return;
-  const cx=cv.getContext('2d');
+  const CODE_TOKENS = [
+    {t:'cm',v:'# ── 1. Import & initialise ─────────────────'},
+    {t:'nl'},
+    {t:'kw',v:'from'},  {t:'sp'}, {t:'fn',v:'normgamlss'}, {t:'sp'}, {t:'kw',v:'import'}, {t:'sp'}, {t:'vr',v:'Gamlss'},
+    {t:'nl'},
+    {t:'nl'},
+    {t:'vr',v:'model'}, {t:'op',v:' = '}, {t:'fn',v:'Gamlss'},{t:'op',v:'('},
+    {t:'nl'},
+    {t:'sp4'},{t:'vr',v:'model_name'},{t:'op',v:'='},{t:'st',v:'"brain_norm"'},{t:'op',v:','},
+    {t:'nl'},
+    {t:'sp4'},{t:'vr',v:'x_vals'},{t:'op',v:'=['},{t:'st',v:'"age"'},{t:'op',v:','},{t:'st',v:'"sex"'},{t:'op',v:','},{t:'st',v:'"site"'},{t:'op',v:'],'},
+    {t:'nl'},
+    {t:'sp4'},{t:'vr',v:'y_val'},{t:'op',v:'='},{t:'st',v:'"cortical_thickness"'},{t:'op',v:')'},
+    {t:'nl'},
+    {t:'nl'},
+    {t:'cm',v:'# ── 2. Fit ──────────────────────────────────'},
+    {t:'nl'},
+    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'fit'},{t:'op',v:'('},
+    {t:'nl'},
+    {t:'sp4'},{t:'vr',v:'r_code'},{t:'op',v:'='},
+    {t:'nl'},
+    {t:'sp4'},{t:'st',v:'"""model <- gamlss('},
+    {t:'nl'},
+    {t:'sp8'},{t:'st',v:'y ~ pb(age) + re(~1|site),'},
+    {t:'nl'},
+    {t:'sp8'},{t:'st',v:'sigma.formula = ~ pb(age),'},
+    {t:'nl'},
+    {t:'sp8'},{t:'st',v:'family = SHASH(), method = RS(50))"""'},
+    {t:'op',v:','},
+    {t:'nl'},
+    {t:'sp4'},{t:'vr',v:'data'},{t:'op',v:'='},{t:'vr',v:'train_df'},{t:'op',v:')'},
+    {t:'nl'},
+    {t:'nl'},
+    {t:'cm',v:'# ── 3. Z-scores & centiles ──────────────────'},
+    {t:'nl'},
+    {t:'vr',v:'z'},{t:'op',v:' = '},{t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'z_score'},{t:'op',v:'(test_df, train_df)'},
+    {t:'nl'},
+    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'plot_centiles'},{t:'op',v:'(test_df, train_df)'},
+    {t:'nl'},
+    {t:'nl'},
+    {t:'cm',v:'# ── 4. Site transfer ────────────────────────'},
+    {t:'nl'},
+    {t:'kw',v:'from'},{t:'sp'},{t:'fn',v:'normgamlss'},{t:'sp'},{t:'kw',v:'import'},{t:'sp'},{t:'vr',v:'site_transfer'},
+    {t:'nl'},
+    {t:'vr',v:'site_transfer'},{t:'op',v:'('},{t:'vr',v:'model'},{t:'op',v:','},{t:'nl'},
+    {t:'sp4'},{t:'vr',v:'new_site'},{t:'op',v:'='},{t:'st',v:'"SITE_X"'},{t:'op',v:','},{t:'vr',v:'sample_size'},{t:'op',v:'='},{t:'vr',v:'.1'},{t:'op',v:')'},
+    {t:'cursor'}
+  ];
 
-  // Proper z-scores for each centile
-  const CENTS=[3,10,25,50,75,90,97];
-  const ZMAP={3:-1.88,10:-1.28,25:-0.674,50:0,75:0.674,90:1.28,97:1.88};
-  const COLS=['#2979ff','#00bfa5','#43a047','#e8e8f0','#43a047','#00bfa5','#2979ff'];
-  const ALPHAS=[.55,.65,.75,1,.75,.65,.55];
+  const SPEED = {cm:18,st:14,kw:22,fn:16,vr:16,op:24,nl:80,sp:30,sp4:20,sp8:20,cursor:0};
+  const CHARS = {sp:' ',sp4:'    ',sp8:'        '};
 
-  // Realistic cortical thickness model (mm):
-  // peaks ~age 12, slow linear decline after age 20
-  function mu(age){
-    const peak=2.78+0.14*Math.exp(-0.5*((age-12)/16)**2);
-    const decline=0.0042*Math.max(age-20,0);
-    return peak-decline;
+  const body = document.getElementById('code-body');
+  let lineNum = 1;
+  let html = '';
+  let tokIdx = 0;
+  let charBuf = '';
+  let charPos = 0;
+  let started = false;
+
+  function buildLineNum(n){
+    return `<span class="line-num">${String(n).padStart(2,' ')}</span>`;
   }
-  function sigma(age){ return 0.13+0.0007*age; }
-  function cval(age,p){ return mu(age)+sigma(age)*ZMAP[p]; }
 
-  const DPR=window.devicePixelRatio||1;
-  const W2=cv.offsetWidth||480,H2=340;
-  cv.width=W2*DPR;cv.height=H2*DPR;
-  cv.style.width=W2+'px';cv.style.height=H2+'px';
+  function renderNext(){
+    if(tokIdx >= CODE_TOKENS.length) return;
+    const tok = CODE_TOKENS[tokIdx];
+
+    if(tok.t === 'nl'){
+      html += '\n';
+      lineNum++;
+      body.innerHTML = decorateLines(html) + '<span class="cur-blink"></span>';
+      tokIdx++;
+      setTimeout(renderNext, SPEED.nl);
+      return;
+    }
+    if(tok.t === 'cursor'){
+      body.innerHTML = decorateLines(html) + '<span class="cur-blink"></span>';
+      return;
+    }
+
+    const text = CHARS[tok.t] || tok.v || '';
+    if(charPos < text.length){
+      charBuf += text[charPos];
+      charPos++;
+      const preview = html + `<span class="${tok.t}">${escH(charBuf)}</span>`;
+      body.innerHTML = decorateLines(preview) + '<span class="cur-blink"></span>';
+      setTimeout(renderNext, SPEED[tok.t]||20);
+    } else {
+      html += `<span class="${tok.t}">${escH(text)}</span>`;
+      charBuf = ''; charPos = 0; tokIdx++;
+      setTimeout(renderNext, 8);
+    }
+  }
+
+  function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+  function decorateLines(raw){
+    // wrap each line with line numbers
+    let ln = 1;
+    return raw.split('\n').map(line=>{
+      const num = `<span class="line-num">${String(ln).padStart(2,' ')}</span>`;
+      ln++;
+      return num + line;
+    }).join('\n');
+  }
+
+  // Trigger when code window enters viewport
+  const obs = new IntersectionObserver(entries=>{
+    if(entries[0].isIntersecting && !started){
+      started = true;
+      renderNext();
+      obs.disconnect();
+    }
+  },{threshold:.3});
+  obs.observe(document.getElementById('code-window'));
+})();
+
+/* ══════════════════════════════════════════
+   3. CHART TAB SWITCHING
+══════════════════════════════════════════ */
+function switchTab(tab){
+  document.getElementById('tab-cent').classList.toggle('active', tab==='cent');
+  document.getElementById('tab-zscore').classList.toggle('active', tab==='zscore');
+  document.getElementById('cc').style.display = tab==='cent' ? 'block' : 'none';
+  document.getElementById('czs').style.display = tab==='zscore' ? 'block' : 'none';
+  if(tab==='cent'){
+    document.getElementById('chart-title').textContent = 'Centile curves — Cortical Thickness';
+    document.getElementById('chart-meta').textContent = 'SHASH · n = 21 351';
+  } else {
+    document.getElementById('chart-title').textContent = 'Z-scores — Cortical Thickness';
+    document.getElementById('chart-meta').textContent = 'SHASH · highlighted: disorder cohort';
+  }
+}
+
+/* ══════════════════════════════════════════
+   4. CENTILE CHART
+══════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('cc');
+  if(!cv) return;
+  const cx = cv.getContext('2d');
+
+  const CENTS = [3,10,25,50,75,90,97];
+  const ZMAP  = {3:-1.88,10:-1.28,25:-0.674,50:0,75:0.674,90:1.28,97:1.88};
+  const COLS  = ['#2979ff','#00bfa5','#43a047','#eeeef5','#43a047','#00bfa5','#2979ff'];
+  const ALPHAS= [.5,.62,.72,.95,.72,.62,.5];
+
+  function mu(age){ return (2.78+0.13*Math.exp(-0.5*((age-12)/16)**2)) - 0.004*Math.max(age-20,0) }
+  function sig(age){ return 0.13+0.0006*age }
+  function cv2(age,p){ return mu(age)+sig(age)*ZMAP[p] }
+
+  const DPR = window.devicePixelRatio||1;
+  const W2 = cv.offsetWidth||480, H2 = 320;
+  cv.width=W2*DPR; cv.height=H2*DPR;
+  cv.style.width=W2+'px'; cv.style.height=H2+'px';
   cx.scale(DPR,DPR);
 
-  const P={t:22,r:52,b:46,l:52};
-  const cW=W2-P.l-P.r,cH=H2-P.t-P.b;
-  const A0=5,A1=90;
-  const V0=1.9,V1=3.45;
+  const P={t:22,r:60,b:46,l:54};
+  const cW=W2-P.l-P.r, cH=H2-P.t-P.b;
+  const A0=5,A1=90,V0=1.88,V1=3.52;
 
   function ax(a){return P.l+(a-A0)/(A1-A0)*cW}
   function ay(v){return P.t+cH-(v-V0)/(V1-V0)*cH}
 
-  // Scatter — gaussian noise around 50th centile, no clipping
+  // Normal scatter
   const scat=[];
-  for(let i=0;i<280;i++){
+  const rng = ()=>{ let u,v,s; do{u=Math.random()*2-1;v=Math.random()*2-1;s=u*u+v*v}while(s>=1||s===0); return u*Math.sqrt(-2*Math.log(s)/s) };
+  for(let i=0;i<320;i++){
     const age=A0+Math.random()*(A1-A0);
-    const v=mu(age)+sigma(age)*(Math.random()-.5)*3.2;
-    if(v>=V0&&v<=V1)scat.push({age,v});
+    const v=mu(age)+sig(age)*rng()*0.88;
+    if(v>=V0&&v<=V1) scat.push({age,v,disorder:false});
   }
+  // Disorder outliers — lower tail (atrophy pattern)
+  const disorders=[
+    {age:28,v:2.08,label:'MDD'},{age:35,v:2.02,label:'MDD'},
+    {age:42,v:1.97,label:'SCZ'},{age:55,v:1.91,label:'SCZ'},
+    {age:63,v:1.94,label:'AD'},{age:70,v:1.89,label:'AD'},
+    {age:22,v:2.12,label:'SCZ'},{age:48,v:1.98,label:'MDD'},
+    {age:60,v:1.92,label:'AD'},{age:30,v:3.38,label:'?'},
+    {age:45,v:3.41,label:'?'},{age:20,v:3.36,label:'?'}
+  ];
+  disorders.forEach(d=>scat.push({...d,disorder:true}));
 
   const ages=[];for(let a=A0;a<=A1;a+=.5)ages.push(a);
   let prog=0;
 
   function draw(p){
     cx.clearRect(0,0,W2,H2);
-    cx.fillStyle='#04040e';cx.fillRect(0,0,W2,H2);
-
+    cx.fillStyle='#030310'; cx.fillRect(0,0,W2,H2);
     const mi=Math.floor(p*ages.length);
 
     // grid
-    cx.strokeStyle='rgba(255,255,255,.045)';cx.lineWidth=1;
-    [2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4].forEach(v=>{
-      cx.beginPath();cx.moveTo(P.l,ay(v));cx.lineTo(P.l+cW,ay(v));cx.stroke();
-    });
-    [10,20,30,40,50,60,70,80,90].forEach(a=>{
-      cx.beginPath();cx.moveTo(ax(a),P.t);cx.lineTo(ax(a),P.t+cH);cx.stroke();
-    });
+    cx.strokeStyle='rgba(255,255,255,.04)'; cx.lineWidth=1;
+    [2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4].forEach(v=>{cx.beginPath();cx.moveTo(P.l,ay(v));cx.lineTo(P.l+cW,ay(v));cx.stroke()});
+    [10,20,30,40,50,60,70,80,90].forEach(a=>{cx.beginPath();cx.moveTo(ax(a),P.t);cx.lineTo(ax(a),P.t+cH);cx.stroke()});
 
     // shaded bands
-    [[0,6,.07],[1,5,.1],[2,4,.13]].forEach(([lo,hi,alpha])=>{
-      if(mi<2)return;
-      cx.beginPath();
-      ages.slice(0,mi).forEach((a,i)=>{
-        const y=ay(cval(a,CENTS[hi]));
-        i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y);
+    if(mi>=2){
+      [[0,6,.06],[1,5,.09],[2,4,.13]].forEach(([lo,hi,alpha])=>{
+        cx.beginPath();
+        ages.slice(0,mi).forEach((a,i)=>{const y=ay(cv2(a,CENTS[hi]));i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y)});
+        for(let i=mi-1;i>=0;i--)cx.lineTo(ax(ages[i]),ay(cv2(ages[i],CENTS[lo])));
+        cx.closePath(); cx.fillStyle=`rgba(0,191,165,${alpha})`; cx.fill();
       });
-      for(let i=mi-1;i>=0;i--)cx.lineTo(ax(ages[i]),ay(cval(ages[i],CENTS[lo])));
-      cx.closePath();
-      cx.fillStyle=`rgba(0,191,165,${alpha})`;cx.fill();
-    });
+    }
 
     // centile lines
     CENTS.forEach((cp,ci)=>{
-      cx.beginPath();
-      cx.strokeStyle=COLS[ci];cx.globalAlpha=ALPHAS[ci];
+      cx.beginPath(); cx.strokeStyle=COLS[ci]; cx.globalAlpha=ALPHAS[ci];
       cx.lineWidth=cp===50?2.4:1.3;
-      ages.slice(0,mi).forEach((a,i)=>{
-        const y=ay(cval(a,cp));
-        i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y);
-      });
-      cx.stroke();cx.globalAlpha=1;
-
-      // centile label at right edge
+      ages.slice(0,mi).forEach((a,i)=>{const y=ay(cv2(a,cp));i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y)});
+      cx.stroke(); cx.globalAlpha=1;
       if(p>.92&&mi>0){
-        const la=ages[mi-1];
-        const lv=cval(la,cp);
+        const la=ages[mi-1],lv=cv2(la,cp);
         if(lv>=V0&&lv<=V1){
-          cx.fillStyle=COLS[ci];cx.globalAlpha=ALPHAS[ci];
-          cx.font=`500 8.5px 'JetBrains Mono',monospace`;
-          cx.textAlign='left';
-          cx.fillText(`${cp}th`,ax(la)+5,ay(lv)+3);
-          cx.globalAlpha=1;
+          cx.fillStyle=COLS[ci]; cx.globalAlpha=ALPHAS[ci];
+          cx.font=`500 8px 'JetBrains Mono',monospace`; cx.textAlign='left';
+          cx.fillText(`${cp}th`,ax(la)+5,ay(lv)+3); cx.globalAlpha=1;
         }
       }
     });
 
     // scatter
-    const sm=Math.floor(p*scat.length);
-    scat.slice(0,sm).forEach(pt=>{
-      cx.beginPath();cx.arc(ax(pt.age),ay(pt.v),1.6,0,Math.PI*2);
-      cx.strokeStyle='rgba(180,200,255,.28)';cx.lineWidth=1;cx.stroke();
+    const sm=Math.floor(p*scat.filter(s=>!s.disorder).length);
+    scat.filter(s=>!s.disorder).slice(0,sm).forEach(pt=>{
+      const inRange = Math.abs((pt.v-mu(pt.age))/sig(pt.age)) <= 2;
+      cx.beginPath(); cx.arc(ax(pt.age),ay(pt.v),2,0,Math.PI*2);
+      cx.strokeStyle=inRange?'rgba(0,191,165,.25)':'rgba(251,140,0,.6)';
+      cx.lineWidth=inRange?1:1.5; cx.stroke();
     });
 
-    // axes
-    cx.strokeStyle='rgba(255,255,255,.12)';cx.lineWidth=1;
-    cx.beginPath();cx.moveTo(P.l,P.t);cx.lineTo(P.l,P.t+cH);cx.stroke();
-    cx.beginPath();cx.moveTo(P.l,P.t+cH);cx.lineTo(P.l+cW,P.t+cH);cx.stroke();
+    // disorder outliers (appear after 75% progress)
+    if(p>.75){
+      const dp=Math.min(1,(p-.75)/.25);
+      const dm=Math.floor(dp*disorders.length);
+      disorders.slice(0,dm).forEach(pt=>{
+        const isLow = pt.v < 2.2;
+        cx.save();
+        // glow
+        cx.shadowColor=isLow?'#ff4444':'#fb8c00';
+        cx.shadowBlur=10;
+        // diamond shape
+        cx.beginPath();
+        const px=ax(pt.age),py=ay(pt.v);
+        cx.moveTo(px,py-5); cx.lineTo(px+4,py); cx.lineTo(px,py+5); cx.lineTo(px-4,py); cx.closePath();
+        cx.fillStyle=isLow?'rgba(255,68,68,.85)':'rgba(251,140,0,.85)';
+        cx.fill();
+        // label
+        cx.font=`600 8px 'JetBrains Mono',monospace`;
+        cx.fillStyle=isLow?'#ff6666':'#ffa726';
+        cx.textAlign='center'; cx.shadowBlur=0;
+        cx.fillText(pt.label,px,py-8);
+        cx.restore();
+      });
+    }
 
-    // tick labels
-    cx.fillStyle='rgba(140,140,165,.65)';
-    cx.font='9.5px "DM Sans",sans-serif';
+    // axes
+    cx.strokeStyle='rgba(255,255,255,.1)'; cx.lineWidth=1;
+    cx.beginPath(); cx.moveTo(P.l,P.t); cx.lineTo(P.l,P.t+cH); cx.stroke();
+    cx.beginPath(); cx.moveTo(P.l,P.t+cH); cx.lineTo(P.l+cW,P.t+cH); cx.stroke();
+
+    // labels
+    cx.fillStyle='rgba(120,120,145,.6)'; cx.font='9.5px "DM Sans",sans-serif';
     cx.textAlign='center';
     [10,20,30,40,50,60,70,80,90].forEach(a=>cx.fillText(a,ax(a),P.t+cH+15));
     cx.textAlign='right';
     [2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4].forEach(v=>cx.fillText(v.toFixed(1),P.l-7,ay(v)+3.5));
-
-    // axis labels
-    cx.save();cx.fillStyle='rgba(130,130,155,.55)';cx.font='9.5px "DM Sans",sans-serif';
-    cx.translate(13,P.t+cH/2);cx.rotate(-Math.PI/2);cx.textAlign='center';
-    cx.fillText('Thickness (mm)',0,0);cx.restore();
-    cx.textAlign='center';cx.fillStyle='rgba(130,130,155,.55)';
+    cx.save(); cx.fillStyle='rgba(110,110,135,.5)'; cx.font='9.5px "DM Sans",sans-serif';
+    cx.translate(13,P.t+cH/2); cx.rotate(-Math.PI/2); cx.textAlign='center';
+    cx.fillText('Thickness (mm)',0,0); cx.restore();
+    cx.textAlign='center'; cx.fillStyle='rgba(110,110,135,.5)';
     cx.fillText('Age (years)',P.l+cW/2,H2-5);
   }
 
-  function anim(){
-    if(prog<1){prog=Math.min(1,prog+1/110);draw(prog);requestAnimationFrame(anim);}
-    else draw(1);
-  }
+  function anim(){if(prog<1){prog=Math.min(1,prog+1/100);draw(prog);requestAnimationFrame(anim);}else draw(1);}
   const obs=new IntersectionObserver(e=>{if(e[0].isIntersecting){anim();obs.disconnect();}},{threshold:.3});
   obs.observe(cv);
 })();
 
+/* ══════════════════════════════════════════
+   5. Z-SCORE CHART
+══════════════════════════════════════════ */
+(function(){
+  const cv = document.getElementById('czs');
+  if(!cv) return;
+  const cx = cv.getContext('2d');
 
-/* ── 3. Countdown ─── */
+  const rng=()=>{let u,v,s;do{u=Math.random()*2-1;v=Math.random()*2-1;s=u*u+v*v}while(s>=1||s===0);return u*Math.sqrt(-2*Math.log(s)/s)};
+
+  const DPR=window.devicePixelRatio||1;
+  const W2=cv.offsetWidth||480, H2=320;
+  cv.width=W2*DPR; cv.height=H2*DPR;
+  cv.style.width=W2+'px'; cv.style.height=H2+'px';
+  cx.scale(DPR,DPR);
+
+  const P={t:22,r:30,b:46,l:54};
+  const cW=W2-P.l-P.r, cH=H2-P.t-P.b;
+  const A0=5,A1=90,Z0=-4,Z1=4;
+  function ax(a){return P.l+(a-A0)/(A1-A0)*cW}
+  function ay(z){return P.t+cH-(z-Z0)/(Z1-Z0)*cH}
+
+  const pts=[];
+  for(let i=0;i<300;i++){
+    const age=A0+Math.random()*(A1-A0);
+    const z=rng()*0.85;
+    pts.push({age,z,disorder:false});
+  }
+  const disordered=[
+    {age:28,z:-2.65,label:'MDD'},{age:35,z:-2.88,label:'MDD'},
+    {age:42,z:-3.1,label:'SCZ'},{age:55,z:-3.3,label:'SCZ'},
+    {age:63,z:-2.9,label:'AD'},{age:70,z:-3.4,label:'AD'},
+    {age:22,z:-2.55,label:'SCZ'},{age:48,z:-2.75,label:'MDD'},
+    {age:60,z:-3.05,label:'AD'},{age:30,z:2.8,label:'?'},
+    {age:45,z:3.0,label:'?'},{age:20,z:2.7,label:'?'}
+  ];
+
+  let prog=0, drawn=false;
+  function draw(p){
+    cx.clearRect(0,0,W2,H2);
+    cx.fillStyle='#030310'; cx.fillRect(0,0,W2,H2);
+    const mi=Math.floor(p*pts.length);
+
+    // grid
+    cx.strokeStyle='rgba(255,255,255,.04)'; cx.lineWidth=1;
+    [-3,-2,-1,0,1,2,3].forEach(z=>{cx.beginPath();cx.moveTo(P.l,ay(z));cx.lineTo(P.l+cW,ay(z));cx.stroke()});
+    [10,20,30,40,50,60,70,80,90].forEach(a=>{cx.beginPath();cx.moveTo(ax(a),P.t);cx.lineTo(ax(a),P.t+cH);cx.stroke()});
+
+    // z=±2 bands
+    cx.fillStyle='rgba(0,191,165,.05)'; cx.fillRect(P.l,ay(2),cW,ay(-2)-ay(2));
+    cx.strokeStyle='rgba(0,191,165,.18)'; cx.setLineDash([5,4]); cx.lineWidth=1;
+    cx.beginPath(); cx.moveTo(P.l,ay(2)); cx.lineTo(P.l+cW,ay(2)); cx.stroke();
+    cx.beginPath(); cx.moveTo(P.l,ay(-2)); cx.lineTo(P.l+cW,ay(-2)); cx.stroke();
+    cx.setLineDash([]);
+
+    // z=0 line
+    cx.strokeStyle='rgba(238,238,245,.25)'; cx.lineWidth=1.5;
+    cx.beginPath(); cx.moveTo(P.l,ay(0)); cx.lineTo(P.l+cW,ay(0)); cx.stroke();
+
+    // normal scatter
+    pts.slice(0,mi).forEach(pt=>{
+      const out=Math.abs(pt.z)>2;
+      cx.beginPath(); cx.arc(ax(pt.age),ay(pt.z),out?2.5:1.8,0,Math.PI*2);
+      cx.fillStyle=out?'rgba(251,140,0,.65)':'rgba(0,191,165,.3)'; cx.fill();
+    });
+
+    // disorder points (after 75%)
+    if(p>.72){
+      const dp=Math.min(1,(p-.72)/.28);
+      const dm=Math.floor(dp*disordered.length);
+      disordered.slice(0,dm).forEach(pt=>{
+        const px=ax(pt.age), py=ay(pt.z);
+        cx.save();
+        cx.shadowColor='#ff4444'; cx.shadowBlur=12;
+        cx.beginPath();
+        cx.moveTo(px,py-5.5); cx.lineTo(px+4.5,py); cx.lineTo(px,py+5.5); cx.lineTo(px-4.5,py); cx.closePath();
+        cx.fillStyle='rgba(255,60,60,.9)'; cx.fill();
+        cx.font=`600 8px 'JetBrains Mono',monospace`;
+        cx.fillStyle='#ff7777'; cx.shadowBlur=0; cx.textAlign='center';
+        cx.fillText(pt.label,px,py-8.5);
+        cx.restore();
+      });
+    }
+
+    // y-axis labels (z-values)
+    cx.fillStyle='rgba(120,120,145,.6)'; cx.font='9.5px "DM Sans",sans-serif';
+    cx.textAlign='right';
+    [-3,-2,-1,0,1,2,3].forEach(z=>{
+      cx.fillStyle=z===0?'rgba(200,200,220,.7)':'rgba(120,120,145,.6)';
+      cx.fillText(z===0?'0':(z>0?'+'+z:z),P.l-7,ay(z)+3.5);
+    });
+    cx.textAlign='center'; cx.fillStyle='rgba(120,120,145,.6)';
+    [10,20,30,40,50,60,70,80,90].forEach(a=>cx.fillText(a,ax(a),P.t+cH+15));
+
+    cx.save(); cx.fillStyle='rgba(110,110,135,.5)'; cx.font='9.5px "DM Sans",sans-serif';
+    cx.translate(13,P.t+cH/2); cx.rotate(-Math.PI/2); cx.textAlign='center';
+    cx.fillText('Z-score',0,0); cx.restore();
+    cx.textAlign='center'; cx.fillStyle='rgba(110,110,135,.5)';
+    cx.fillText('Age (years)',P.l+cW/2,H2-5);
+
+    // ±2 labels
+    cx.fillStyle='rgba(0,191,165,.5)'; cx.font='8.5px "JetBrains Mono",monospace';
+    cx.textAlign='left';
+    cx.fillText('z=+2',P.l+4,ay(2)-3);
+    cx.fillText('z=−2',P.l+4,ay(-2)+11);
+
+    // axes
+    cx.strokeStyle='rgba(255,255,255,.1)'; cx.lineWidth=1;
+    cx.beginPath(); cx.moveTo(P.l,P.t); cx.lineTo(P.l,P.t+cH); cx.stroke();
+    cx.beginPath(); cx.moveTo(P.l,P.t+cH); cx.lineTo(P.l+cW,P.t+cH); cx.stroke();
+  }
+
+  function anim(){if(prog<1){prog=Math.min(1,prog+1/100);draw(prog);requestAnimationFrame(anim);}else draw(1);}
+  // trigger when tab becomes visible
+  window._drawZScore=function(){if(!drawn){drawn=true;anim();}};
+})();
+
+// override tab switch to trigger z-score animation
+const _origSwitch=switchTab;
+window.switchTab=function(tab){
+  _origSwitch(tab);
+  if(tab==='zscore' && window._drawZScore) window._drawZScore();
+};
+
+/* ══════════════════════════════════════════
+   6. COUNTDOWN
+══════════════════════════════════════════ */
 (function(){
   const t=new Date('2026-07-15T09:00:00Z');
   const p=n=>String(n).padStart(2,'0');
   function tick(){
     const d=t-Date.now();
-    if(d<=0){['cdd','cdh','cdm','cds2'].forEach(id=>document.getElementById(id).textContent='00');return;}
+    if(d<=0){['cdd','cdh','cdm','cds2'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent='00'});return;}
     document.getElementById('cdd').textContent=p(Math.floor(d/864e5));
     document.getElementById('cdh').textContent=p(Math.floor((d%864e5)/36e5));
     document.getElementById('cdm').textContent=p(Math.floor((d%36e5)/6e4));
     document.getElementById('cds2').textContent=p(Math.floor((d%6e4)/1e3));
   }
-  tick();setInterval(tick,1000);
+  tick(); setInterval(tick,1000);
 })();
 
-
-/* ── 4. Scroll reveal ─── */
+/* ══════════════════════════════════════════
+   7. SCROLL REVEAL
+══════════════════════════════════════════ */
 (function(){
-  const o=new IntersectionObserver(es=>{
-    es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on');});
-  },{threshold:.1});
+  const o=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('on')})},{threshold:.08});
   document.querySelectorAll('.rv').forEach(el=>o.observe(el));
 })();
 
-
-/* ── 5. Nav opacity on scroll ─── */
+/* ══════════════════════════════════════════
+   8. NAV OPACITY
+══════════════════════════════════════════ */
 (function(){
   const n=document.getElementById('mnav');
   window.addEventListener('scroll',()=>{
-    n.style.background=window.scrollY>50?'rgba(5,5,11,.96)':'rgba(5,5,11,.82)';
+    n.style.background=window.scrollY>60?'rgba(4,4,12,.97)':'rgba(4,4,12,.85)';
   },{passive:true});
 })();
 </script>
