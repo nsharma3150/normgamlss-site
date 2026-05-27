@@ -108,8 +108,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;
 /* ── STATS ── */
 #stats{background:var(--bg2);border-top:1px solid var(--bord);border-bottom:1px solid var(--bord);padding:36px 0}
 .ctr{max-width:1120px;margin:0 auto;padding:0 28px}
-.sg{display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
-.si{padding:0 18px}
+.sg{display:grid;grid-template-columns:repeat(4,1fr);text-align:center;max-width:680px;margin:0 auto}
+.si{padding:0 20px}
 .si+.si{border-left:1px solid var(--bord)}
 .sn{font-family:var(--fh);font-size:2.1rem;font-weight:800;line-height:1;
   background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
@@ -169,14 +169,16 @@ section{position:relative;z-index:1}
 .cd{width:11px;height:11px;border-radius:50%}
 .cdr{background:#ff5f57}.cdy{background:#febc2e}.cdg{background:#28c840}
 .cfn{margin-left:10px;font-family:var(--fm);font-size:.72rem;color:var(--muted)}
-.cb{background:#060610;padding:26px 24px 28px;font-family:var(--fm);font-size:.79rem;
-  line-height:1.9;min-height:340px;position:relative}
+.cb{background:#060610;padding:20px 0 24px;font-family:var(--fm);font-size:.79rem;
+  line-height:1.9;min-height:340px;position:relative;overflow:hidden}
+.code-line{display:flex;align-items:baseline;padding:0 24px;white-space:pre;min-height:1.9em}
+.code-line:hover{background:rgba(255,255,255,.02)}
 .kw{color:#c792ea}.fn{color:#00d9be}.st{color:#89ddff}
 .cm{color:#3d3d60}.vr{color:#ffcb6b}.op{color:#89ddff;opacity:.8}
 .cur-blink{display:inline-block;width:2px;height:.88em;background:var(--teal);
   vertical-align:text-bottom;animation:bk 1s step-end infinite}
 @keyframes bk{50%{opacity:0}}
-.line-num{color:#2a2a45;user-select:none;display:inline-block;width:20px;text-align:right;margin-right:14px;font-size:.71rem}
+.line-num{color:#2a2a45;user-select:none;flex-shrink:0;width:26px;text-align:right;margin-right:16px;font-size:.71rem;line-height:inherit}
 
 /* Chart panel */
 .cp{border-radius:var(--r);overflow:hidden;border:1px solid var(--bord);background:#030310;
@@ -325,7 +327,7 @@ footer{background:var(--bg2);border-top:1px solid var(--bord);padding:38px 0;tex
 <div id="stats">
   <div class="ctr">
     <div class="sg">
-      <div class="si rv"><div class="sn">5+</div><div class="sl">Modalities validated</div></div>
+      <div class="si rv"><div class="sn">4+</div><div class="sl">Modalities validated</div></div>
       <div class="si rv d1"><div class="sn">4</div><div class="sl">Papers in preparation</div></div>
       <div class="si rv d2"><div class="sn">μ σ ν τ</div><div class="sl">Full distribution modeled</div></div>
       <div class="si rv d3"><div class="sn">100+</div><div class="sl">Distribution families</div></div>
@@ -589,121 +591,131 @@ footer{background:var(--bg2);border-top:1px solid var(--bord);padding:38px 0;tex
    2. TYPING CODE ANIMATION
 ══════════════════════════════════════════ */
 (function(){
-  const CODE_TOKENS = [
-    {t:'cm',v:'# ── 1. Import & initialise ─────────────────'},
+  // Each entry: {t: token-type, v: text} or {t:'nl'} for newline or {t:'cursor'}
+  const CODE = [
+    {t:'cm',v:'# ── 1. Import & initialise ─────────────────'},{t:'nl'},
+    {t:'kw',v:'from'},{t:'sp',v:' '},{t:'fn',v:'normgamlss'},{t:'sp',v:' '},{t:'kw',v:'import'},{t:'sp',v:' '},{t:'vr',v:'Gamlss'},{t:'nl'},
     {t:'nl'},
-    {t:'kw',v:'from'},  {t:'sp'}, {t:'fn',v:'normgamlss'}, {t:'sp'}, {t:'kw',v:'import'}, {t:'sp'}, {t:'vr',v:'Gamlss'},
+    {t:'vr',v:'model'},{t:'op',v:' = '},{t:'fn',v:'Gamlss'},{t:'op',v:'('},{t:'nl'},
+    {t:'ind',v:'    '},{t:'vr',v:'model_name'},{t:'op',v:'='},{t:'st',v:'"brain_norm"'},{t:'op',v:','},{t:'nl'},
+    {t:'ind',v:'    '},{t:'vr',v:'x_vals'},{t:'op',v:'=['},{t:'st',v:'"age"'},{t:'op',v:','},{t:'st',v:'"sex"'},{t:'op',v:','},{t:'st',v:'"site"'},{t:'op',v:'],'},{t:'nl'},
+    {t:'ind',v:'    '},{t:'vr',v:'y_val'},{t:'op',v:'='},{t:'st',v:'"cortical_thickness"'},{t:'op',v:')'},{t:'nl'},
     {t:'nl'},
+    {t:'cm',v:'# ── 2. Fit ──────────────────────────────────'},{t:'nl'},
+    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'fit'},{t:'op',v:'('},{t:'nl'},
+    {t:'ind',v:'    '},{t:'vr',v:'r_code'},{t:'op',v:'='},{t:'nl'},
+    {t:'ind',v:'    '},{t:'st',v:'"""model <- gamlss('},{t:'nl'},
+    {t:'ind',v:'        '},{t:'st',v:'y ~ pb(age) + re(~1|site),'},{t:'nl'},
+    {t:'ind',v:'        '},{t:'st',v:'sigma.formula = ~ pb(age),'},{t:'nl'},
+    {t:'ind',v:'        '},{t:'st',v:'family = SHASH(), method = RS(50))"""'},{t:'op',v:','},{t:'nl'},
+    {t:'ind',v:'    '},{t:'vr',v:'data'},{t:'op',v:'='},{t:'vr',v:'train_df'},{t:'op',v:')'},{t:'nl'},
     {t:'nl'},
-    {t:'vr',v:'model'}, {t:'op',v:' = '}, {t:'fn',v:'Gamlss'},{t:'op',v:'('},
+    {t:'cm',v:'# ── 3. Z-scores & centiles ──────────────────'},{t:'nl'},
+    {t:'vr',v:'z'},{t:'op',v:' = '},{t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'z_score'},{t:'op',v:'(test_df, train_df)'},{t:'nl'},
+    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'plot_centiles'},{t:'op',v:'(test_df, train_df)'},{t:'nl'},
     {t:'nl'},
-    {t:'sp4'},{t:'vr',v:'model_name'},{t:'op',v:'='},{t:'st',v:'"brain_norm"'},{t:'op',v:','},
-    {t:'nl'},
-    {t:'sp4'},{t:'vr',v:'x_vals'},{t:'op',v:'=['},{t:'st',v:'"age"'},{t:'op',v:','},{t:'st',v:'"sex"'},{t:'op',v:','},{t:'st',v:'"site"'},{t:'op',v:'],'},
-    {t:'nl'},
-    {t:'sp4'},{t:'vr',v:'y_val'},{t:'op',v:'='},{t:'st',v:'"cortical_thickness"'},{t:'op',v:')'},
-    {t:'nl'},
-    {t:'nl'},
-    {t:'cm',v:'# ── 2. Fit ──────────────────────────────────'},
-    {t:'nl'},
-    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'fit'},{t:'op',v:'('},
-    {t:'nl'},
-    {t:'sp4'},{t:'vr',v:'r_code'},{t:'op',v:'='},
-    {t:'nl'},
-    {t:'sp4'},{t:'st',v:'"""model <- gamlss('},
-    {t:'nl'},
-    {t:'sp8'},{t:'st',v:'y ~ pb(age) + re(~1|site),'},
-    {t:'nl'},
-    {t:'sp8'},{t:'st',v:'sigma.formula = ~ pb(age),'},
-    {t:'nl'},
-    {t:'sp8'},{t:'st',v:'family = SHASH(), method = RS(50))"""'},
-    {t:'op',v:','},
-    {t:'nl'},
-    {t:'sp4'},{t:'vr',v:'data'},{t:'op',v:'='},{t:'vr',v:'train_df'},{t:'op',v:')'},
-    {t:'nl'},
-    {t:'nl'},
-    {t:'cm',v:'# ── 3. Z-scores & centiles ──────────────────'},
-    {t:'nl'},
-    {t:'vr',v:'z'},{t:'op',v:' = '},{t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'z_score'},{t:'op',v:'(test_df, train_df)'},
-    {t:'nl'},
-    {t:'vr',v:'model'},{t:'op',v:'.'},{t:'fn',v:'plot_centiles'},{t:'op',v:'(test_df, train_df)'},
-    {t:'nl'},
-    {t:'nl'},
-    {t:'cm',v:'# ── 4. Site transfer ────────────────────────'},
-    {t:'nl'},
-    {t:'kw',v:'from'},{t:'sp'},{t:'fn',v:'normgamlss'},{t:'sp'},{t:'kw',v:'import'},{t:'sp'},{t:'vr',v:'site_transfer'},
-    {t:'nl'},
+    {t:'cm',v:'# ── 4. Site transfer ────────────────────────'},{t:'nl'},
+    {t:'kw',v:'from'},{t:'sp',v:' '},{t:'fn',v:'normgamlss'},{t:'sp',v:' '},{t:'kw',v:'import'},{t:'sp',v:' '},{t:'vr',v:'site_transfer'},{t:'nl'},
     {t:'vr',v:'site_transfer'},{t:'op',v:'('},{t:'vr',v:'model'},{t:'op',v:','},{t:'nl'},
-    {t:'sp4'},{t:'vr',v:'new_site'},{t:'op',v:'='},{t:'st',v:'"SITE_X"'},{t:'op',v:','},{t:'vr',v:'sample_size'},{t:'op',v:'='},{t:'vr',v:'.1'},{t:'op',v:')'},
-    {t:'cursor'}
+    {t:'ind',v:'    '},{t:'vr',v:'new_site'},{t:'op',v:'='},{t:'st',v:'"SITE_X"'},{t:'op',v:','},{t:'vr',v:'sample_size'},{t:'op',v:'='},{t:'vr',v:'.1'},{t:'op',v:')'},{t:'cursor'}
   ];
 
-  const SPEED = {cm:18,st:14,kw:22,fn:16,vr:16,op:24,nl:80,sp:30,sp4:20,sp8:20,cursor:0};
-  const CHARS = {sp:' ',sp4:'    ',sp8:'        '};
+  // ms per character for each token type
+  const SPD = {cm:16,st:13,kw:20,fn:15,vr:15,op:22,ind:0,sp:0,nl:70,cursor:0};
 
-  const body = document.getElementById('code-body');
+  const container = document.getElementById('code-body');
   let lineNum = 1;
-  let html = '';
-  let tokIdx = 0;
-  let charBuf = '';
-  let charPos = 0;
+  let tokIdx = 0, charPos = 0;
   let started = false;
 
-  function buildLineNum(n){
-    return `<span class="line-num">${String(n).padStart(2,' ')}</span>`;
+  // Always keep a current line div
+  let curLineEl = null;
+  let curContentEl = null; // span inside line that gets cursor
+
+  function newLine(){
+    curLineEl = document.createElement('div');
+    curLineEl.className = 'code-line';
+    const numSpan = document.createElement('span');
+    numSpan.className = 'line-num';
+    numSpan.textContent = String(lineNum).padStart(2,' ');
+    curLineEl.appendChild(numSpan);
+    container.appendChild(curLineEl);
+    lineNum++;
+  }
+
+  function appendSpan(cls, text){
+    const s = document.createElement('span');
+    if(cls) s.className = cls;
+    s.textContent = text;
+    curLineEl.appendChild(s);
+    return s;
+  }
+
+  // Blinking cursor element, moved to end of current line
+  const cursorEl = document.createElement('span');
+  cursorEl.className = 'cur-blink';
+
+  function placeCursor(){
+    curLineEl.appendChild(cursorEl);
   }
 
   function renderNext(){
-    if(tokIdx >= CODE_TOKENS.length) return;
-    const tok = CODE_TOKENS[tokIdx];
+    if(tokIdx >= CODE.length) return;
+    const tok = CODE[tokIdx];
+
+    if(tok.t === 'cursor'){
+      placeCursor();
+      return;
+    }
 
     if(tok.t === 'nl'){
-      html += '\n';
-      lineNum++;
-      body.innerHTML = decorateLines(html) + '<span class="cur-blink"></span>';
+      // remove cursor before ending line
+      if(cursorEl.parentNode) cursorEl.parentNode.removeChild(cursorEl);
       tokIdx++;
-      setTimeout(renderNext, SPEED.nl);
-      return;
-    }
-    if(tok.t === 'cursor'){
-      body.innerHTML = decorateLines(html) + '<span class="cur-blink"></span>';
+      charPos = 0;
+      newLine();
+      placeCursor();
+      setTimeout(renderNext, SPD.nl);
       return;
     }
 
-    const text = CHARS[tok.t] || tok.v || '';
+    // instant tokens (indentation, space)
+    if(tok.t === 'ind' || tok.t === 'sp'){
+      if(cursorEl.parentNode) cursorEl.parentNode.removeChild(cursorEl);
+      appendSpan('', tok.v);
+      placeCursor();
+      tokIdx++; charPos = 0;
+      setTimeout(renderNext, 10);
+      return;
+    }
+
+    // character-by-character tokens
+    const text = tok.v || '';
+    if(charPos === 0){
+      // Start a new span for this token
+      if(cursorEl.parentNode) cursorEl.parentNode.removeChild(cursorEl);
+      tok._span = appendSpan(tok.t, '');
+      placeCursor();
+    }
     if(charPos < text.length){
-      charBuf += text[charPos];
+      tok._span.textContent += text[charPos];
       charPos++;
-      const preview = html + `<span class="${tok.t}">${escH(charBuf)}</span>`;
-      body.innerHTML = decorateLines(preview) + '<span class="cur-blink"></span>';
-      setTimeout(renderNext, SPEED[tok.t]||20);
+      setTimeout(renderNext, SPD[tok.t] || 15);
     } else {
-      html += `<span class="${tok.t}">${escH(text)}</span>`;
-      charBuf = ''; charPos = 0; tokIdx++;
-      setTimeout(renderNext, 8);
+      tokIdx++; charPos = 0;
+      setTimeout(renderNext, 6);
     }
   }
 
-  function escH(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
-  function decorateLines(raw){
-    // wrap each line with line numbers
-    let ln = 1;
-    return raw.split('\n').map(line=>{
-      const num = `<span class="line-num">${String(ln).padStart(2,' ')}</span>`;
-      ln++;
-      return num + line;
-    }).join('\n');
-  }
-
-  // Trigger when code window enters viewport
   const obs = new IntersectionObserver(entries=>{
     if(entries[0].isIntersecting && !started){
       started = true;
+      newLine(); // first line
+      placeCursor();
       renderNext();
       obs.disconnect();
     }
-  },{threshold:.3});
+  },{threshold:.25});
   obs.observe(document.getElementById('code-window'));
 })();
 
