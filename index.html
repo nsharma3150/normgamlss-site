@@ -4,13 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>NormGAMLSS | Distributional Normative Modeling</title>
-    
-    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
-
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -21,148 +17,176 @@
                         mono: ['"JetBrains Mono"', 'monospace'],
                     },
                     colors: {
-                        bg: '#04040d',
-                        bg2: '#070712',
-                        brand: {
-                            cyan: '#00bfa5',
-                            blue: '#2979ff',
-                            indigo: '#9c27b0',
-                            emerald: '#43a047',
-                            orange: '#f4511e',
-                            amber: '#fb8c00'
-                        }
+                        bg: '#04040d', bg2: '#070712',
+                        brand: { cyan: '#00bfa5', blue: '#2979ff', indigo: '#9c27b0', emerald: '#43a047', orange: '#f4511e', amber: '#fb8c00' }
                     },
-                    animation: {
-                        'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards',
-                    },
-                    keyframes: {
-                        fadeInUp: {
-                            '0%': { opacity: '0', transform: 'translateY(20px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
+                    animation: { 'fade-in-up': 'fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards' },
+                    keyframes: { fadeInUp: { '0%': { opacity: '0', transform: 'translateY(20px)' }, '100%': { opacity: '1', transform: 'translateY(0)' } } }
                 }
             }
         }
     </script>
-
     <style>
-        /* Force dark theme explicitly */
-        body {
-            background-color: #04040d !important;
-            color: #eaeaf2 !important;
-            overflow-x: hidden;
+        /* ── Base ── */
+        body { background-color: #04040d !important; color: #eaeaf2 !important; overflow-x: hidden; }
+
+        /* ── Scroll Progress Bar ── */
+        #scroll-progress {
+            position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+            background: linear-gradient(90deg, #00bfa5, #2979ff, #9c27b0);
+            z-index: 10000; box-shadow: 0 0 10px rgba(0,191,165,0.7), 0 0 20px rgba(41,121,255,0.4);
+            transition: width 0.08s linear;
         }
 
-        /* Glassmorphism & Cards */
+        /* ── Cursor Glow ── */
+        #cursor-glow {
+            position: fixed; width: 320px; height: 320px; border-radius: 50%;
+            background: radial-gradient(circle, rgba(0,191,165,0.055) 0%, transparent 70%);
+            pointer-events: none; z-index: 2; transform: translate(-50%,-50%);
+            left: -999px; top: -999px; will-change: left, top;
+            transition: left 0.15s ease, top 0.15s ease;
+        }
+
+        /* ── Aurora Orbs ── */
+        .aurora-orb { position: absolute; border-radius: 50%; filter: blur(90px); pointer-events: none; will-change: transform; }
+        .aurora-1 {
+            width: 560px; height: 560px;
+            background: radial-gradient(circle, rgba(0,191,165,0.20) 0%, transparent 70%);
+            top: -140px; right: -100px;
+            animation: aurora-1 20s ease-in-out infinite;
+        }
+        .aurora-2 {
+            width: 640px; height: 640px;
+            background: radial-gradient(circle, rgba(41,121,255,0.16) 0%, transparent 70%);
+            bottom: -160px; left: -160px;
+            animation: aurora-2 25s ease-in-out infinite;
+        }
+        .aurora-3 {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(156,39,176,0.12) 0%, transparent 70%);
+            top: 35%; right: 12%;
+            animation: aurora-3 18s ease-in-out infinite;
+        }
+        @keyframes aurora-1 { 0%,100%{transform:translate(0,0) scale(1)} 40%{transform:translate(-80px,60px) scale(1.12)} 70%{transform:translate(50px,-40px) scale(0.92)} }
+        @keyframes aurora-2 { 0%,100%{transform:translate(0,0) scale(1)} 35%{transform:translate(70px,-50px) scale(1.08)} 65%{transform:translate(-40px,60px) scale(0.95)} }
+        @keyframes aurora-3 { 0%,100%{transform:translate(0,0) scale(1)} 50%{transform:translate(-60px,40px) scale(1.18)} }
+
+        /* ── Glass Cards ── */
         .glass-card {
-            background-color: #0c0c16 !important;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
+            background-color: #0c0c16 !important; border: 1px solid rgba(255,255,255,0.08);
+            transition: all 0.3s ease; position: relative; overflow: hidden;
         }
-        
         .glass-card::before {
-            content: '';
-            position: absolute;
-            inset: 0;
+            content: ''; position: absolute; inset: 0;
             background: linear-gradient(135deg, rgba(0,191,165,0.06), rgba(41,121,255,0.04));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            pointer-events: none;
+            opacity: 0; transition: opacity 0.3s ease; pointer-events: none;
         }
+        .glass-card:hover { border-color: rgba(0,191,165,0.35); transform: translateY(-4px); box-shadow: 0 20px 40px rgba(0,0,0,0.6); }
+        .glass-card:hover::before { opacity: 1; }
+        .hover-glow-cyan:hover  { border-color: rgba(0,191,165,0.4)  !important; box-shadow: 0 12px 40px rgba(0,191,165,0.12)  !important; }
+        .hover-glow-blue:hover  { border-color: rgba(41,121,255,0.4) !important; box-shadow: 0 12px 40px rgba(41,121,255,0.12) !important; }
+        .hover-glow-orange:hover{ border-color: rgba(244,81,30,0.4)  !important; box-shadow: 0 12px 40px rgba(244,81,30,0.12)  !important; }
 
-        .glass-card:hover {
-            border-color: rgba(0, 191, 165, 0.35);
-            transform: translateY(-4px);
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
-        }
-        
-        .glass-card:hover::before {
-            opacity: 1;
-        }
-
-        /* Bento specific hover highlights */
-        .hover-glow-cyan:hover { border-color: rgba(0, 191, 165, 0.4); box-shadow: 0 10px 40px rgba(0, 191, 165, 0.1); }
-        .hover-glow-blue:hover { border-color: rgba(41, 121, 255, 0.4); box-shadow: 0 10px 40px rgba(41, 121, 255, 0.1); }
-        .hover-glow-orange:hover { border-color: rgba(244, 81, 30, 0.4); box-shadow: 0 10px 40px rgba(244, 81, 30, 0.1); }
-
-        /* Gradient Text */
+        /* ── Gradient Text ── */
         .text-gradient {
             background: linear-gradient(90deg, #2979ff, #00bfa5, #43a047, #fb8c00, #f4511e);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
 
-        /* Terminal styling */
-        .code-cursor {
-            display: inline-block;
-            width: 8px;
-            height: 1.2em;
-            background-color: #00bfa5;
-            vertical-align: middle;
-            animation: blink 1s step-end infinite;
-        }
-        @keyframes blink { 50% { opacity: 0; } }
-        .token-keyword { color: #c792ea; }
-        .token-function { color: #00d9be; }
-        .token-string { color: #89ddff; }
-        .token-comment { color: #58587a; font-style: italic; }
-        .token-operator { color: #89ddff; opacity: 0.8; }
-        .token-variable { color: #ffcb6b; }
-        .token-number { color: #f78c6c; }
+        /* ── Terminal ── */
+        .code-cursor { display:inline-block; width:8px; height:1.2em; background-color:#00bfa5; vertical-align:middle; animation:blink 1s step-end infinite; }
+        @keyframes blink { 50%{opacity:0} }
+        .token-keyword{color:#c792ea} .token-function{color:#00d9be} .token-string{color:#89ddff}
+        .token-comment{color:#58587a;font-style:italic} .token-operator{color:#89ddff;opacity:.8}
+        .token-variable{color:#ffcb6b} .token-number{color:#f78c6c}
+        .custom-scrollbar::-webkit-scrollbar{width:6px}
+        .custom-scrollbar::-webkit-scrollbar-track{background:transparent}
+        .custom-scrollbar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.1);border-radius:4px}
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover{background:rgba(255,255,255,.2)}
 
-        /* Custom Scrollbar for Terminal */
-        .custom-scrollbar::-webkit-scrollbar { width: 6px; }
-        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
-        .custom-scrollbar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
-        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+        /* ── Scroll Indicator ── */
+        .scroll-line { width:1px; height:38px; background:linear-gradient(to bottom,#00bfa5,transparent); animation:scrollDown 2s ease-in-out infinite; transform-origin:top; }
+        @keyframes scrollDown { 0%{transform:scaleY(0);transform-origin:top} 50%{transform:scaleY(1);transform-origin:top} 50.1%{transform-origin:bottom} 100%{transform:scaleY(0);transform-origin:bottom} }
 
-        /* Scroll indicator */
-        .scroll-line {
-            width: 1px;
-            height: 38px;
-            background: linear-gradient(to bottom, #00bfa5, transparent);
-            animation: scrollDown 2s ease-in-out infinite;
-            transform-origin: top;
-        }
-        @keyframes scrollDown {
-            0% { transform: scaleY(0); transform-origin: top; }
-            50% { transform: scaleY(1); transform-origin: top; }
-            50.1% { transform-origin: bottom; }
-            100% { transform: scaleY(0); transform-origin: bottom; }
-        }
+        /* ── Reveal Animations ── */
+        .reveal { opacity:0; transform:translateY(24px); transition:all 0.6s cubic-bezier(0.16,1,0.3,1); }
+        .reveal.active { opacity:1; transform:translateY(0); }
+        .delay-100{transition-delay:100ms} .delay-200{transition-delay:200ms} .delay-300{transition-delay:300ms} .delay-400{transition-delay:400ms}
 
-        /* Reveal animations */
-        .reveal {
-            opacity: 0;
-            transform: translateY(24px);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .delay-100 { transition-delay: 100ms; }
-        .delay-200 { transition-delay: 200ms; }
+        /* ── Scanner Reveal (headings) ── */
+        .reveal-scan { clip-path: inset(0 100% 0 0); transition: clip-path 1.0s cubic-bezier(0.16,1,0.3,1) 0.15s; }
+        .reveal-scan.active { clip-path: inset(0 0% 0 0); }
 
-        /* Global noise overlay */
+        /* ── Scan-Line Divider ── */
+        .scan-divider { height:1px; background:rgba(255,255,255,0.05); position:relative; overflow:hidden; }
+        .scan-divider::after {
+            content:''; position:absolute; top:0; left:-60%;
+            width:60%; height:100%;
+            background:linear-gradient(90deg, transparent, rgba(0,191,165,0.55), rgba(41,121,255,0.3), transparent);
+            animation: scan-sweep 5s ease-in-out infinite;
+        }
+        @keyframes scan-sweep { 0%{left:-60%} 100%{left:110%} }
+
+        /* ── Mobile Menu Overlay ── */
+        #mobile-overlay {
+            position:fixed; inset:0; z-index:300;
+            background:rgba(4,4,13,0.97); backdrop-filter:blur(24px);
+            display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2.5rem;
+            transform:translateX(100%); transition:transform 0.4s cubic-bezier(0.16,1,0.3,1);
+        }
+        #mobile-overlay.open { transform:translateX(0); }
+        #mobile-overlay a { font-size:1.4rem; font-weight:400; color:rgba(234,234,242,0.65); transition:color 0.2s; }
+        #mobile-overlay a:hover { color:#00bfa5; }
+
+        /* ── Email Capture ── */
+        .email-input {
+            background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.12);
+            color:#eaeaf2; border-radius:0.75rem; padding:0.75rem 1rem; font-size:0.875rem;
+            outline:none; width:100%; transition:border-color 0.2s, box-shadow 0.2s;
+            font-family:'IBM Plex Sans', sans-serif;
+        }
+        .email-input:focus { border-color:rgba(0,191,165,0.5); box-shadow:0 0 0 3px rgba(0,191,165,0.1); }
+        .email-input::placeholder { color:rgba(138,138,158,0.55); }
+
+        /* ── Noise Overlay ── */
         .bg-noise {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-            pointer-events: none;
-            opacity: 0.02;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+            position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.02;
+            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        /* ── Reduced Motion ── */
+        @media (prefers-reduced-motion: reduce) {
+            *, ::before, ::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+            .reveal, .reveal-scan { opacity:1; transform:none; clip-path:none; }
+            #cursor-glow, .aurora-orb { display:none; }
         }
     </style>
 </head>
 <body class="antialiased selection:bg-brand-cyan selection:text-black">
+
+    <!-- ── Scroll Progress Bar ── -->
+    <div id="scroll-progress"></div>
+
+    <!-- ── Cursor Glow ── -->
+    <div id="cursor-glow"></div>
+
+    <!-- ── Noise ── -->
     <div class="bg-noise"></div>
 
-    <!-- Navigation -->
+    <!-- ── Mobile Menu ── -->
+    <div id="mobile-overlay">
+        <button id="mobile-close" aria-label="Close menu" class="absolute top-6 right-6 text-white/50 hover:text-white transition-colors p-2">
+            <svg class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/></svg>
+        </button>
+        <div class="font-mono font-bold text-2xl mb-4"><span class="text-brand-cyan">Norm</span><span class="text-gradient">GAMLSS</span></div>
+        <a href="#features" onclick="closeMobileMenu()">Features</a>
+        <a href="#demo" onclick="closeMobileMenu()">Demo</a>
+        <a href="#modalities" onclick="closeMobileMenu()">Modalities</a>
+        <a href="#papers" onclick="closeMobileMenu()">Papers</a>
+        <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="mt-6 px-8 py-3 rounded-xl bg-white/5 border border-white/10 text-white text-base font-medium hover:bg-white/10 transition-all">GitHub ↗</a>
+    </div>
+
+    <!-- ── Navigation ── -->
     <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 border-b border-transparent py-4 bg-[#04040d]/90 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-6 md:px-12 flex justify-between items-center">
             <div class="flex items-center gap-2">
@@ -176,48 +200,68 @@
                 <a href="#modalities" class="hover:text-white transition-colors">Modalities</a>
                 <a href="#papers" class="hover:text-white transition-colors">Papers</a>
             </div>
-            <div>
-                <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="px-4 py-2 text-sm font-medium rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10">
-                    GitHub ↗
-                </a>
+            <div class="flex items-center gap-3">
+                <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="hidden md:inline-flex px-4 py-2 text-sm font-medium rounded-lg bg-white/5 border border-white/10 text-white transition-all hover:bg-white/10">GitHub ↗</a>
+                <!-- Hamburger — mobile only -->
+                <button id="hamburger" aria-label="Open menu" class="md:hidden p-2 text-white/70 hover:text-white transition-colors">
+                    <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- ── Hero ── -->
     <section class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden pt-20 pb-12">
-        <!-- Background Image & Overlay (Glowing Brain) -->
-        <div class="absolute inset-0 z-0">
-            <img src="1f8abc87-a5d8-4d07-b966-7243c7ef0a59_3bb82f70-f167-45e2-b3c6-e5c83fa2c82d_raw.png" alt="Background Brain" class="w-full h-full object-cover object-[center_30%] opacity-40 mix-blend-screen" onerror="this.style.display='none'" />
+
+        <!-- Layer 0: Aurora orbs -->
+        <div class="absolute inset-0 overflow-hidden" style="z-index:0">
+            <div class="aurora-orb aurora-1"></div>
+            <div class="aurora-orb aurora-2"></div>
+            <div class="aurora-orb aurora-3"></div>
+        </div>
+
+        <!-- Layer 1: Brain + gradient overlay -->
+        <div class="absolute inset-0" style="z-index:1">
+            <img id="hero-brain"
+                src="1f8abc87-a5d8-4d07-b966-7243c7ef0a59_3bb82f70-f167-45e2-b3c6-e5c83fa2c82d_raw.png"
+                alt="Neural connectivity visualization"
+                class="w-full h-full object-cover object-[center_30%] opacity-40 mix-blend-screen will-change-transform"
+                style="transform:scale(1.1)"
+                onerror="this.style.display='none'" />
             <div class="absolute inset-0 bg-gradient-to-b from-[#04040d]/50 via-[#04040d]/70 to-[#04040d]"></div>
         </div>
-        
-        <!-- Animated Particles Canvas -->
-        <canvas id="network-canvas" class="absolute inset-0 z-0 opacity-60 pointer-events-none"></canvas>
 
-        <div class="relative z-10 max-w-4xl mx-auto px-6 text-center mt-12">
+        <!-- Layer 2: Ghost floating distribution curves (SIGNATURE ELEMENT) -->
+        <canvas id="ghost-curves" class="absolute inset-0 pointer-events-none" style="z-index:2; width:100%; height:100%;"></canvas>
+
+        <!-- Layer 3: Network particles -->
+        <canvas id="network-canvas" class="absolute inset-0 pointer-events-none" style="z-index:3; opacity:0.45; width:100%; height:100%;"></canvas>
+
+        <!-- Layer 10: Content -->
+        <div class="relative max-w-4xl mx-auto px-6 text-center mt-12" style="z-index:10">
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-brand-cyan/35 bg-brand-cyan/10 text-brand-cyan text-[11px] font-mono font-semibold tracking-widest uppercase mb-8 opacity-0 animate-fade-in-up">
                 <span class="w-1.5 h-1.5 rounded-full bg-brand-cyan shadow-[0_0_10px_#00bfa5] animate-pulse"></span>
                 Presenting at OHBM 2026 · June 14–18
             </div>
-            
-            <!-- Dynamic Logo -->
-            <div class="mb-8 opacity-0 animate-fade-in-up flex justify-center w-full" style="animation-delay: 0.1s;">
-                <img src="9aaf35fb-53ef-4505-a370-2b993e5ab6bc_e14c7e03-f8fc-4113-a7b9-daececf77f2a_raw.png" alt="NormGAMLSS Logo" class="w-full max-w-xl mx-auto object-contain drop-shadow-2xl" onerror="this.style.display='none'; document.getElementById('text-logo').style.display='block';" />
+
+            <div class="mb-8 opacity-0 animate-fade-in-up flex justify-center w-full" style="animation-delay:0.1s">
+                <img src="9aaf35fb-53ef-4505-a370-2b993e5ab6bc_e14c7e03-f8fc-4113-a7b9-daececf77f2a_raw.png"
+                    alt="NormGAMLSS Logo"
+                    class="w-full max-w-xl mx-auto object-contain drop-shadow-2xl"
+                    onerror="this.style.display='none'; document.getElementById('text-logo').style.display='block';" />
                 <h1 id="text-logo" class="hidden text-5xl md:text-7xl font-mono font-bold tracking-tighter">
                     <span class="text-brand-cyan">Norm</span><span class="text-gradient">GAMLSS</span>
                 </h1>
             </div>
 
-            <h2 class="text-xl md:text-2xl font-light italic text-white/80 mb-4 opacity-0 animate-fade-in-up" style="animation-delay: 0.2s;">
+            <h2 class="text-xl md:text-2xl font-light italic text-white/80 mb-4 opacity-0 animate-fade-in-up" style="animation-delay:0.2s">
                 Go beyond the mean. Model the norm.
             </h2>
-            
-            <p class="max-w-xl mx-auto text-base text-[#8a8a9e] font-light leading-relaxed mb-10 opacity-0 animate-fade-in-up" style="animation-delay: 0.3s;">
+            <p class="max-w-xl mx-auto text-base text-[#8a8a9e] font-light leading-relaxed mb-10 opacity-0 animate-fade-in-up" style="animation-delay:0.3s">
                 Most normative models only fit the average. NormGAMLSS fits the full shape of your data, transfers to new sites effortlessly, and robustly identifies true outliers.
             </p>
 
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 opacity-0 animate-fade-in-up" style="animation-delay: 0.4s;">
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-3 opacity-0 animate-fade-in-up" style="animation-delay:0.4s">
                 <a href="#papers" class="w-full sm:w-auto px-6 py-3.5 rounded-xl bg-brand-cyan text-black font-semibold shadow-[0_0_32px_rgba(0,191,165,0.28)] hover:bg-[#00d8be] hover:-translate-y-0.5 hover:shadow-[0_0_52px_rgba(0,191,165,0.48)] transition-all">
                     📅 Release — July 15
                 </a>
@@ -227,22 +271,22 @@
             </div>
         </div>
 
-        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 animate-fade-in-up" style="animation-delay: 0.8s;">
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 animate-fade-in-up" style="animation-delay:0.8s; z-index:10">
             <div class="scroll-line"></div>
             <span class="font-mono text-[10px] tracking-widest uppercase text-[#58587a]">Scroll</span>
         </div>
     </section>
 
-    <!-- Stats Section -->
+    <!-- ── Stats ── -->
     <section class="relative z-20 bg-[#070712] border-y border-white/5 py-10">
         <div class="max-w-6xl mx-auto px-6">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-y-8 md:gap-y-0 divide-x-0 md:divide-x divide-white/10">
                 <div class="text-center px-4 reveal">
-                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1">5+</div>
+                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1 count-up" data-target="5" data-suffix="+">0+</div>
                     <div class="text-sm text-[#8a8a9e] font-light">Modalities validated</div>
                 </div>
                 <div class="text-center px-4 reveal delay-100">
-                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1">4</div>
+                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1 count-up" data-target="4" data-suffix="">0</div>
                     <div class="text-sm text-[#8a8a9e] font-light">Papers in preparation</div>
                 </div>
                 <div class="text-center px-4 reveal delay-200">
@@ -250,84 +294,83 @@
                     <div class="text-sm text-[#8a8a9e] font-light">Full shape modeled</div>
                 </div>
                 <div class="text-center px-4 reveal delay-300">
-                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1">100+</div>
+                    <div class="text-3xl md:text-4xl font-mono font-bold text-gradient mb-1 count-up" data-target="100" data-suffix="+">0+</div>
                     <div class="text-sm text-[#8a8a9e] font-light">Distribution families</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Features Section (Punchy Bento Box) -->
+    <!-- ── Features ── -->
     <section id="features" class="py-28 relative bg-[#04040d]">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16 reveal">
                 <div class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-3">Architecture</div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Built for the <span class="text-gradient">real shape</span> of your data</h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight reveal-scan">Built for the <span class="text-gradient">real shape</span> of your data</h2>
             </div>
 
-            <!-- Bento Grid -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-5 auto-rows-min">
-                
-                <!-- 1. Full Distribution (Span 2) -->
-                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-center min-h-[220px]">
-                    <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4 border border-brand-cyan/20">
-                        <svg class="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z" /></svg>
+
+                <!-- Full Distribution — with mini live chart -->
+                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-between" style="min-height:260px">
+                    <div>
+                        <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4 border border-brand-cyan/20">
+                            <svg class="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"/></svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-2">Model the full distribution</h3>
+                        <p class="text-[#8a8a9e] text-[14px] font-light">Location (μ), scale (σ), skewness (ν), and kurtosis (τ) modeled simultaneously as smooth functions of age, sex, and site.</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2">Model the full distribution</h3>
-                    <p class="text-[#8a8a9e] text-[14px] font-light">Location (μ), scale (σ), skewness (ν), and kurtosis (τ) modeled simultaneously as smooth functions of age, sex, and site.</p>
+                    <!-- Mini animated centile chart -->
+                    <div class="mt-5 rounded-xl overflow-hidden border border-white/5 bg-black/20" style="height:68px">
+                        <canvas id="mini-dist-canvas" style="display:block; width:100%; height:68px;"></canvas>
+                    </div>
                 </div>
 
-                <!-- 2. Permutation (Span 1) -->
-                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-orange reveal flex flex-col justify-center min-h-[220px]">
+                <!-- Permutation -->
+                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-orange reveal flex flex-col justify-center" style="min-height:260px">
                     <div class="w-10 h-10 rounded-lg bg-brand-orange/10 flex items-center justify-center mb-4 border border-brand-orange/20">
-                        <svg class="w-5 h-5 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" /></svg>
+                        <svg class="w-5 h-5 text-brand-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
                     </div>
                     <h3 class="text-lg font-bold text-white mb-2">Permutation Tests</h3>
                     <p class="text-[#8a8a9e] text-[13px] font-light">Rigorous non-parametric p-values to evaluate if adding covariates genuinely improves model fit.</p>
                 </div>
 
-                <!-- 3. Scale to Regions (Span 1) -->
-                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-center min-h-[220px]">
+                <!-- Scale to Regions -->
+                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-center" style="min-height:220px">
                     <div class="w-10 h-10 rounded-lg bg-brand-cyan/10 flex items-center justify-center mb-4 border border-brand-cyan/20">
-                        <svg class="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5" /></svg>
+                        <svg class="w-5 h-5 text-brand-cyan" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10l-2 1m0 0l-2-1m2 1v2.5M20 7l-2 1m2-1l-2-1m2 1v2.5M14 4l-2-1-2 1M4 7l2-1M4 7l2 1M4 7v2.5M12 21l-2-1m2 1l2-1m-2 1v-2.5M6 18l-2-1v-2.5M18 18l2-1v-2.5"/></svg>
                     </div>
                     <h3 class="text-lg font-bold text-white mb-2">Scale to every region</h3>
                     <p class="text-[#8a8a9e] text-[13px] font-light">Run base vs. target comparison across all parcels or EEG bands in parallel, with built-in caching.</p>
                 </div>
 
-                <!-- 4. Site Transfer (Span 2) -->
-                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-blue reveal flex flex-col justify-center min-h-[220px]">
+                <!-- Site Transfer -->
+                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-blue reveal flex flex-col justify-center" style="min-height:220px">
                     <div class="flex justify-between items-start gap-4">
                         <div>
                             <div class="w-10 h-10 rounded-lg bg-brand-blue/10 flex items-center justify-center mb-4 border border-brand-blue/20">
-                                <svg class="w-5 h-5 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" /></svg>
+                                <svg class="w-5 h-5 text-brand-blue" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/></svg>
                             </div>
                             <h3 class="text-xl font-bold text-white mb-2">Zero-shot Site Transfer</h3>
                             <p class="text-[#8a8a9e] text-[14px] font-light mb-4">Adapt pre-trained reference models to entirely new clinical scanners using only a tiny calibration sample.</p>
                         </div>
-                        <div class="hidden sm:block mt-2">
-                            <code class="text-brand-blue bg-brand-blue/10 px-3 py-2 rounded-lg font-mono text-[11px] border border-brand-blue/20">
-                                site_transfer()
-                            </code>
+                        <div class="hidden sm:block mt-2 flex-shrink-0">
+                            <code class="text-brand-blue bg-brand-blue/10 px-3 py-2 rounded-lg font-mono text-[11px] border border-brand-blue/20">site_transfer()</code>
                         </div>
                     </div>
                 </div>
 
-                <!-- 5. Reference Curves (Span 2) -->
-                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-center min-h-[220px]">
+                <!-- Reference Curves -->
+                <div class="glass-card md:col-span-2 rounded-2xl p-8 hover-glow-cyan reveal flex flex-col justify-center" style="min-height:220px">
                     <h3 class="text-xl font-bold text-white mb-2">Beautiful Reference Curves</h3>
                     <p class="text-[#8a8a9e] text-[14px] font-light mb-4 max-w-md">Generate continuous, age-dependent centile bands and calculate exact deviation scores (Z-scores) for individuals.</p>
-                    <div>
-                        <code class="text-brand-indigo bg-brand-indigo/10 px-3 py-2 rounded-lg font-mono text-[11px] border border-brand-indigo/20">
-                            model.plot_continuous_centiles()
-                        </code>
-                    </div>
+                    <code class="text-brand-indigo bg-brand-indigo/10 px-3 py-2 rounded-lg font-mono text-[11px] border border-brand-indigo/20 self-start">model.plot_continuous_centiles()</code>
                 </div>
 
-                <!-- 6. Python Native (Span 1) -->
-                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-blue reveal flex flex-col justify-center min-h-[220px]">
+                <!-- Python Native -->
+                <div class="glass-card md:col-span-1 rounded-2xl p-8 hover-glow-blue reveal flex flex-col justify-center" style="min-height:220px">
                     <div class="w-10 h-10 rounded-lg bg-brand-indigo/10 flex items-center justify-center mb-4 border border-brand-indigo/20">
-                        <svg class="w-5 h-5 text-brand-indigo" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg>
+                        <svg class="w-5 h-5 text-brand-indigo" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/></svg>
                     </div>
                     <h3 class="text-lg font-bold text-white mb-2">Python Native</h3>
                     <p class="text-[#8a8a9e] text-[13px] font-light">R runs the stats via rpy2, but you stay seamlessly in Pandas and Scikit-learn.</p>
@@ -337,10 +380,10 @@
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="h-px bg-gradient-to-r from-transparent via-brand-cyan/20 to-transparent"></div>
+    <!-- ── Scan Divider ── -->
+    <div class="scan-divider"></div>
 
-    <!-- Live Demo Section (Fixed Heights & Layout) -->
+    <!-- ── Demo ── -->
     <section id="demo" class="py-28 relative bg-[#070712]">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-16 reveal">
@@ -349,10 +392,8 @@
                 <p class="text-[#8a8a9e] max-w-xl mx-auto font-light">Watch a real NormGAMLSS workflow type itself out.</p>
             </div>
 
-            <!-- Lock both containers to a strict height so layout never jumps -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch h-auto lg:h-[460px]">
-                
-                <!-- Terminal Window -->
+                <!-- Terminal -->
                 <div class="reveal flex flex-col rounded-xl overflow-hidden border border-white/10 shadow-2xl bg-[#060610] h-[460px]">
                     <div class="flex-none flex items-center px-4 py-3 bg-white/[0.03] border-b border-white/10">
                         <div class="flex gap-2">
@@ -362,56 +403,44 @@
                         </div>
                         <div class="ml-4 font-mono text-[11px] text-[#58587a]">normative_model.py</div>
                     </div>
-                    <!-- Scrolling terminal body -->
-                    <div class="flex-1 p-5 font-mono text-[13px] leading-relaxed overflow-y-auto custom-scrollbar" id="code-container">
-                        <!-- JS will type code here dynamically -->
-                    </div>
+                    <div class="flex-1 p-5 font-mono text-[13px] leading-relaxed overflow-y-auto custom-scrollbar" id="code-container"></div>
                 </div>
 
                 <!-- Canvas Chart -->
                 <div class="reveal delay-100 flex flex-col rounded-xl overflow-hidden border border-white/10 bg-[#030310] shadow-2xl h-[460px]">
                     <div class="flex-none flex items-center justify-between px-5 py-3 border-b border-white/10 text-xs bg-white/[0.02]">
-                        <div>
-                            <span id="chart-title" class="font-semibold text-brand-cyan">Centile curves</span>
-                        </div>
+                        <span id="chart-title" class="font-semibold text-brand-cyan">Centile curves</span>
                     </div>
                     <div class="flex-none flex border-b border-white/10 bg-white/[0.01]">
                         <button onclick="switchTab('cent')" id="tab-cent" class="flex-1 py-2 text-xs font-mono transition-all text-brand-cyan bg-brand-cyan/5 border-b-2 border-brand-cyan">Centiles</button>
                         <button onclick="switchTab('zscore')" id="tab-zscore" class="flex-1 py-2 text-xs font-mono transition-all text-[#58587a] hover:text-white border-b-2 border-transparent">Z-Scores</button>
                     </div>
-                    
-                    <!-- Wrapper provides exact flex bounds for the absolute canvases -->
                     <div class="flex-1 relative p-4" id="canvas-wrapper">
-                        <!-- absolute inset-4 applies padding so canvas doesn't touch the borders -->
                         <canvas id="cc" class="absolute inset-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] block"></canvas>
                         <canvas id="czs" class="absolute inset-4 w-[calc(100%-2rem)] h-[calc(100%-2rem)] hidden"></canvas>
                     </div>
-                    
                     <div class="flex-none px-4 py-3 bg-white/[0.02] border-t border-white/10 flex flex-wrap gap-4 text-xs text-[#58587a] font-mono">
                         <span class="flex items-center gap-1.5"><span class="text-brand-cyan">●</span> Normal</span>
                         <span class="flex items-center gap-1.5"><span class="text-brand-amber">●</span> |Z| > 2</span>
                         <span class="flex items-center gap-1.5"><span class="text-red-500 text-[10px]">◆</span> Clinical Cohort</span>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
 
-    <!-- Divider -->
-    <div class="h-px bg-gradient-to-r from-transparent via-brand-cyan/20 to-transparent"></div>
+    <!-- ── Scan Divider ── -->
+    <div class="scan-divider"></div>
 
-    <!-- Modalities Section -->
+    <!-- ── Modalities ── -->
     <section id="modalities" class="py-28 relative bg-[#04040d]">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16 reveal">
                 <div class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-3">Validated modalities</div>
-                <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight">Any modality. <br class="hidden sm:block"/> <span class="text-gradient">Any measurement.</span></h2>
+                <h2 class="text-3xl md:text-4xl font-bold mb-4 tracking-tight reveal-scan">Any modality. <br class="hidden sm:block"/> <span class="text-gradient">Any measurement.</span></h2>
                 <p class="text-[#8a8a9e] max-w-2xl mx-auto font-light leading-relaxed">Developed and validated across imaging and non-imaging data by the <a href="https://mhm-lab.github.io/" target="_blank" class="text-brand-cyan border-b border-brand-cyan/30 hover:border-brand-cyan transition-colors">Laboratory for Mental Health Mapping</a>. Four separate papers cover four separate modalities.</p>
             </div>
-
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-                <!-- 1 -->
                 <div class="glass-card rounded-xl p-5 text-center reveal">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="26" rx="18" ry="14" stroke="#2979ff" stroke-width="1.8"/><path d="M8 24 Q12 16 18 20 Q22 23 24 20 Q27 16 32 20 Q38 24 40 24" stroke="#2979ff" stroke-width="1.6" fill="none" stroke-linecap="round"/><path d="M10 28 Q14 22 20 25 Q24 27 28 24 Q33 21 38 26" stroke="#2979ff" stroke-width="1.2" fill="none" stroke-linecap="round" opacity=".55"/><ellipse cx="24" cy="20" rx="6" ry="4" fill="rgba(41,121,255,.12)"/></svg>
@@ -419,7 +448,6 @@
                     <h4 class="font-semibold text-white text-[13px] mb-1">Structural MRI</h4>
                     <p class="text-[11px] text-[#8a8a9e] font-light leading-snug">Cortical thickness</p>
                 </div>
-                <!-- 2 -->
                 <div class="glass-card rounded-xl p-5 text-center reveal delay-100">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><polyline points="2,24 8,24 10,24 12,10 14,38 16,24 20,24 22,16 24,32 26,24 30,24 32,14 34,34 36,24 46,24" stroke="#00bfa5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="12" cy="6" r="2" fill="#00bfa5" opacity=".7"/><circle cx="24" cy="4" r="2" fill="#00bfa5" opacity=".7"/><circle cx="36" cy="6" r="2" fill="#00bfa5" opacity=".7"/><line x1="12" y1="8" x2="12" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/><line x1="24" y1="6" x2="24" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/><line x1="36" y1="8" x2="36" y2="11" stroke="#00bfa5" stroke-width="1.2" opacity=".5"/></svg>
@@ -427,7 +455,6 @@
                     <h4 class="font-semibold text-white text-[13px] mb-1">EEG</h4>
                     <p class="text-[11px] text-[#8a8a9e] font-light leading-snug">Spectral power & ERPs</p>
                 </div>
-                <!-- 3 -->
                 <div class="glass-card rounded-xl p-5 text-center reveal delay-200">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><ellipse cx="24" cy="25" rx="17" ry="13" stroke="#43a047" stroke-width="1.6"/><circle cx="18" cy="22" r="5" fill="rgba(67,160,71,.32)" stroke="#43a047" stroke-width="1.2"/><circle cx="30" cy="26" r="4" fill="rgba(67,160,71,.18)" stroke="#43a047" stroke-width="1" opacity=".7"/><circle cx="22" cy="30" r="3" fill="rgba(251,140,0,.32)" stroke="#fb8c00" stroke-width="1.2"/><polyline points="4,40 9,40 11,36 13,44 15,38 17,42 19,40 23,40 25,35 27,45 29,40 35,40 37,37 39,40 44,40" stroke="#43a047" stroke-width="1.4" stroke-linecap="round" fill="none" opacity=".75"/></svg>
@@ -435,7 +462,6 @@
                     <h4 class="font-semibold text-white text-[13px] mb-1">fMRI</h4>
                     <p class="text-[11px] text-[#8a8a9e] font-light leading-snug">Resting-state connectivity</p>
                 </div>
-                <!-- 4 -->
                 <div class="glass-card rounded-xl p-5 text-center reveal delay-300">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fb8c00" stroke-width="1.8" stroke-dasharray="4 2.5"/><circle cx="24" cy="24" r="12" stroke="#fb8c00" stroke-width="1.4" opacity=".55"/><circle cx="24" cy="7" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="24" cy="41" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="7" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="41" cy="24" r="2.5" fill="#fb8c00" opacity=".8"/><circle cx="24" cy="24" r="5" fill="rgba(251,140,0,.25)" stroke="#fb8c00" stroke-width="1.2"/><circle cx="24" cy="24" r="2" fill="#fb8c00"/></svg>
@@ -443,16 +469,14 @@
                     <h4 class="font-semibold text-white text-[13px] mb-1">PET</h4>
                     <p class="text-[11px] text-[#8a8a9e] font-light leading-snug">Receptor binding maps</p>
                 </div>
-                <!-- 5 -->
-                <div class="glass-card rounded-xl p-5 text-center reveal delay-100 lg:delay-400">
+                <div class="glass-card rounded-xl p-5 text-center reveal delay-100">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="10" r="4" fill="rgba(244,81,30,.28)" stroke="#f4511e" stroke-width="1.6"/><circle cx="10" cy="32" r="4" fill="rgba(244,81,30,.28)" stroke="#f4511e" stroke-width="1.6"/><circle cx="38" cy="32" r="4" fill="rgba(244,81,30,.28)" stroke="#f4511e" stroke-width="1.6"/><circle cx="24" cy="28" r="3.5" fill="rgba(244,81,30,.45)" stroke="#f4511e" stroke-width="1.6"/><line x1="24" y1="14" x2="24" y2="24.5" stroke="#f4511e" stroke-width="1.4" opacity=".65"/><line x1="21" y1="26" x2="13.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".65"/><line x1="27" y1="26" x2="34.5" y2="29" stroke="#f4511e" stroke-width="1.4" opacity=".65"/><rect x="8" y="41" width="32" height="3" rx="1.5" fill="rgba(244,81,30,.12)" stroke="#f4511e" stroke-width="1" opacity=".35"/><rect x="8" y="41" width="22" height="3" rx="1.5" fill="rgba(244,81,30,.5)"/></svg>
                     </div>
                     <h4 class="font-semibold text-white text-[13px] mb-1">Cognitive</h4>
                     <p class="text-[11px] text-[#8a8a9e] font-light leading-snug">Reaction times & memory</p>
                 </div>
-                <!-- 6 -->
-                <div class="glass-card rounded-xl p-5 text-center border-dashed border-brand-cyan/30 reveal delay-200 lg:delay-500">
+                <div class="glass-card rounded-xl p-5 text-center border-dashed border-brand-cyan/30 reveal delay-200">
                     <div class="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                         <svg viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#00bfa5" stroke-width="1.5" stroke-dasharray="3 3" opacity=".45"/><line x1="24" y1="13" x2="24" y2="35" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/><line x1="13" y1="24" x2="35" y2="24" stroke="#00bfa5" stroke-width="2.5" stroke-linecap="round"/></svg>
                     </div>
@@ -463,16 +487,16 @@
         </div>
     </section>
 
-    <!-- Countdown & Papers Section -->
+    <!-- ── Countdown & Papers ── -->
     <section id="countdown" class="py-28 relative bg-[#070712] border-y border-white/10 overflow-hidden">
-        <div class="absolute inset-0 pointer-events-none" style="background: radial-gradient(ellipse 80% 55% at 50% 50%, rgba(0,191,165,0.07), transparent 70%)"></div>
+        <div class="absolute inset-0 pointer-events-none" style="background:radial-gradient(ellipse 80% 55% at 50% 50%, rgba(0,191,165,0.07), transparent 70%)"></div>
         <div class="max-w-4xl mx-auto px-6 text-center relative z-10">
             <div class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-4 reveal">Paper & package release</div>
             <h2 class="text-4xl md:text-5xl font-bold mb-4 tracking-tight reveal delay-100">Coming <span class="text-gradient">July 15, 2026</span></h2>
             <p class="text-[#8a8a9e] font-light mb-12 reveal delay-200">PyPI package · full documentation · preprints — all on the same day.</p>
-            
-            <!-- Countdown -->
-            <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-16 reveal delay-300">
+
+            <!-- Countdown Timer -->
+            <div class="flex flex-wrap justify-center gap-4 md:gap-6 mb-12 reveal delay-300">
                 <div class="glass-card rounded-xl py-6 px-4 min-w-[90px] md:min-w-[120px] shadow-lg">
                     <div class="text-4xl md:text-5xl font-mono font-bold text-gradient mb-2 leading-none" id="cdd">--</div>
                     <div class="text-[10px] md:text-[11px] font-mono tracking-widest text-[#8a8a9e] uppercase">Days</div>
@@ -491,38 +515,58 @@
                 </div>
             </div>
 
+            <!-- ── Email Notification Capture ── -->
+            <div class="max-w-md mx-auto mb-16 reveal delay-400">
+                <div class="glass-card rounded-2xl p-6 border border-brand-cyan/15 hover-glow-cyan">
+                    <div class="flex items-center gap-2 mb-2">
+                        <span class="w-2 h-2 rounded-full bg-brand-cyan animate-pulse"></span>
+                        <span class="text-[11px] font-mono text-brand-cyan tracking-widest uppercase font-semibold">Get notified on release day</span>
+                    </div>
+                    <p class="text-[#8a8a9e] text-sm font-light mb-4 text-left">Leave your email and we'll ping you the moment the package and preprints drop on July 15.</p>
+                    <form id="notify-form" class="flex flex-col sm:flex-row gap-3" onsubmit="handleNotifySubmit(event)">
+                        <label for="notify-email" class="sr-only">Email address</label>
+                        <input type="email" id="notify-email" name="email" autocomplete="email"
+                            class="email-input flex-1" placeholder="you@institution.edu" required />
+                        <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-cyan text-black font-semibold text-sm hover:bg-[#00d8be] transition-all whitespace-nowrap flex-shrink-0 shadow-[0_0_20px_rgba(0,191,165,0.2)] hover:shadow-[0_0_36px_rgba(0,191,165,0.4)] hover:-translate-y-0.5">
+                            Notify me →
+                        </button>
+                    </form>
+                    <div id="notify-success" class="hidden mt-3 flex items-center gap-2 text-brand-cyan text-sm font-mono" aria-live="polite">
+                        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>
+                        You're on the list. We'll email you July 15.
+                    </div>
+                </div>
+            </div>
+
             <!-- Publications -->
-            <div class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-6 reveal">Publications — please cite</div>
+            <div id="papers" class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-6 reveal">Publications — please cite</div>
             <div class="grid md:grid-cols-2 gap-4 text-left mb-16 reveal delay-100">
                 <div class="glass-card p-6 rounded-xl relative">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#2979ff] to-[#00bfa5] opacity-60"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#2979ff] to-[#00bfa5] opacity-60 rounded-l-xl"></div>
                     <div class="inline-block px-2.5 py-1 bg-brand-amber/10 text-brand-amber text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3 border border-brand-amber/20">In Preparation</div>
                     <h4 class="font-medium text-white text-[15px] mb-1 leading-snug">NormGAMLSS: A Python framework for distributional normative modeling</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-2">Sharma N. et al.</p>
                     <div class="text-[12px] text-brand-cyan opacity-85 mb-3">📦 Main package paper</div>
                     <div class="inline-flex items-center text-[11px] font-mono text-[#58587a] border border-white/10 px-3 py-1 rounded opacity-70">Preprint · coming July 15, 2026</div>
                 </div>
-                
                 <div class="glass-card p-6 rounded-xl relative">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#00bfa5] to-[#43a047] opacity-60"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#00bfa5] to-[#43a047] opacity-60 rounded-l-xl"></div>
                     <div class="inline-block px-2.5 py-1 bg-brand-amber/10 text-brand-amber text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3 border border-brand-amber/20">In Preparation</div>
                     <h4 class="font-medium text-white text-[15px] mb-1 leading-snug">Site transfer for GAMLSS-based normative models</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-2">Sicheng et al.</p>
                     <div class="text-[12px] text-brand-cyan opacity-85 mb-3">🔁 Multi-site methodology</div>
                     <div class="inline-flex items-center text-[11px] font-mono text-[#58587a] border border-white/10 px-3 py-1 rounded opacity-70">Preprint · coming 2026</div>
                 </div>
-                
                 <div class="glass-card p-6 rounded-xl relative">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#fb8c00] to-[#f4511e] opacity-60"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#fb8c00] to-[#f4511e] opacity-60 rounded-l-xl"></div>
                     <div class="inline-block px-2.5 py-1 bg-brand-amber/10 text-brand-amber text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3 border border-brand-amber/20">In Preparation</div>
                     <h4 class="font-medium text-white text-[15px] mb-1 leading-snug">Distributional normative modeling for neuroimaging biomarkers</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-2">Yanwu et al.</p>
                     <div class="text-[12px] text-brand-cyan opacity-85 mb-3">🧠 Structural MRI application</div>
                     <div class="inline-flex items-center text-[11px] font-mono text-[#58587a] border border-white/10 px-3 py-1 rounded opacity-70">Preprint · coming 2026</div>
                 </div>
-                
                 <div class="glass-card p-6 rounded-xl relative">
-                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#9c27b0] to-[#2979ff] opacity-60"></div>
+                    <div class="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-[#9c27b0] to-[#2979ff] opacity-60 rounded-l-xl"></div>
                     <div class="inline-block px-2.5 py-1 bg-brand-amber/10 text-brand-amber text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3 border border-brand-amber/20">In Preparation</div>
                     <h4 class="font-medium text-white text-[15px] mb-1 leading-snug">Normative modeling of EEG measures across the lifespan</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-2">Mallus F. et al.</p>
@@ -534,14 +578,13 @@
             <!-- Background Reading -->
             <div class="text-[#58587a] font-mono text-[11px] font-bold tracking-widest uppercase mb-6 mt-16 reveal">Background reading</div>
             <div class="grid md:grid-cols-2 gap-4 text-left mb-16 reveal delay-100">
-                <a href="https://www.nature.com/articles/s41380-019-0441-1" target="_blank" class="glass-card p-6 rounded-xl block hover-glow-blue group">
+                <a href="https://www.nature.com/articles/s41380-019-0441-1" target="_blank" rel="noopener noreferrer" class="glass-card p-6 rounded-xl block hover-glow-blue group">
                     <div class="inline-block px-2.5 py-1 bg-brand-blue/15 text-[#6ea8fe] text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3">Review</div>
                     <h4 class="font-medium text-white text-[14px] mb-1 leading-snug group-hover:text-brand-cyan transition-colors">Conceptualizing mental disorders as deviations from normative functioning</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-3">Marquand et al. (2019) · <em>Molecular Psychiatry</em></p>
                     <div class="inline-flex items-center text-[11px] font-mono text-brand-cyan border border-brand-cyan/30 px-3 py-1 rounded group-hover:bg-brand-cyan/10 transition-colors">Read ↗</div>
                 </a>
-                
-                <a href="https://www.nature.com/articles/s41596-022-00696-5" target="_blank" class="glass-card p-6 rounded-xl block hover-glow-blue group">
+                <a href="https://www.nature.com/articles/s41596-022-00696-5" target="_blank" rel="noopener noreferrer" class="glass-card p-6 rounded-xl block hover-glow-blue group">
                     <div class="inline-block px-2.5 py-1 bg-brand-blue/15 text-[#6ea8fe] text-[10px] font-mono font-semibold uppercase tracking-wider rounded mb-3">Protocol</div>
                     <h4 class="font-medium text-white text-[14px] mb-1 leading-snug group-hover:text-brand-cyan transition-colors">The normative modeling framework for computational psychiatry</h4>
                     <p class="text-[12px] text-[#8a8a9e] font-mono mb-3">Rutherford et al. (2022) · <em>Nature Protocols</em></p>
@@ -552,637 +595,541 @@
             <!-- CTAs -->
             <div class="flex flex-wrap justify-center items-center gap-4 reveal delay-200">
                 <button class="px-6 py-3 rounded-xl bg-brand-cyan text-black font-semibold opacity-50 cursor-not-allowed flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
                     pip install normgamlss <span class="opacity-60 text-xs font-normal ml-1">(July 15)</span>
                 </button>
                 <button class="px-6 py-3 rounded-xl bg-white/5 border border-white/10 text-white font-medium opacity-50 cursor-not-allowed flex items-center gap-2">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path></svg>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/></svg>
                     Documentation <span class="opacity-60 text-xs font-normal ml-1">(July 15)</span>
                 </button>
             </div>
         </div>
     </section>
 
-    <!-- Acknowledgements Section -->
+    <!-- ── Acknowledgements ── -->
     <section class="py-24 relative bg-[#04040d]">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-brand-cyan font-mono text-[11px] font-bold tracking-widest uppercase mb-12 text-center reveal">Built on the shoulders of giants</div>
-            
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div class="glass-card p-6 rounded-xl reveal">
                     <div class="text-[11px] font-mono font-semibold text-[#8a8a9e] mb-2 uppercase tracking-wider">Statistical engine</div>
                     <div class="text-[14px] font-light leading-relaxed mb-3"><strong>GAMLSS (R package)</strong><br/>Rigby R.A. & Stasinopoulos D.M. (2005). Generalized additive models for location, scale and shape. <em>Applied Statistics</em>.</div>
-                    <a href="https://www.gamlss.com" target="_blank" class="text-[13px] text-brand-cyan hover:underline">gamlss.com ↗</a>
+                    <a href="https://www.gamlss.com" target="_blank" rel="noopener noreferrer" class="text-[13px] text-brand-cyan hover:underline">gamlss.com ↗</a>
                 </div>
-                
                 <div class="glass-card p-6 rounded-xl reveal delay-100">
                     <div class="text-[11px] font-mono font-semibold text-[#8a8a9e] mb-2 uppercase tracking-wider">R–Python bridge</div>
                     <div class="text-[14px] font-light leading-relaxed mb-3"><strong>rpy2</strong><br/>All R calls — fitting, prediction, centile calculation, model saving — run inside R sessions managed transparently from Python.</div>
-                    <a href="https://rpy2.github.io" target="_blank" class="text-[13px] text-brand-cyan hover:underline">rpy2.github.io ↗</a>
+                    <a href="https://rpy2.github.io" target="_blank" rel="noopener noreferrer" class="text-[13px] text-brand-cyan hover:underline">rpy2.github.io ↗</a>
                 </div>
-                
                 <div class="glass-card p-6 rounded-xl reveal delay-200">
                     <div class="text-[11px] font-mono font-semibold text-[#8a8a9e] mb-2 uppercase tracking-wider">Lab</div>
                     <div class="text-[14px] font-light leading-relaxed mb-3"><strong>Laboratory for Mental Health Mapping</strong><br/>MHM-Lab — developed and validated across MRI, EEG, fMRI, PET, and cognitive data, multiple sites, clinical populations.</div>
-                    <a href="https://mhm-lab.github.io/" target="_blank" class="text-[13px] text-brand-cyan hover:underline">mhm-lab.github.io ↗</a>
+                    <a href="https://mhm-lab.github.io/" target="_blank" rel="noopener noreferrer" class="text-[13px] text-brand-cyan hover:underline">mhm-lab.github.io ↗</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
+    <!-- ── Footer ── -->
     <footer class="bg-[#070712] border-t border-white/10 py-10">
         <div class="max-w-6xl mx-auto px-6 text-center">
             <div class="font-mono font-bold text-lg tracking-tight mb-2">
                 <span class="text-brand-cyan">Norm</span><span class="text-gradient">GAMLSS</span>
             </div>
             <div class="text-[13px] text-[#8a8a9e] font-light mb-6">Normative modeling with GAMLSS · MHM-Lab</div>
-            
             <div class="flex flex-wrap justify-center gap-6 text-[13px] text-[#8a8a9e] mb-6">
-                <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" class="hover:text-white transition-colors">GitHub</a>
+                <a href="https://github.com/nsharma3150/GAMLSS-python" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
                 <a href="#features" class="hover:text-white transition-colors">Features</a>
                 <a href="#modalities" class="hover:text-white transition-colors">Modalities</a>
                 <a href="#papers" class="hover:text-white transition-colors">Papers</a>
-                <a href="https://mhm-lab.github.io/" target="_blank" class="hover:text-white transition-colors">MHM-Lab</a>
-                <a href="https://www.gamlss.com" target="_blank" class="hover:text-white transition-colors">GAMLSS R</a>
+                <a href="https://mhm-lab.github.io/" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">MHM-Lab</a>
+                <a href="https://www.gamlss.com" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GAMLSS R</a>
             </div>
-            
             <div class="font-mono text-[11px] text-[#58587a] opacity-50">© 2026 MHM-Lab · MIT License</div>
         </div>
     </footer>
 
-    <!-- Scripts -->
+    <!-- ══════════════════════════════════════════════════
+         SCRIPTS
+    ══════════════════════════════════════════════════ -->
     <script>
-        // 1. Navigation Scroll Effect
-        const nav = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                nav.classList.add('shadow-lg', 'border-white/10');
-                nav.classList.remove('border-transparent');
-            } else {
-                nav.classList.remove('shadow-lg', 'border-white/10');
-                nav.classList.add('border-transparent');
+    /* ─── 1. Scroll Progress + Navbar + Parallax ─── */
+    const nav = document.getElementById('navbar');
+    const heroBrain = document.getElementById('hero-brain');
+    const progressBar = document.getElementById('scroll-progress');
+
+    function onScroll() {
+        const scrollY = window.scrollY;
+        const docH = document.documentElement.scrollHeight - window.innerHeight;
+
+        // Progress bar
+        progressBar.style.width = ((scrollY / docH) * 100).toFixed(2) + '%';
+
+        // Navbar
+        if (scrollY > 50) {
+            nav.classList.add('shadow-lg', 'border-white/10');
+            nav.classList.remove('border-transparent');
+        } else {
+            nav.classList.remove('shadow-lg', 'border-white/10');
+            nav.classList.add('border-transparent');
+        }
+
+        // Parallax brain
+        if (heroBrain) {
+            heroBrain.style.transform = `translateY(${scrollY * 0.28}px) scale(1.1)`;
+        }
+    }
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+
+    /* ─── 2. Cursor Glow ─── */
+    const cursorGlow = document.getElementById('cursor-glow');
+    document.addEventListener('mousemove', e => {
+        cursorGlow.style.left = e.clientX + 'px';
+        cursorGlow.style.top  = e.clientY + 'px';
+    }, { passive: true });
+
+    /* ─── 3. Mobile Menu ─── */
+    const hamburger = document.getElementById('hamburger');
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileClose = document.getElementById('mobile-close');
+    hamburger.addEventListener('click', () => mobileOverlay.classList.add('open'));
+    mobileClose.addEventListener('click', () => mobileOverlay.classList.remove('open'));
+    window.closeMobileMenu = () => mobileOverlay.classList.remove('open');
+    mobileOverlay.addEventListener('click', e => { if (e.target === mobileOverlay) mobileOverlay.classList.remove('open'); });
+
+    /* ─── 4. Reveal Animations (scroll-triggered) ─── */
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                revealObserver.unobserve(entry.target);
             }
         });
+    }, { threshold: 0.1, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 
-        // 2. Reveal Animations via Intersection Observer
-        const revealObserver = new IntersectionObserver((entries) => {
+    const scanObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('active');
+                scanObserver.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.2 });
+    document.querySelectorAll('.reveal-scan').forEach(el => scanObserver.observe(el));
+
+    /* ─── 5. Count-up Stats ─── */
+    const countObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (!entry.isIntersecting) return;
+            const el = entry.target;
+            const target = parseInt(el.dataset.target, 10);
+            const suffix = el.dataset.suffix || '';
+            const duration = 1400;
+            const easeOut = t => 1 - Math.pow(1 - t, 3);
+            let startTime = null;
+            function step(ts) {
+                if (!startTime) startTime = ts;
+                const p = Math.min((ts - startTime) / duration, 1);
+                el.textContent = Math.floor(easeOut(p) * target) + suffix;
+                if (p < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+            countObserver.unobserve(el);
+        });
+    }, { threshold: 0.5 });
+    document.querySelectorAll('.count-up').forEach(el => countObserver.observe(el));
+
+    /* ─── 6. Network Background Canvas ─── */
+    (function initNetwork() {
+        const canvas = document.getElementById('network-canvas');
+        const ctx = canvas.getContext('2d');
+        let W, H;
+        function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize); resize();
+        class Particle {
+            constructor() { this.reset(); }
+            reset() {
+                this.x = Math.random() * W; this.y = Math.random() * H;
+                this.vx = (Math.random() - 0.5) * 0.45;
+                this.vy = (Math.random() - 0.5) * 0.45;
+                this.r = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0 || this.x > W) this.vx *= -1;
+                if (this.y < 0 || this.y > H) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0,191,165,0.5)'; ctx.fill();
+            }
+        }
+        const particles = Array.from({ length: 70 }, () => new Particle());
+        function animate() {
+            ctx.clearRect(0, 0, W, H);
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update(); particles[i].draw();
+                for (let j = i + 1; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const d = Math.sqrt(dx * dx + dy * dy);
+                    if (d < 130) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(0,191,165,${0.12 * (1 - d / 130)})`;
+                        ctx.lineWidth = 1;
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+    })();
+
+    /* ─── 7. Ghost Distribution Curves (Signature Element) ─── */
+    (function initGhostCurves() {
+        const canvas = document.getElementById('ghost-curves');
+        const ctx = canvas.getContext('2d');
+        const hero = canvas.closest('section');
+
+        function resize() {
+            canvas.width = window.innerWidth;
+            canvas.height = hero ? hero.offsetHeight : window.innerHeight;
+        }
+        window.addEventListener('resize', resize); resize();
+
+        // 4 slowly rising Gaussian bell curves, one per GAMLSS parameter
+        const curves = [
+            { mu: 0.22, sigma: 0.11, color: '#00bfa5', alpha: 0.09, yFrac: 0.78, speed: 0.000055 },
+            { mu: 0.50, sigma: 0.17, color: '#2979ff', alpha: 0.07, yFrac: 1.05, speed: 0.000040 },
+            { mu: 0.73, sigma: 0.10, color: '#43a047', alpha: 0.07, yFrac: 0.92, speed: 0.000065 },
+            { mu: 0.60, sigma: 0.21, color: '#fb8c00', alpha: 0.055, yFrac: 1.25, speed: 0.000048 },
+        ];
+
+        function gaussian(x, mu, sigma) {
+            return Math.exp(-0.5 * ((x - mu) / sigma) ** 2);
+        }
+
+        let last = 0;
+        function draw(ts) {
+            const dt = ts - last; last = ts;
+            const W = canvas.width, H = canvas.height;
+            ctx.clearRect(0, 0, W, H);
+
+            curves.forEach(c => {
+                c.yFrac -= c.speed * dt;
+                if (c.yFrac < -0.5) c.yFrac = 1.6;
+
+                const baseY = H * c.yFrac;
+                const amp   = H * 0.30;
+
+                ctx.beginPath();
+                ctx.strokeStyle = c.color;
+                ctx.globalAlpha = c.alpha;
+                ctx.lineWidth = 1.8;
+
+                for (let px = 0; px <= W; px += 3) {
+                    const x = px / W;
+                    const y = baseY - gaussian(x, c.mu, c.sigma) * amp;
+                    px === 0 ? ctx.moveTo(px, y) : ctx.lineTo(px, y);
+                }
+                ctx.stroke();
+            });
+
+            ctx.globalAlpha = 1;
+            requestAnimationFrame(draw);
+        }
+        requestAnimationFrame(draw);
+    })();
+
+    /* ─── 8. Mini Distribution Canvas (Bento Card) ─── */
+    (function initMiniDist() {
+        const canvas = document.getElementById('mini-dist-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        function setup() {
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            const w = Math.max(rect.width, 100);
+            const h = 68;
+            canvas.width  = w * dpr;
+            canvas.height = h * dpr;
+            canvas.style.width  = w + 'px';
+            canvas.style.height = h + 'px';
+            ctx.scale(dpr, dpr);
+        }
+        setup();
+        window.addEventListener('resize', () => { ctx.setTransform(1,0,0,1,0,0); setup(); });
+
+        // 5 centile curves representing the full GAMLSS distribution output
+        const centiles = [
+            { p: 0.03, color: '#2979ff', alpha: 0.38, lw: 1.2 },
+            { p: 0.10, color: '#00bfa5', alpha: 0.50, lw: 1.4 },
+            { p: 0.50, color: '#eaeaf2', alpha: 0.85, lw: 2.2 },
+            { p: 0.90, color: '#00bfa5', alpha: 0.50, lw: 1.4 },
+            { p: 0.97, color: '#2979ff', alpha: 0.38, lw: 1.2 },
+        ];
+
+        // Simple age-varying mean and sigma for realistic curves
+        function muAge(a)    { return 2.78 + 0.13 * Math.exp(-0.5 * ((a - 0.3) / 0.25) ** 2) - 0.06 * a; }
+        function sigAge(a)   { return 0.055 + 0.015 * a; }
+        function quantile(p) { /* probit approximation */
+            const a = [2.515517, 0.802853, 0.010328];
+            const b = [1.432788, 0.189269, 0.001308];
+            const t = Math.sqrt(-2 * Math.log(p < 0.5 ? p : 1 - p));
+            const z = t - (a[0] + a[1]*t + a[2]*t*t) / (1 + b[0]*t + b[1]*t*t + b[2]*t*t*t);
+            return p < 0.5 ? -z : z;
+        }
+
+        let phase = 0;
+        function draw() {
+            const dpr = window.devicePixelRatio || 1;
+            const W = canvas.width / dpr;
+            const H = canvas.height / dpr;
+            ctx.clearRect(0, 0, W, H);
+            phase += 0.006;
+
+            const N = 80;
+            centiles.forEach((c, ci) => {
+                const breathe = 1 + 0.022 * Math.sin(phase + ci * 0.9);
+                const q = quantile(c.p);
+
+                ctx.beginPath();
+                ctx.strokeStyle = c.color;
+                ctx.globalAlpha = c.alpha;
+                ctx.lineWidth = c.lw;
+
+                for (let i = 0; i <= N; i++) {
+                    const a = i / N;
+                    const mu  = muAge(a);
+                    const sig = sigAge(a) * breathe;
+                    const val = mu + sig * q;
+                    // Map val (range ~1.9–3.5) to canvas Y
+                    const y = H - ((val - 1.85) / 1.7) * H * 0.82 - H * 0.06;
+                    const x = (a * W * 0.96) + W * 0.02;
+                    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+                }
+                ctx.stroke();
+            });
+
+            // Shade 10th–90th band subtly
+            ctx.globalAlpha = 0.06;
+            ctx.fillStyle = '#00bfa5';
+            ctx.beginPath();
+            for (let i = 0; i <= N; i++) {
+                const a = i / N;
+                const y = H - ((muAge(a) + sigAge(a) * quantile(0.90) - 1.85) / 1.7) * H * 0.82 - H * 0.06;
+                const x = (a * W * 0.96) + W * 0.02;
+                i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+            }
+            for (let i = N; i >= 0; i--) {
+                const a = i / N;
+                const y = H - ((muAge(a) + sigAge(a) * quantile(0.10) - 1.85) / 1.7) * H * 0.82 - H * 0.06;
+                const x = (a * W * 0.96) + W * 0.02;
+                ctx.lineTo(x, y);
+            }
+            ctx.closePath(); ctx.fill();
+            ctx.globalAlpha = 1;
+
+            requestAnimationFrame(draw);
+        }
+        draw();
+    })();
+
+    /* ─── 9. Terminal Typing Effect ─── */
+    (function initCodeTyping() {
+        const codeLines = [
+            [{ c:'token-comment', t:'# 1. Define & fit the normative model' }],
+            [{ c:'token-keyword', t:'from '}, {c:'token-variable', t:'normgamlss '}, {c:'token-keyword', t:'import '}, {c:'token-function', t:'Gamlss'}],
+            [{t:''}],
+            [{c:'token-variable', t:'model '}, {c:'token-operator', t:'= '}, {c:'token-function', t:'Gamlss'}, {c:'token-operator', t:'('}, {c:'token-string', t:'"brain_norm"'}, {c:'token-operator', t:', ['}, {c:'token-string', t:'"age"'}, {c:'token-operator', t:', '}, {c:'token-string', t:'"sex"'}, {c:'token-operator', t:'], '}, {c:'token-string', t:'"thickness"'}, {c:'token-operator', t:')'}],
+            [{t:''}],
+            [{c:'token-variable', t:'model'}, {c:'token-operator', t:'.'}, {c:'token-function', t:'fit'}, {c:'token-operator', t:'(r_code='}, {c:'token-string', t:'"""'}],
+            [{c:'token-string', t:'    model <- gamlss('}],
+            [{c:'token-string', t:'        y ~ pb(age) + as.factor(sex),'}],
+            [{c:'token-string', t:'        sigma.formula = ~ pb(age),'}],
+            [{c:'token-string', t:'        family = SHASH()'}],
+            [{c:'token-string', t:'    )'}],
+            [{c:'token-string', t:'"""'}, {c:'token-operator', t:', data='}, {c:'token-variable', t:'train_df'}, {c:'token-operator', t:')'}],
+            [{t:''}],
+            [{c:'token-comment', t:'# 2. Calculate outliers & plot centiles'}],
+            [{c:'token-variable', t:'z_scores '}, {c:'token-operator', t:'= '}, {c:'token-variable', t:'model'}, {c:'token-operator', t:'.'}, {c:'token-function', t:'z_score'}, {c:'token-operator', t:'(test_df, train_df)'}],
+            [{c:'token-variable', t:'model'}, {c:'token-operator', t:'.'}, {c:'token-function', t:'plot_centiles'}, {c:'token-operator', t:'(test_df, train_df)'}],
+            [{t:''}],
+            [{c:'token-comment', t:'# 3. Transfer to unseen sites instantly'}],
+            [{c:'token-keyword', t:'from '}, {c:'token-variable', t:'normgamlss '}, {c:'token-keyword', t:'import '}, {c:'token-function', t:'site_transfer'}],
+            [{t:''}],
+            [{c:'token-variable', t:'results '}, {c:'token-operator', t:'= '}, {c:'token-function', t:'site_transfer'}, {c:'token-operator', t:'('}],
+            [{c:'token-variable', t:'    model_path'}, {c:'token-operator', t:'='}, {c:'token-string', t:'"brain_norm.rds"'}, {c:'token-operator', t:','}],
+            [{c:'token-variable', t:'    new_site_data'}, {c:'token-operator', t:'='}, {c:'token-variable', t:'df_site_b'}, {c:'token-operator', t:','}],
+            [{c:'token-variable', t:'    sample_size'}, {c:'token-operator', t:'='}, {c:'token-number', t:'0.10  '}, {c:'token-comment', t:'# 10% calibration'}],
+            [{c:'token-operator', t:')'}],
+        ];
+
+        const container = document.getElementById('code-container');
+        let l = 0, c = 0, i = 0, isTyping = false;
+        let lineEl = null, chunkEl = null, timeoutId = null;
+
+        function typeChar() {
+            if (!isTyping) return;
+            if (l >= codeLines.length) { isTyping = false; return; }
+
+            if (c === 0 && i === 0) {
+                lineEl = document.createElement('div');
+                lineEl.className = 'whitespace-pre relative';
+                lineEl.innerHTML = `<span class="text-[#3d3d60] mr-4 select-none inline-block w-4 text-right">${l + 1}</span>`;
+                container.appendChild(lineEl);
+                const cur = document.createElement('span');
+                cur.className = 'code-cursor'; lineEl.appendChild(cur);
+            }
+
+            const lineData = codeLines[l];
+            if (!lineData.length || (lineData.length === 1 && lineData[0].t === '')) {
+                const oc = lineEl.querySelector('.code-cursor'); if (oc) oc.remove();
+                l++; c = 0; i = 0;
+                container.scrollTop = container.scrollHeight;
+                timeoutId = setTimeout(typeChar, 150); return;
+            }
+
+            if (i === 0) {
+                chunkEl = document.createElement('span');
+                if (lineData[c].c) chunkEl.className = lineData[c].c;
+                lineEl.insertBefore(chunkEl, lineEl.lastChild);
+            }
+            chunkEl.textContent += lineData[c].t[i]; i++;
+            container.scrollTop = container.scrollHeight;
+
+            if (i >= lineData[c].t.length) {
+                c++; i = 0;
+                if (c >= lineData.length) {
+                    const oc = lineEl.querySelector('.code-cursor'); if (oc) oc.remove();
+                    l++; c = 0;
+                    timeoutId = setTimeout(typeChar, 120); return;
+                }
+            }
+            timeoutId = setTimeout(typeChar, Math.random() * 20 + 14);
+        }
+
+        const codeObs = new IntersectionObserver(entries => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('active');
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.1, rootMargin: "0px 0px -30px 0px" });
-        
-        document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
-
-        // 3. Network Background Canvas
-        (function initNetworkBg() {
-            const canvas = document.getElementById('network-canvas');
-            const ctx = canvas.getContext('2d');
-            let width, height;
-            let particles = [];
-            
-            function resize() {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            }
-            window.addEventListener('resize', resize);
-            resize();
-
-            class Particle {
-                constructor() {
-                    this.x = Math.random() * width;
-                    this.y = Math.random() * height;
-                    this.vx = (Math.random() - 0.5) * 0.5;
-                    this.vy = (Math.random() - 0.5) * 0.5;
-                    this.radius = Math.random() * 1.5 + 0.5;
-                }
-                update() {
-                    this.x += this.vx;
-                    this.y += this.vy;
-                    if (this.x < 0 || this.x > width) this.vx *= -1;
-                    if (this.y < 0 || this.y > height) this.vy *= -1;
-                }
-                draw() {
-                    ctx.beginPath();
-                    ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(0, 191, 165, 0.5)';
-                    ctx.fill();
-                }
-            }
-
-            for (let i = 0; i < 70; i++) particles.push(new Particle());
-
-            function animate() {
-                ctx.clearRect(0, 0, width, height);
-                
-                for (let i = 0; i < particles.length; i++) {
-                    particles[i].update();
-                    particles[i].draw();
-                    
-                    for (let j = i; j < particles.length; j++) {
-                        const dx = particles[i].x - particles[j].x;
-                        const dy = particles[i].y - particles[j].y;
-                        const dist = Math.sqrt(dx * dx + dy * dy);
-                        
-                        if (dist < 130) {
-                            ctx.beginPath();
-                            ctx.strokeStyle = `rgba(0, 191, 165, ${0.12 * (1 - dist/130)})`;
-                            ctx.lineWidth = 1;
-                            ctx.moveTo(particles[i].x, particles[i].y);
-                            ctx.lineTo(particles[j].x, particles[j].y);
-                            ctx.stroke();
-                        }
-                    }
-                }
-                requestAnimationFrame(animate);
-            }
-            animate();
-        })();
-
-        // 4. Terminal Code Character-by-Character Typing Effect
-        (function initCodeTyping() {
-            const codeLines = [
-                [ { c: 'token-comment', t: '# 1. Define & fit the normative model' } ],
-                [ { c: 'token-keyword', t: 'from ' }, { c: 'token-variable', t: 'normgamlss ' }, { c: 'token-keyword', t: 'import ' }, { c: 'token-function', t: 'Gamlss' } ],
-                [ { t: '' } ],
-                [ { c: 'token-variable', t: 'model ' }, { c: 'token-operator', t: '= ' }, { c: 'token-function', t: 'Gamlss' }, { c: 'token-operator', t: '(' }, { c: 'token-string', t: '"brain_norm"' }, { c: 'token-operator', t: ', [' }, { c: 'token-string', t: '"age"' }, { c: 'token-operator', t: ', ' }, { c: 'token-string', t: '"sex"' }, { c: 'token-operator', t: '], ' }, { c: 'token-string', t: '"thickness"' }, { c: 'token-operator', t: ')' } ],
-                [ { t: '' } ],
-                [ { c: 'token-variable', t: 'model' }, { c: 'token-operator', t: '.' }, { c: 'token-function', t: 'fit' }, { c: 'token-operator', t: '(r_code=' }, { c: 'token-string', t: '"""' } ],
-                [ { c: 'token-string', t: '    model <- gamlss(' } ],
-                [ { c: 'token-string', t: '        y ~ pb(age) + as.factor(sex),' } ],
-                [ { c: 'token-string', t: '        sigma.formula = ~ pb(age),' } ],
-                [ { c: 'token-string', t: '        family = SHASH()' } ],
-                [ { c: 'token-string', t: '    )' } ],
-                [ { c: 'token-string', t: '"""' }, { c: 'token-operator', t: ', data=' }, { c: 'token-variable', t: 'train_df' }, { c: 'token-operator', t: ')' } ],
-                [ { t: '' } ],
-                [ { c: 'token-comment', t: '# 2. Calculate outliers & plot centiles' } ],
-                [ { c: 'token-variable', t: 'z_scores ' }, { c: 'token-operator', t: '= ' }, { c: 'token-variable', t: 'model' }, { c: 'token-operator', t: '.' }, { c: 'token-function', t: 'z_score' }, { c: 'token-operator', t: '(test_df, train_df)' } ],
-                [ { c: 'token-variable', t: 'model' }, { c: 'token-operator', t: '.' }, { c: 'token-function', t: 'plot_centiles' }, { c: 'token-operator', t: '(test_df, train_df)' } ],
-                [ { t: '' } ],
-                [ { c: 'token-comment', t: '# 3. Transfer to unseen sites instantly' } ],
-                [ { c: 'token-keyword', t: 'from ' }, { c: 'token-variable', t: 'normgamlss ' }, { c: 'token-keyword', t: 'import ' }, { c: 'token-function', t: 'site_transfer' } ],
-                [ { t: '' } ],
-                [ { c: 'token-variable', t: 'results ' }, { c: 'token-operator', t: '= ' }, { c: 'token-function', t: 'site_transfer' }, { c: 'token-operator', t: '(' } ],
-                [ { c: 'token-variable', t: '    model_path' }, { c: 'token-operator', t: '=' }, { c: 'token-string', t: '"brain_norm.rds"' }, { c: 'token-operator', t: ',' } ],
-                [ { c: 'token-variable', t: '    new_site_data' }, { c: 'token-operator', t: '=' }, { c: 'token-variable', t: 'df_site_b' }, { c: 'token-operator', t: ',' } ],
-                [ { c: 'token-variable', t: '    sample_size' }, { c: 'token-operator', t: '=' }, { c: 'token-number', t: '0.10  ' }, { c: 'token-comment', t: '# 10% calibration' } ],
-                [ { c: 'token-operator', t: ')' } ]
-            ];
-
-            const container = document.getElementById('code-container');
-            let l = 0, c = 0, i = 0;
-            let isTyping = false;
-            let lineEl = null;
-            let chunkEl = null;
-            let timeoutId = null;
-
-            function typeChar() {
-                if (!isTyping) return;
-                
-                if (l >= codeLines.length) {
-                    isTyping = false;
-                    return;
-                }
-
-                if (c === 0 && i === 0) {
-                    lineEl = document.createElement('div');
-                    lineEl.className = 'whitespace-pre relative';
-                    lineEl.innerHTML = `<span class="text-[#3d3d60] mr-4 select-none inline-block w-4 text-right">${l + 1}</span>`;
-                    container.appendChild(lineEl);
-                    
-                    const cursor = document.createElement('span');
-                    cursor.className = 'code-cursor';
-                    lineEl.appendChild(cursor);
-                }
-
-                const lineData = codeLines[l];
-                
-                if (lineData.length === 0 || (lineData.length === 1 && lineData[0].t === '')) {
-                    const oldCur = lineEl.querySelector('.code-cursor');
-                    if(oldCur) oldCur.remove();
-                    l++; c = 0; i = 0;
-                    container.scrollTop = container.scrollHeight;
-                    timeoutId = setTimeout(typeChar, 150);
-                    return;
-                }
-
-                if (i === 0) {
-                    chunkEl = document.createElement('span');
-                    if (lineData[c].c) chunkEl.className = lineData[c].c;
-                    lineEl.insertBefore(chunkEl, lineEl.lastChild);
-                }
-
-                chunkEl.textContent += lineData[c].t[i];
-                i++;
-                container.scrollTop = container.scrollHeight;
-
-                if (i >= lineData[c].t.length) {
-                    c++; i = 0;
-                    if (c >= lineData.length) {
-                        const oldCur = lineEl.querySelector('.code-cursor');
-                        if (oldCur) oldCur.remove();
-                        l++; c = 0;
-                        timeoutId = setTimeout(typeChar, 120);
-                        return;
-                    }
-                }
-
-                timeoutId = setTimeout(typeChar, Math.random() * 20 + 15);
-            }
-
-            const codeObserver = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (!isTyping) {
-                            clearTimeout(timeoutId);
-                            container.innerHTML = ''; 
-                            l = 0; c = 0; i = 0;
-                            isTyping = true;
-                            setTimeout(typeChar, 400); 
-                        }
-                    } else {
-                        isTyping = false;
+                    if (!isTyping) {
                         clearTimeout(timeoutId);
+                        container.innerHTML = '';
+                        l = 0; c = 0; i = 0; isTyping = true;
+                        setTimeout(typeChar, 400);
                     }
-                });
-            }, { threshold: 0.2 });
-            
-            codeObserver.observe(document.getElementById('demo'));
-        })();
-
-        // 5. Canvas Data Visualization (Centiles & Z-Scores)
-        const CENTS=[3,10,25,50,75,90,97];
-        const ZMAP={3:-1.88,10:-1.28,25:-0.674,50:0,75:0.674,90:1.28,97:1.88};
-        const COLS=['#2979ff','#00bfa5','#43a047','#eaeaf2','#43a047','#00bfa5','#2979ff'];
-        const ALPHAS=[0.5, 0.62, 0.72, 1.0, 0.72, 0.62, 0.5];
-        
-        function mu(a){return(2.78+0.13*Math.exp(-0.5*((a-12)/16)**2))-0.004*Math.max(a-20,0)}
-        function sig(a){return 0.13+0.0006*a}
-        function cv2(a,p){return mu(a)+sig(a)*ZMAP[p]}
-        
-        const rng=()=>{let u,v,s;do{u=Math.random()*2-1;v=Math.random()*2-1;s=u*u+v*v}while(s>=1||s===0);return u*Math.sqrt(-2*Math.log(s)/s)};
-        
-        // Generate dataset once
-        const scat=[];
-        const A0=5, A1=90, V0=1.9, V1=3.5;
-        for(let i=0;i<300;i++){
-            const age=A0+Math.random()*(A1-A0);
-            const v=mu(age)+sig(age)*rng()*.88;
-            if(v>=V0&&v<=V1) scat.push({age,v,d:false});
-        }
-        const dis=[{age:28,v:2.1,l:'MDD'},{age:35,v:2.03,l:'MDD'},{age:42,v:1.98,l:'SCZ'},{age:55,v:1.93,l:'SCZ'},{age:63,v:1.95,l:'AD'},{age:70,v:1.91,l:'AD'},{age:22,v:2.14,l:'SCZ'},{age:48,v:2.0,l:'MDD'}];
-        dis.forEach(d=>scat.push({...d,v:Math.max(d.v,V0+.02),d:true}));
-        const ages=[];for(let a=A0;a<=A1;a+=0.5)ages.push(a);
-
-        let currentTab = 'cent';
-        let animProgress = { cent: 0, zscore: 0 };
-        let chartsInitialized = { cent: false, zscore: false };
-
-        function drawCentileChart(canvas, progress) {
-            const cx = canvas.getContext('2d');
-            const W = canvas.width / (window.devicePixelRatio || 1);
-            const H = canvas.height / (window.devicePixelRatio || 1);
-            const P = { t: 25, r: 40, b: 40, l: 45 };
-            const cW = W - P.l - P.r;
-            const cH = H - P.t - P.b;
-
-            const ax = (a) => P.l + (a - A0) / (A1 - A0) * cW;
-            const ay = (v) => P.t + cH - (v - V0) / (V1 - V0) * cH;
-
-            cx.clearRect(0, 0, W, H);
-            
-            // Grid lines
-            cx.strokeStyle = 'rgba(255,255,255,0.06)';
-            cx.lineWidth = 1;
-            [2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4].forEach(v => { cx.beginPath(); cx.moveTo(P.l, ay(v)); cx.lineTo(P.l+cW, ay(v)); cx.stroke(); });
-            [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => { cx.beginPath(); cx.moveTo(ax(a), P.t); cx.lineTo(ax(a), P.t+cH); cx.stroke(); });
-
-            const mi = Math.floor(progress * ages.length);
-            
-            // Draw bands with glowing gradients
-            if(mi >= 2) {
-                [[0,6,0.04], [1,5,0.07], [2,4,0.1]].forEach(([lo,hi,alpha]) => {
-                    cx.beginPath();
-                    ages.slice(0, mi).forEach((a,i) => {
-                        const y = ay(cv2(a, CENTS[hi]));
-                        i === 0 ? cx.moveTo(ax(a), y) : cx.lineTo(ax(a), y);
-                    });
-                    for(let i = mi-1; i >= 0; i--) cx.lineTo(ax(ages[i]), ay(cv2(ages[i], CENTS[lo])));
-                    cx.closePath();
-                    
-                    const grad = cx.createLinearGradient(0, P.t, 0, P.t+cH);
-                    grad.addColorStop(0, `rgba(41, 121, 255, ${alpha})`);
-                    grad.addColorStop(0.5, `rgba(0, 191, 165, ${alpha})`);
-                    grad.addColorStop(1, `rgba(67, 160, 71, ${alpha})`);
-                    
-                    cx.fillStyle = grad;
-                    cx.fill();
-                });
-            }
-
-            // Draw Lines
-            CENTS.forEach((cp,ci) => {
-                cx.beginPath();
-                cx.strokeStyle = COLS[ci];
-                cx.globalAlpha = ALPHAS[ci];
-                cx.lineWidth = cp === 50 ? 2.5 : 1.5;
-                ages.slice(0, mi).forEach((a,i) => {
-                    const y = ay(cv2(a, cp));
-                    i === 0 ? cx.moveTo(ax(a), y) : cx.lineTo(ax(a), y);
-                });
-                if (cp === 50) {
-                    cx.shadowColor = '#eaeaf2';
-                    cx.shadowBlur = 8;
-                }
-                cx.stroke();
-                cx.shadowBlur = 0;
-                cx.globalAlpha = 1;
-                
-                // Labels
-                if(progress > 0.92 && mi > 0) {
-                    const la = ages[mi-1], lv = cv2(la, cp);
-                    if(lv >= V0 && lv <= V1) {
-                        cx.fillStyle = COLS[ci];
-                        cx.globalAlpha = ALPHAS[ci] + 0.2;
-                        cx.font = `600 11px 'JetBrains Mono', monospace`;
-                        cx.textAlign = 'left';
-                        cx.fillText(`${cp}th`, ax(la)+6, ay(lv)+3);
-                        cx.globalAlpha = 1;
-                    }
-                }
+                } else { isTyping = false; clearTimeout(timeoutId); }
             });
-
-            // Scatter
-            const sm = Math.floor(progress * scat.filter(s=>!s.d).length);
-            scat.filter(s=>!s.d).slice(0, sm).forEach(pt => {
-                const out = Math.abs((pt.v - mu(pt.age)) / sig(pt.age)) > 2;
-                cx.beginPath();
-                cx.arc(ax(pt.age), ay(pt.v), out ? 3.5 : 2.5, 0, Math.PI*2);
-                if (out) {
-                    cx.shadowColor = 'rgba(251,140,0,0.9)';
-                    cx.shadowBlur = 8;
-                }
-                cx.fillStyle = out ? 'rgba(251,140,0,0.9)' : 'rgba(0,191,165,0.4)';
-                cx.fill();
-                cx.shadowBlur = 0;
-            });
-
-            // Clinical Cohort
-            if(progress > 0.75) {
-                const dp = Math.min(1, (progress - 0.75) / 0.25);
-                const dm = Math.floor(dp * dis.length);
-                dis.slice(0, dm).forEach(pt => {
-                    const px = ax(pt.age), py = ay(Math.max(pt.v, V0+0.02));
-                    cx.save();
-                    cx.shadowColor = '#ff4444';
-                    cx.shadowBlur = 14;
-                    cx.beginPath();
-                    const s = 6;
-                    cx.moveTo(px, py-s); cx.lineTo(px+s*0.8, py); cx.lineTo(px, py+s); cx.lineTo(px-s*0.8, py);
-                    cx.closePath();
-                    cx.fillStyle = 'rgba(255, 60, 60, 0.95)';
-                    cx.fill();
-                    cx.font = `600 10px 'JetBrains Mono', monospace`;
-                    cx.fillStyle = '#ff7777';
-                    cx.shadowBlur = 0;
-                    cx.textAlign = 'center';
-                    cx.fillText(pt.l, px, py-s-5);
-                    cx.restore();
-                });
-            }
-
-            // Axes
-            cx.strokeStyle = 'rgba(255,255,255,0.15)';
-            cx.lineWidth = 1.5;
-            cx.beginPath(); cx.moveTo(P.l, P.t); cx.lineTo(P.l, P.t+cH); cx.stroke();
-            cx.beginPath(); cx.moveTo(P.l, P.t+cH); cx.lineTo(P.l+cW, P.t+cH); cx.stroke();
-
-            // Ticks
-            cx.fillStyle = 'rgba(138,138,158,0.8)';
-            cx.font = `11px "IBM Plex Sans", sans-serif`;
-            cx.textAlign = 'center';
-            [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => cx.fillText(a, ax(a), P.t+cH+16));
-            cx.textAlign = 'right';
-            [2.0, 2.2, 2.4, 2.6, 2.8, 3.0, 3.2, 3.4].forEach(v => cx.fillText(v.toFixed(1), P.l-8, ay(v)+4));
-            
-            // Labels
-            cx.save(); cx.translate(14, P.t+cH/2); cx.rotate(-Math.PI/2);
-            cx.fillStyle = 'rgba(234,234,242,0.8)';
-            cx.textAlign = 'center'; cx.fillText('Thickness (mm)', 0, 0); cx.restore();
-            cx.fillStyle = 'rgba(234,234,242,0.8)';
-            cx.textAlign = 'center'; cx.fillText('Age (years)', P.l+cW/2, H-6);
-        }
-
-        function drawZScoreChart(canvas, progress) {
-            const cx = canvas.getContext('2d');
-            const W = canvas.width / (window.devicePixelRatio || 1);
-            const H = canvas.height / (window.devicePixelRatio || 1);
-            const P = { t: 25, r: 40, b: 40, l: 45 };
-            const cW = W - P.l - P.r;
-            const cH = H - P.t - P.b;
-
-            const Z0 = -4.2, Z1 = 4.2;
-            const ax = (a) => P.l + (a - A0) / (A1 - A0) * cW;
-            const ay = (z) => P.t + cH - (z - Z0) / (Z1 - Z0) * cH;
-
-            cx.clearRect(0, 0, W, H);
-
-            // Grid lines
-            cx.strokeStyle = 'rgba(255,255,255,0.06)';
-            cx.lineWidth = 1;
-            [-3, -2, -1, 0, 1, 2, 3].forEach(z => { cx.beginPath(); cx.moveTo(P.l, ay(z)); cx.lineTo(P.l+cW, ay(z)); cx.stroke(); });
-            [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => { cx.beginPath(); cx.moveTo(ax(a), P.t); cx.lineTo(ax(a), P.t+cH); cx.stroke(); });
-
-            // Safe zone
-            cx.fillStyle = 'rgba(0, 191, 165, 0.05)';
-            cx.fillRect(P.l, ay(2), cW, ay(-2) - ay(2));
-            
-            // Threshold lines
-            cx.strokeStyle = 'rgba(0, 191, 165, 0.25)';
-            cx.setLineDash([4, 4]);
-            cx.beginPath(); cx.moveTo(P.l, ay(2)); cx.lineTo(P.l+cW, ay(2)); cx.stroke();
-            cx.beginPath(); cx.moveTo(P.l, ay(-2)); cx.lineTo(P.l+cW, ay(-2)); cx.stroke();
-            cx.setLineDash([]);
-
-            // Center line
-            cx.strokeStyle = 'rgba(220,220,240,0.3)';
-            cx.lineWidth = 1.5;
-            cx.beginPath(); cx.moveTo(P.l, ay(0)); cx.lineTo(P.l+cW, ay(0)); cx.stroke();
-
-            const pts = scat.map(s => {
-                const z = s.d ? (-2.5 - Math.random()*0.8) : ((s.v - mu(s.age)) / sig(s.age));
-                return { ...s, z };
-            });
-
-            const mi = Math.floor(progress * pts.length);
-            
-            // Scatter
-            pts.slice(0, mi).forEach(pt => {
-                if (pt.d) {
-                    const px = ax(pt.age), py = ay(Math.max(pt.z, Z0+0.1));
-                    cx.save();
-                    cx.shadowColor = '#ff4444'; cx.shadowBlur = 12;
-                    cx.beginPath();
-                    const s = 6;
-                    cx.moveTo(px, py-s); cx.lineTo(px+s*0.8, py); cx.lineTo(px, py+s); cx.lineTo(px-s*0.8, py);
-                    cx.closePath();
-                    cx.fillStyle = 'rgba(255, 60, 60, 0.95)';
-                    cx.fill();
-                    cx.font = `600 10px 'JetBrains Mono', monospace`;
-                    cx.fillStyle = '#ff7777'; cx.shadowBlur = 0;
-                    cx.textAlign = 'center'; cx.fillText(pt.l, px, py-s-5);
-                    cx.restore();
-                } else {
-                    const out = Math.abs(pt.z) > 2;
-                    cx.beginPath();
-                    cx.arc(ax(pt.age), ay(pt.z), out ? 3.5 : 2.5, 0, Math.PI*2);
-                    if (out) {
-                        cx.shadowColor = 'rgba(251,140,0,0.9)';
-                        cx.shadowBlur = 8;
-                    }
-                    cx.fillStyle = out ? 'rgba(251,140,0,0.9)' : 'rgba(0,191,165,0.4)';
-                    cx.fill();
-                    cx.shadowBlur = 0;
-                }
-            });
-
-            // Axes
-            cx.strokeStyle = 'rgba(255,255,255,0.15)';
-            cx.lineWidth = 1.5;
-            cx.beginPath(); cx.moveTo(P.l, P.t); cx.lineTo(P.l, P.t+cH); cx.stroke();
-            cx.beginPath(); cx.moveTo(P.l, P.t+cH); cx.lineTo(P.l+cW, P.t+cH); cx.stroke();
-
-            // Ticks & Labels
-            cx.fillStyle = 'rgba(138,138,158,0.8)';
-            cx.font = `11px "IBM Plex Sans", sans-serif`;
-            cx.textAlign = 'center';
-            [10, 20, 30, 40, 50, 60, 70, 80, 90].forEach(a => cx.fillText(a, ax(a), P.t+cH+16));
-            cx.textAlign = 'right';
-            [-3, -2, -1, 0, 1, 2, 3].forEach(z => {
-                cx.fillStyle = z === 0 ? 'rgba(234,234,242,0.9)' : 'rgba(138,138,158,0.8)';
-                cx.fillText(z > 0 ? '+'+z : z, P.l-8, ay(z)+4);
-            });
-            
-            cx.fillStyle = 'rgba(0,191,165,0.7)';
-            cx.font = `11px "IBM Plex Mono", monospace`;
-            cx.textAlign = 'left';
-            cx.fillText('z=+2', P.l+6, ay(2)-4);
-            cx.fillText('z=−2', P.l+6, ay(-2)+14);
-
-            cx.save(); cx.translate(14, P.t+cH/2); cx.rotate(-Math.PI/2);
-            cx.fillStyle = 'rgba(234,234,242,0.8)'; cx.font = `11px "IBM Plex Sans", sans-serif`;
-            cx.textAlign = 'center'; cx.fillText('Z-score', 0, 0); cx.restore();
-            cx.fillStyle = 'rgba(234,234,242,0.8)';
-            cx.textAlign = 'center'; cx.fillText('Age (years)', P.l+cW/2, H-6);
-        }
-
-        function handleResizeAndDraw() {
-            const wrapper = document.getElementById('canvas-wrapper');
-            const dpr = window.devicePixelRatio || 1;
-            const rect = wrapper.getBoundingClientRect();
-            // Subtract padding strictly (1rem inset -> 32px total)
-            const w = rect.width - 32;
-            const h = rect.height - 32;
-
-            ['cc', 'czs'].forEach(id => {
-                const cv = document.getElementById(id);
-                // Set native resolution based on actual pixels and DPR
-                cv.width = w * dpr;
-                cv.height = h * dpr;
-                // Force CSS size to precisely map to internal bounds
-                cv.style.width = w + 'px';
-                cv.style.height = h + 'px';
-                const ctx = cv.getContext('2d');
-                ctx.scale(dpr, dpr);
-            });
-
-            // Draw based on the active tab
-            if (currentTab === 'cent') {
-                drawCentileChart(document.getElementById('cc'), animProgress.cent);
-            } else {
-                drawZScoreChart(document.getElementById('czs'), animProgress.zscore);
-            }
-        }
-
-        function animateChart(type) {
-            if (animProgress[type] < 1) {
-                animProgress[type] = Math.min(1, animProgress[type] + 0.015);
-                if (type === 'cent' && currentTab === 'cent') drawCentileChart(document.getElementById('cc'), animProgress[type]);
-                if (type === 'zscore' && currentTab === 'zscore') drawZScoreChart(document.getElementById('czs'), animProgress[type]);
-                requestAnimationFrame(() => animateChart(type));
-            }
-        }
-
-        window.switchTab = function(tab) {
-            currentTab = tab;
-            
-            const btnCent = document.getElementById('tab-cent');
-            const btnZ = document.getElementById('tab-zscore');
-
-            if(tab === 'cent') {
-                btnCent.className = 'flex-1 py-2 text-xs font-mono transition-all text-brand-cyan bg-brand-cyan/5 border-b-2 border-brand-cyan';
-                btnZ.className = 'flex-1 py-2 text-xs font-mono transition-all text-[#58587a] hover:text-white border-b-2 border-transparent';
-                
-                document.getElementById('cc').style.display = 'block';
-                document.getElementById('czs').style.display = 'none';
-                
-                document.getElementById('chart-title').textContent = 'Centile curves';
-            } else {
-                btnZ.className = 'flex-1 py-2 text-xs font-mono transition-all text-brand-cyan bg-brand-cyan/5 border-b-2 border-brand-cyan';
-                btnCent.className = 'flex-1 py-2 text-xs font-mono transition-all text-[#58587a] hover:text-white border-b-2 border-transparent';
-                
-                document.getElementById('czs').style.display = 'block';
-                document.getElementById('cc').style.display = 'none';
-                
-                document.getElementById('chart-title').textContent = 'Z-scores';
-            }
-
-            // Always reset animation when switching tabs!
-            animProgress[tab] = 0;
-            chartsInitialized[tab] = true;
-            handleResizeAndDraw();
-            animateChart(tab);
-        };
-
-        const canvasObserver = new IntersectionObserver(entries => {
-            if (entries[0].isIntersecting && !chartsInitialized.cent) {
-                chartsInitialized.cent = true;
-                handleResizeAndDraw();
-                animateChart('cent');
-            }
         }, { threshold: 0.2 });
-        
-        canvasObserver.observe(document.getElementById('canvas-wrapper'));
-        window.addEventListener('resize', handleResizeAndDraw);
+        codeObs.observe(document.getElementById('demo'));
+    })();
 
-        // 6. Countdown Timer
-        (function initCountdown() {
-            const targetDate = new Date('2026-07-15T00:00:00Z').getTime();
-            const pad = n => String(n).padStart(2, '0');
+    /* ─── 10. Canvas Data Visualization (Centiles & Z-Scores) ─── */
+    const CENTS = [3,10,25,50,75,90,97];
+    const ZMAP  = {3:-1.88, 10:-1.28, 25:-0.674, 50:0, 75:0.674, 90:1.28, 97:1.88};
+    const COLS  = ['#2979ff','#00bfa5','#43a047','#eaeaf2','#43a047','#00bfa5','#2979ff'];
+    const ALPHAS= [0.5, 0.62, 0.72, 1.0, 0.72, 0.62, 0.5];
+    function mu(a)  { return (2.78 + 0.13*Math.exp(-0.5*((a-12)/16)**2)) - 0.004*Math.max(a-20,0); }
+    function sig(a) { return 0.13 + 0.0006*a; }
+    function cv2(a,p) { return mu(a)+sig(a)*ZMAP[p]; }
+    const rng = () => { let u,v,s; do{u=Math.random()*2-1;v=Math.random()*2-1;s=u*u+v*v}while(s>=1||s===0); return u*Math.sqrt(-2*Math.log(s)/s); };
+    const scat=[]; const A0=5,A1=90,V0=1.9,V1=3.5;
+    for(let i=0;i<300;i++){const age=A0+Math.random()*(A1-A0);const v=mu(age)+sig(age)*rng()*.88;if(v>=V0&&v<=V1)scat.push({age,v,d:false});}
+    const dis=[{age:28,v:2.1,l:'MDD'},{age:35,v:2.03,l:'MDD'},{age:42,v:1.98,l:'SCZ'},{age:55,v:1.93,l:'SCZ'},{age:63,v:1.95,l:'AD'},{age:70,v:1.91,l:'AD'},{age:22,v:2.14,l:'SCZ'},{age:48,v:2.0,l:'MDD'}];
+    dis.forEach(d=>scat.push({...d,v:Math.max(d.v,V0+.02),d:true}));
+    const ages=[]; for(let a=A0;a<=A1;a+=0.5) ages.push(a);
+    let currentTab='cent'; let animProgress={cent:0,zscore:0}; let chartsInitialized={cent:false,zscore:false};
 
-            function tick() {
-                const now = new Date().getTime();
-                const dist = targetDate - now;
+    function drawCentileChart(canvas, progress) {
+        const cx=canvas.getContext('2d'); const dpr=window.devicePixelRatio||1;
+        const W=canvas.width/dpr,H=canvas.height/dpr;
+        const P={t:25,r:40,b:40,l:45}; const cW=W-P.l-P.r,cH=H-P.t-P.b;
+        const ax=a=>P.l+(a-A0)/(A1-A0)*cW; const ay=v=>P.t+cH-(v-V0)/(V1-V0)*cH;
+        cx.clearRect(0,0,W,H);
+        cx.strokeStyle='rgba(255,255,255,0.06)'; cx.lineWidth=1;
+        [2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4].forEach(v=>{cx.beginPath();cx.moveTo(P.l,ay(v));cx.lineTo(P.l+cW,ay(v));cx.stroke();});
+        [10,20,30,40,50,60,70,80,90].forEach(a=>{cx.beginPath();cx.moveTo(ax(a),P.t);cx.lineTo(ax(a),P.t+cH);cx.stroke();});
+        const mi=Math.floor(progress*ages.length);
+        if(mi>=2){[[0,6,0.04],[1,5,0.07],[2,4,0.1]].forEach(([lo,hi,alpha])=>{cx.beginPath();ages.slice(0,mi).forEach((a,i)=>{const y=ay(cv2(a,CENTS[hi]));i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y);});for(let i=mi-1;i>=0;i--)cx.lineTo(ax(ages[i]),ay(cv2(ages[i],CENTS[lo])));cx.closePath();const g=cx.createLinearGradient(0,P.t,0,P.t+cH);g.addColorStop(0,`rgba(41,121,255,${alpha})`);g.addColorStop(0.5,`rgba(0,191,165,${alpha})`);g.addColorStop(1,`rgba(67,160,71,${alpha})`);cx.fillStyle=g;cx.fill();});}
+        CENTS.forEach((cp,ci)=>{cx.beginPath();cx.strokeStyle=COLS[ci];cx.globalAlpha=ALPHAS[ci];cx.lineWidth=cp===50?2.5:1.5;ages.slice(0,mi).forEach((a,i)=>{const y=ay(cv2(a,cp));i===0?cx.moveTo(ax(a),y):cx.lineTo(ax(a),y);});if(cp===50){cx.shadowColor='#eaeaf2';cx.shadowBlur=8;}cx.stroke();cx.shadowBlur=0;cx.globalAlpha=1;if(progress>0.92&&mi>0){const la=ages[mi-1],lv=cv2(la,cp);if(lv>=V0&&lv<=V1){cx.fillStyle=COLS[ci];cx.globalAlpha=ALPHAS[ci]+0.2;cx.font="600 11px 'JetBrains Mono', monospace";cx.textAlign='left';cx.fillText(`${cp}th`,ax(la)+6,ay(lv)+3);cx.globalAlpha=1;}}});
+        const sm=Math.floor(progress*scat.filter(s=>!s.d).length);scat.filter(s=>!s.d).slice(0,sm).forEach(pt=>{const out=Math.abs((pt.v-mu(pt.age))/sig(pt.age))>2;cx.beginPath();cx.arc(ax(pt.age),ay(pt.v),out?3.5:2.5,0,Math.PI*2);if(out){cx.shadowColor='rgba(251,140,0,0.9)';cx.shadowBlur=8;}cx.fillStyle=out?'rgba(251,140,0,0.9)':'rgba(0,191,165,0.4)';cx.fill();cx.shadowBlur=0;});
+        if(progress>0.75){const dp=Math.min(1,(progress-0.75)/0.25);const dm=Math.floor(dp*dis.length);dis.slice(0,dm).forEach(pt=>{const px2=ax(pt.age),py=ay(Math.max(pt.v,V0+0.02));cx.save();cx.shadowColor='#ff4444';cx.shadowBlur=14;cx.beginPath();const s=6;cx.moveTo(px2,py-s);cx.lineTo(px2+s*0.8,py);cx.lineTo(px2,py+s);cx.lineTo(px2-s*0.8,py);cx.closePath();cx.fillStyle='rgba(255,60,60,0.95)';cx.fill();cx.font="600 10px 'JetBrains Mono', monospace";cx.fillStyle='#ff7777';cx.shadowBlur=0;cx.textAlign='center';cx.fillText(pt.l,px2,py-s-5);cx.restore();});}
+        cx.strokeStyle='rgba(255,255,255,0.15)';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(P.l,P.t);cx.lineTo(P.l,P.t+cH);cx.stroke();cx.beginPath();cx.moveTo(P.l,P.t+cH);cx.lineTo(P.l+cW,P.t+cH);cx.stroke();
+        cx.fillStyle='rgba(138,138,158,0.8)';cx.font='11px "IBM Plex Sans", sans-serif';cx.textAlign='center';[10,20,30,40,50,60,70,80,90].forEach(a=>cx.fillText(a,ax(a),P.t+cH+16));cx.textAlign='right';[2.0,2.2,2.4,2.6,2.8,3.0,3.2,3.4].forEach(v=>cx.fillText(v.toFixed(1),P.l-8,ay(v)+4));
+        cx.save();cx.translate(14,P.t+cH/2);cx.rotate(-Math.PI/2);cx.fillStyle='rgba(234,234,242,0.8)';cx.textAlign='center';cx.fillText('Thickness (mm)',0,0);cx.restore();cx.fillStyle='rgba(234,234,242,0.8)';cx.textAlign='center';cx.fillText('Age (years)',P.l+cW/2,H-6);
+    }
 
-                if (dist <= 0) {
-                    ['cdd', 'cdh', 'cdm', 'cds2'].forEach(id => {
-                        const el = document.getElementById(id);
-                        if(el) el.textContent = '00';
-                    });
-                    return;
-                }
+    function drawZScoreChart(canvas, progress) {
+        const cx=canvas.getContext('2d');const dpr=window.devicePixelRatio||1;const W=canvas.width/dpr,H=canvas.height/dpr;const P={t:25,r:40,b:40,l:45};const cW=W-P.l-P.r,cH=H-P.t-P.b;const Z0=-4.2,Z1=4.2;const ax=a=>P.l+(a-A0)/(A1-A0)*cW;const ay=z=>P.t+cH-(z-Z0)/(Z1-Z0)*cH;cx.clearRect(0,0,W,H);
+        cx.strokeStyle='rgba(255,255,255,0.06)';cx.lineWidth=1;[-3,-2,-1,0,1,2,3].forEach(z=>{cx.beginPath();cx.moveTo(P.l,ay(z));cx.lineTo(P.l+cW,ay(z));cx.stroke();});[10,20,30,40,50,60,70,80,90].forEach(a=>{cx.beginPath();cx.moveTo(ax(a),P.t);cx.lineTo(ax(a),P.t+cH);cx.stroke();});
+        cx.fillStyle='rgba(0,191,165,0.05)';cx.fillRect(P.l,ay(2),cW,ay(-2)-ay(2));cx.strokeStyle='rgba(0,191,165,0.25)';cx.setLineDash([4,4]);cx.beginPath();cx.moveTo(P.l,ay(2));cx.lineTo(P.l+cW,ay(2));cx.stroke();cx.beginPath();cx.moveTo(P.l,ay(-2));cx.lineTo(P.l+cW,ay(-2));cx.stroke();cx.setLineDash([]);cx.strokeStyle='rgba(220,220,240,0.3)';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(P.l,ay(0));cx.lineTo(P.l+cW,ay(0));cx.stroke();
+        const pts=scat.map(s=>{const z=s.d?(-2.5-Math.random()*0.8):((s.v-mu(s.age))/sig(s.age));return{...s,z};});const mi=Math.floor(progress*pts.length);
+        pts.slice(0,mi).forEach(pt=>{if(pt.d){const px2=ax(pt.age),py=ay(Math.max(pt.z,Z0+0.1));cx.save();cx.shadowColor='#ff4444';cx.shadowBlur=12;cx.beginPath();const s=6;cx.moveTo(px2,py-s);cx.lineTo(px2+s*0.8,py);cx.lineTo(px2,py+s);cx.lineTo(px2-s*0.8,py);cx.closePath();cx.fillStyle='rgba(255,60,60,0.95)';cx.fill();cx.font="600 10px 'JetBrains Mono', monospace";cx.fillStyle='#ff7777';cx.shadowBlur=0;cx.textAlign='center';cx.fillText(pt.l,px2,py-s-5);cx.restore();}else{const out=Math.abs(pt.z)>2;cx.beginPath();cx.arc(ax(pt.age),ay(pt.z),out?3.5:2.5,0,Math.PI*2);if(out){cx.shadowColor='rgba(251,140,0,0.9)';cx.shadowBlur=8;}cx.fillStyle=out?'rgba(251,140,0,0.9)':'rgba(0,191,165,0.4)';cx.fill();cx.shadowBlur=0;}});
+        cx.strokeStyle='rgba(255,255,255,0.15)';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(P.l,P.t);cx.lineTo(P.l,P.t+cH);cx.stroke();cx.beginPath();cx.moveTo(P.l,P.t+cH);cx.lineTo(P.l+cW,P.t+cH);cx.stroke();
+        cx.fillStyle='rgba(138,138,158,0.8)';cx.font='11px "IBM Plex Sans", sans-serif';cx.textAlign='center';[10,20,30,40,50,60,70,80,90].forEach(a=>cx.fillText(a,ax(a),P.t+cH+16));cx.textAlign='right';[-3,-2,-1,0,1,2,3].forEach(z=>{cx.fillStyle=z===0?'rgba(234,234,242,0.9)':'rgba(138,138,158,0.8)';cx.fillText(z>0?'+'+z:z,P.l-8,ay(z)+4);});
+        cx.fillStyle='rgba(0,191,165,0.7)';cx.font="11px 'JetBrains Mono', monospace";cx.textAlign='left';cx.fillText('z=+2',P.l+6,ay(2)-4);cx.fillText('z=−2',P.l+6,ay(-2)+14);
+        cx.save();cx.translate(14,P.t+cH/2);cx.rotate(-Math.PI/2);cx.fillStyle='rgba(234,234,242,0.8)';cx.font='11px "IBM Plex Sans", sans-serif';cx.textAlign='center';cx.fillText('Z-score',0,0);cx.restore();cx.fillStyle='rgba(234,234,242,0.8)';cx.textAlign='center';cx.fillText('Age (years)',P.l+cW/2,H-6);
+    }
 
-                document.getElementById('cdd').textContent = pad(Math.floor(dist / (1000 * 60 * 60 * 24)));
-                document.getElementById('cdh').textContent = pad(Math.floor((dist % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)));
-                document.getElementById('cdm').textContent = pad(Math.floor((dist % (1000 * 60 * 60)) / (1000 * 60)));
-                document.getElementById('cds2').textContent = pad(Math.floor((dist % (1000 * 60)) / 1000));
-            }
-            tick();
-            setInterval(tick, 1000);
-        })();
+    function handleResizeAndDraw() {
+        const wrapper=document.getElementById('canvas-wrapper');const dpr=window.devicePixelRatio||1;const rect=wrapper.getBoundingClientRect();const w=rect.width-32,h=rect.height-32;
+        ['cc','czs'].forEach(id=>{const cv=document.getElementById(id);cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px';cv.style.height=h+'px';const c=cv.getContext('2d');c.scale(dpr,dpr);});
+        if(currentTab==='cent') drawCentileChart(document.getElementById('cc'),animProgress.cent);
+        else drawZScoreChart(document.getElementById('czs'),animProgress.zscore);
+    }
+    function animateChart(type) {
+        if(animProgress[type]<1){animProgress[type]=Math.min(1,animProgress[type]+0.015);if(type==='cent'&&currentTab==='cent')drawCentileChart(document.getElementById('cc'),animProgress[type]);if(type==='zscore'&&currentTab==='zscore')drawZScoreChart(document.getElementById('czs'),animProgress[type]);requestAnimationFrame(()=>animateChart(type));}
+    }
+    window.switchTab = function(tab) {
+        currentTab=tab;const bc=document.getElementById('tab-cent');const bz=document.getElementById('tab-zscore');
+        if(tab==='cent'){bc.className='flex-1 py-2 text-xs font-mono transition-all text-brand-cyan bg-brand-cyan/5 border-b-2 border-brand-cyan';bz.className='flex-1 py-2 text-xs font-mono transition-all text-[#58587a] hover:text-white border-b-2 border-transparent';document.getElementById('cc').style.display='block';document.getElementById('czs').style.display='none';document.getElementById('chart-title').textContent='Centile curves';}
+        else{bz.className='flex-1 py-2 text-xs font-mono transition-all text-brand-cyan bg-brand-cyan/5 border-b-2 border-brand-cyan';bc.className='flex-1 py-2 text-xs font-mono transition-all text-[#58587a] hover:text-white border-b-2 border-transparent';document.getElementById('czs').style.display='block';document.getElementById('cc').style.display='none';document.getElementById('chart-title').textContent='Z-scores';}
+        animProgress[tab]=0;chartsInitialized[tab]=true;handleResizeAndDraw();animateChart(tab);
+    };
+    const canvasObs=new IntersectionObserver(entries=>{if(entries[0].isIntersecting&&!chartsInitialized.cent){chartsInitialized.cent=true;handleResizeAndDraw();animateChart('cent');}},{threshold:0.2});
+    canvasObs.observe(document.getElementById('canvas-wrapper'));
+    window.addEventListener('resize', handleResizeAndDraw);
+
+    /* ─── 11. Countdown Timer ─── */
+    (function initCountdown() {
+        const target = new Date('2026-07-15T00:00:00Z').getTime();
+        const pad = n => String(n).padStart(2,'0');
+        function tick() {
+            const d = target - Date.now();
+            if (d <= 0) { ['cdd','cdh','cdm','cds2'].forEach(id => { const el=document.getElementById(id); if(el) el.textContent='00'; }); return; }
+            document.getElementById('cdd').textContent  = pad(Math.floor(d/(1000*60*60*24)));
+            document.getElementById('cdh').textContent  = pad(Math.floor((d%(1000*60*60*24))/(1000*60*60)));
+            document.getElementById('cdm').textContent  = pad(Math.floor((d%(1000*60*60))/(1000*60)));
+            document.getElementById('cds2').textContent = pad(Math.floor((d%(1000*60))/1000));
+        }
+        tick(); setInterval(tick, 1000);
+    })();
+
+    /* ─── 12. Email Notification Form ─── */
+    window.handleNotifySubmit = function(e) {
+        e.preventDefault();
+        const form = document.getElementById('notify-form');
+        const success = document.getElementById('notify-success');
+        form.style.opacity = '0';
+        form.style.transition = 'opacity 0.3s';
+        setTimeout(() => {
+            form.style.display = 'none';
+            success.classList.remove('hidden');
+            success.style.opacity = '0';
+            success.style.transition = 'opacity 0.4s';
+            requestAnimationFrame(() => { success.style.opacity = '1'; });
+        }, 300);
+    };
     </script>
+
 </body>
 </html>
