@@ -225,7 +225,7 @@
             <img id="hero-brain"
                 src="1f8abc87-a5d8-4d07-b966-7243c7ef0a59_3bb82f70-f167-45e2-b3c6-e5c83fa2c82d_raw.png"
                 alt="Neural connectivity visualization"
-                class="w-full h-full object-cover object-[center_30%] opacity-40 mix-blend-screen will-change-transform"
+                class="w-full h-full object-cover object-[center_30%] opacity-40 opacity-45"
                 style="transform:scale(1.1)"
                 onerror="this.style.display='none'" />
             <div class="absolute inset-0 bg-gradient-to-b from-[#04040d]/50 via-[#04040d]/70 to-[#04040d]"></div>
@@ -681,8 +681,8 @@
             nav.classList.add('border-transparent');
         }
 
-        // Parallax brain
-        if (heroBrain) {
+        // Parallax brain — desktop only (mobile: transform causes compositing issues)
+        if (heroBrain && window.innerWidth > 768) {
             heroBrain.style.transform = `translateY(${scrollY * 0.28}px) scale(1.1)`;
         }
     }
