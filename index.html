@@ -516,6 +516,8 @@
             </div>
 
             <!-- ── Email Notification Capture ── -->
+            <!-- Submissions go silently to Google Forms via hidden iframe — emails stored privately in your Google Sheet -->
+            <iframe name="gforms-hidden" style="display:none" aria-hidden="true"></iframe>
             <div class="max-w-md mx-auto mb-16 reveal delay-400">
                 <div class="glass-card rounded-2xl p-6 border border-brand-cyan/15 hover-glow-cyan">
                     <div class="flex items-center gap-2 mb-2">
@@ -523,9 +525,14 @@
                         <span class="text-[11px] font-mono text-brand-cyan tracking-widest uppercase font-semibold">Get notified on release day</span>
                     </div>
                     <p class="text-[#8a8a9e] text-sm font-light mb-4 text-left">Leave your email and we'll ping you the moment the package and preprints drop on July 15.</p>
-                    <form id="notify-form" class="flex flex-col sm:flex-row gap-3" onsubmit="handleNotifySubmit(event)">
+                    <form id="notify-form"
+                        action="https://docs.google.com/forms/d/e/1FAIpQLSe9oNhil-lNi539rxUPBzPKp6X4Im9SffQ1QDuG6nOKVXy4GA/formResponse"
+                        method="POST"
+                        target="gforms-hidden"
+                        onsubmit="handleNotifySubmit(event)"
+                        class="flex flex-col sm:flex-row gap-3">
                         <label for="notify-email" class="sr-only">Email address</label>
-                        <input type="email" id="notify-email" name="email" autocomplete="email"
+                        <input type="email" id="notify-email" name="entry.1028360073" autocomplete="email"
                             class="email-input flex-1" placeholder="you@institution.edu" required />
                         <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-cyan text-black font-semibold text-sm hover:bg-[#00d8be] transition-all whitespace-nowrap flex-shrink-0 shadow-[0_0_20px_rgba(0,191,165,0.2)] hover:shadow-[0_0_36px_rgba(0,191,165,0.4)] hover:-translate-y-0.5">
                             Notify me →
