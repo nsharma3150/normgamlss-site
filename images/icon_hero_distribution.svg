@@ -1,0 +1,25 @@
+<svg viewBox="0 0 480 300" xmlns="http://www.w3.org/2000/svg" font-family="'IBM Plex Mono', monospace">
+  <rect x="0" y="0" width="480" height="300" fill="#FBFAF7"/>
+
+  <!-- baseline -->
+  <line x1="40" y1="230" x2="440" y2="230" stroke="#1C1C1A" stroke-width="1.5" stroke-opacity="0.35"/>
+
+  <!-- single precise skewed curve, smooth bezier, no jitter -->
+  <path d="M40,230 C95,230 120,80 175,68 C225,58 235,140 270,175 C310,213 360,226 440,229"
+        fill="none" stroke="#00897B" stroke-width="3" stroke-linecap="round"/>
+  <path d="M40,230 C95,230 120,80 175,68 C225,58 235,140 270,175 C310,213 360,226 440,229 L440,230 L40,230 Z"
+        fill="#00897B" fill-opacity="0.08"/>
+
+  <!-- median marker -->
+  <line x1="185" y1="230" x2="185" y2="66" stroke="#1C1C1A" stroke-width="1.5" stroke-dasharray="1 5" stroke-opacity="0.5"/>
+  <circle cx="185" cy="66" r="4" fill="#1C1C1A"/>
+  <text x="185" y="50" text-anchor="middle" font-size="13" fill="#1C1C1A">median</text>
+
+  <!-- flagged point -->
+  <circle cx="330" cy="150" r="6" fill="#E2542C"/>
+  <line x1="336" y1="146" x2="360" y2="118" stroke="#E2542C" stroke-width="1.5"/>
+  <text x="290" y="105" font-size="13" fill="#E2542C">flagged (|Z| = 3.1)</text>
+
+  <!-- axis labels: shape parameters, restrained -->
+  <text x="40" y="255" font-size="12" fill="#1C1C1A" fill-opacity="0.55">μ · σ · ν · τ modeled jointly</text>
+</svg>

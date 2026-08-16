@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NormGAMLSS | Normative modeling for neuroimaging</title>
+<style>
+  @font-face{font-family:'IBM Plex Sans';src:url('fonts/IBMPlexSans-Regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+  @font-face{font-family:'IBM Plex Sans';src:url('fonts/IBMPlexSans-Medium.woff2') format('woff2');font-weight:500;font-display:swap;}
+  @font-face{font-family:'IBM Plex Sans';src:url('fonts/IBMPlexSans-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap;}
+  @font-face{font-family:'IBM Plex Sans';src:url('fonts/IBMPlexSans-Bold.woff2') format('woff2');font-weight:700;font-display:swap;}
+  @font-face{font-family:'IBM Plex Mono';src:url('fonts/IBMPlexMono-Regular.woff2') format('woff2');font-weight:400;font-display:swap;}
+  @font-face{font-family:'IBM Plex Mono';src:url('fonts/IBMPlexMono-Medium.woff2') format('woff2');font-weight:500;font-display:swap;}
+  @font-face{font-family:'IBM Plex Mono';src:url('fonts/IBMPlexMono-SemiBold.woff2') format('woff2');font-weight:600;font-display:swap;}
+
+  :root{
+    --paper:#FBFAF7; --paper-2:#F3F1EA;
+    --ink:#1C1C1A; --muted:rgba(28,28,26,0.62); --faint:rgba(28,28,26,0.38);
+    --teal:#00897B; --teal-wash:rgba(0,137,123,0.08);
+    --coral:#E2542C;
+    --border:rgba(28,28,26,0.10); --border-soft:rgba(28,28,26,0.06);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0; background:var(--paper); color:var(--ink);
+    font-family:"IBM Plex Sans",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    -webkit-font-smoothing:antialiased;}
+  .mono{font-family:"IBM Plex Mono",ui-monospace,monospace;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 24px;}
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+
+  /* nav */
+  nav{position:sticky; top:0; z-index:50; background:rgba(251,250,247,0.93);
+    backdrop-filter:blur(10px); border-bottom:1px solid var(--border-soft);}
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:96px;}
+  .brand img{height:54px; width:auto;}
+  .navlinks{display:flex; font-size:14.5px; color:var(--muted);}
+  .navlinks a{margin-left:34px; text-decoration:none;}
+  .navlinks a:hover{color:var(--ink);}
+  .navcta{display:flex; gap:10px; align-items:center;}
+  .btn{font-size:14px; font-weight:500; padding:10px 17px; border-radius:9px;
+    border:1px solid var(--border); text-decoration:none; display:inline-flex;
+    align-items:center; gap:6px; cursor:pointer; white-space:nowrap;}
+  .btn-dark{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .btn-dark:hover{background:#000;}
+  .btn-ghost{background:transparent; color:var(--ink);}
+  .btn-ghost:hover{background:var(--paper-2);}
+  .btn-disabled{background:var(--paper-2); color:var(--faint); cursor:default;}
+  @media (max-width:860px){ .navlinks{display:none;} }
+
+  /* hero + ghost curves */
+  header.hero{position:relative; padding:80px 0 56px; overflow:hidden;}
+  .ghost{position:absolute; inset:0; width:100%; height:100%; pointer-events:none; z-index:0;}
+  .ghost .gc path{fill:none; stroke-width:2.6; vector-effect:non-scaling-stroke;}
+  .ghost .gc1 path{stroke:#00897B;} .ghost .gc1{opacity:.22; animation:drift1 34s linear infinite;}
+  .ghost .gc2 path{stroke:#2563EB;} .ghost .gc2{opacity:.16; animation:drift2 46s linear infinite;}
+  .ghost .gc3 path{stroke:#43a047;} .ghost .gc3{opacity:.17; animation:drift3 29s linear infinite;}
+  .ghost .gc4 path{stroke:#E2542C;} .ghost .gc4{opacity:.13; animation:drift4 40s linear infinite;}
+  @keyframes drift1{from{transform:translateY(0)} to{transform:translateY(-115%)}}
+  @keyframes drift2{from{transform:translateY(20%)} to{transform:translateY(-125%)}}
+  @keyframes drift3{from{transform:translateY(10%)} to{transform:translateY(-120%)}}
+  @keyframes drift4{from{transform:translateY(30%)} to{transform:translateY(-130%)}}
+  @media (prefers-reduced-motion: reduce){ .ghost .gc{animation:none !important;} }
+  .hero-inner{position:relative; z-index:1;}
+
+  .hero-grid{display:flex; gap:52px; align-items:center;}
+  .hero-grid > div:first-child{flex:1.05 1 0; min-width:0;}
+  .hero-grid > div:last-child{flex:0.95 1 0; min-width:0;}
+  @media (max-width:880px){ .hero-grid{flex-direction:column; align-items:stretch;} }
+  .sideline{display:inline-flex; align-items:center; gap:8px; font-size:12.5px; color:var(--muted);
+    border:1px solid var(--border); border-radius:20px; padding:7px 15px; margin-bottom:28px;
+    background:rgba(251,250,247,0.75);}
+  .sideline b{color:var(--ink); font-weight:600;}
+  h1.title{font-size:46px; line-height:1.07; font-weight:700; margin:0 0 18px; letter-spacing:-0.6px;}
+  h1.title .accent{color:var(--teal);}
+  .subtitle{font-size:17px; color:var(--muted); line-height:1.62; max-width:490px; margin:0 0 30px;}
+  .cta-row{display:flex; flex-wrap:wrap; gap:12px; align-items:center;}
+  .status-pill{display:inline-flex; align-items:center; gap:9px; padding:11px 17px; border-radius:9px;
+    background:rgba(0,137,123,0.07); border:1px solid rgba(0,137,123,0.25); font-size:14px;}
+  .status-pill .dot{width:7px; height:7px; border-radius:50%; background:var(--teal); flex:0 0 7px;}
+  .hero-visual{border:1px solid var(--border); border-radius:16px; background:#fff; padding:10px;
+    box-shadow:0 1px 3px rgba(28,28,26,0.04);}
+  .hero-visual img{border-radius:10px;}
+
+  /* stats */
+  .stats{border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft); background:var(--paper-2);}
+  .stats .wrap{display:flex; flex-wrap:wrap; padding:34px 24px;}
+  .stat{flex:1 1 0; min-width:140px; text-align:center; padding:8px 12px;}
+  .stat .num{font-size:29px; font-weight:700; font-family:"IBM Plex Mono",monospace; color:var(--teal);}
+  .stat .label{font-size:13px; color:var(--muted); margin-top:5px;}
+
+  .eyebrow{font-family:"IBM Plex Mono",monospace; font-size:12px; letter-spacing:1.6px;
+    text-transform:uppercase; color:var(--teal); font-weight:600; margin-bottom:11px;}
+  .section-title{font-size:31px; font-weight:700; margin:0 0 9px; letter-spacing:-0.4px;}
+  .section-sub{color:var(--muted); font-size:15px; max-width:580px; margin:0 0 46px;}
+  section{padding:78px 0;}
+
+  /* modalities strip */
+  .modgrid{display:flex; flex-wrap:wrap; gap:16px;}
+  .modcard{flex:1 1 150px; min-width:140px; border:1px solid var(--border); border-radius:12px;
+    background:#fff; padding:22px 14px; text-align:center;}
+  .modcard.more{background:transparent; border-style:dashed;}
+  .modicon{width:46px; height:46px; margin:0 auto 14px; border-radius:11px; background:var(--teal-wash);
+    display:flex; align-items:center; justify-content:center;}
+  .modcard.more .modicon{background:transparent;}
+  .modicon img{width:26px; height:26px;}
+  .modname{font-size:14.5px; font-weight:600; margin-bottom:4px;}
+  .modcard.more .modname{color:var(--teal);}
+  .moddesc{font-size:12px; color:var(--muted);}
+
+  /* features — 2-col card grid */
+  .fgrid{display:flex; flex-wrap:wrap; gap:20px;}
+  .fcard{flex:1 1 460px; min-width:0; border:1px solid var(--border); border-radius:14px;
+    background:#fff; padding:22px 22px 18px; display:flex; flex-direction:column;}
+  .fhead{display:flex; gap:14px; align-items:flex-start; margin-bottom:14px;}
+  .ficon{flex:0 0 46px; width:46px; height:46px; border-radius:11px; background:var(--teal-wash);
+    display:flex; align-items:center; justify-content:center;}
+  .ficon img{width:25px; height:25px;}
+  .ftitle{font-size:16.5px; font-weight:600; margin:1px 0 5px; line-height:1.25;}
+  .fdesc{color:var(--muted); font-size:13.5px; line-height:1.55;}
+  .fig{margin-top:auto; border:1px solid var(--border-soft); border-radius:9px; overflow:hidden;
+    background:#fff;}
+  .fig img{width:100%; display:block;}
+  .more-note{margin-top:34px; padding:22px 24px; border:1px dashed var(--border);
+    border-radius:12px; background:var(--paper-2); font-size:14px; color:var(--muted); line-height:1.6;}
+  .more-note b{color:var(--ink); font-weight:600;}
+
+  /* papers */
+  .paper-grid{display:flex; flex-wrap:wrap; gap:16px;}
+  .paper-grid .paper-card{flex:1 1 460px; min-width:0;}
+  .paper-card{border:1px solid var(--border); border-radius:12px; padding:23px; background:#fff;}
+  .tag{display:inline-block; font-family:"IBM Plex Mono",monospace; font-size:10.5px; font-weight:600;
+    text-transform:uppercase; letter-spacing:0.5px; padding:4px 9px; border-radius:5px; margin:0 6px 11px 0;}
+  .tag-prep{background:rgba(226,84,44,0.09); color:var(--coral); border:1px solid rgba(226,84,44,0.2);}
+  .tag-preprint{background:rgba(0,137,123,0.09); color:var(--teal); border:1px solid rgba(0,137,123,0.2);}
+  .tag-ohbm{background:var(--paper-2); color:var(--muted); border:1px solid var(--border);}
+  .paper-title{font-size:15px; font-weight:600; line-height:1.4; margin:0 0 6px;}
+  .paper-meta{font-size:12px; color:var(--faint); font-family:"IBM Plex Mono",monospace; margin-bottom:13px;}
+  .paper-links{display:flex; gap:8px; flex-wrap:wrap;}
+  .paper-links a{font-size:12px; font-family:"IBM Plex Mono",monospace; text-decoration:none;
+    color:var(--teal); border:1px solid rgba(0,137,123,0.3); padding:5px 10px; border-radius:6px;}
+  .paper-links a:hover{background:var(--teal-wash);}
+  .paper-links span{font-size:12px; font-family:"IBM Plex Mono",monospace; color:var(--faint);
+    border:1px solid var(--border); padding:5px 10px; border-radius:6px;}
+
+  /* ack */
+  .ack-grid{display:flex; flex-wrap:wrap; gap:18px;}
+  .ack-grid .ack-card{flex:1 1 260px; min-width:0;}
+  .ack-card{border:1px solid var(--border); border-radius:12px; padding:23px; background:var(--paper-2);}
+  .ack-label{font-family:"IBM Plex Mono",monospace; font-size:11px; text-transform:uppercase;
+    letter-spacing:1px; color:var(--muted); margin-bottom:11px;}
+  .ack-body{font-size:14px; line-height:1.6; margin-bottom:11px;}
+  .ack-link{font-size:13px; color:var(--teal); text-decoration:none;}
+
+  footer{border-top:1px solid var(--border-soft); padding:48px 0; text-align:center;}
+  .footer-logo{display:flex; justify-content:center; margin-bottom:20px;}
+  .footer-logo img{height:88px; width:auto;}
+  .footer-links{display:flex; justify-content:center; font-size:13.5px; color:var(--muted); margin-bottom:16px;}
+  .footer-links a{text-decoration:none; margin:0 13px;}
+  .footer-links a:hover{color:var(--ink);}
+  .footer-note{font-size:12px; color:var(--faint); max-width:640px; margin:0 auto; line-height:1.6;}
+
+  @media (max-width:520px){
+    .btn-disabled{display:none;}
+    .status-pill{font-size:12.5px; padding:10px 14px; white-space:nowrap;}
+    #demo pre{white-space:pre-wrap !important; word-break:break-word; font-size:11.5px !important; line-height:1.75 !important;}
+    .cta-row{gap:10px;}
+    h1.title{font-size:33px;}
+    .subtitle{font-size:15.5px;}
+    nav .wrap{height:76px;}
+    .brand img{height:40px;}
+    .footer-logo img{height:64px;}
+    .section-title{font-size:25px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><img src="images/logo-mark.png" alt="NormGAMLSS"/></div>
+    <div class="navlinks">
+      <a href="#modalities">Modalities</a>
+      <a href="#features">Features</a>
+      <a href="#demo">Example</a>
+      <a href="#papers">Publications</a>
+    </div>
+    <div class="navcta">
+      <a class="btn btn-ghost" href="https://github.com/nsharma3150/norm_gamlss" target="_blank" rel="noopener">GitHub &#8599;</a>
+      <span class="btn btn-disabled">Documentation &mdash; coming soon</span>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <svg class="ghost" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <g class="gc gc1"><path d="M0,665 L12,660 L24,653 L36,646 L48,638 L61,629 L73,620 L85,610 L97,599 L109,588 L121,576 L133,564 L145,552 L157,539 L169,527 L182,515 L194,502 L206,491 L218,480 L230,470 L242,460 L254,452 L266,445 L278,440 L290,436 L303,433 L315,432 L327,433 L339,435 L351,438 L363,443 L375,450 L387,457 L399,466 L411,476 L424,487 L436,498 L448,510 L460,522 L472,535 L484,547 L496,560 L508,572 L520,584 L532,595 L545,606 L557,616 L569,626 L581,635 L593,643 L605,650 L617,657 L629,663 L641,669 L653,674 L666,678 L678,682 L690,685 L702,688 L714,690 L726,692 L738,694 L750,696 L762,697 L774,698 L787,699 L799,699 L811,700 L823,700 L835,701 L847,701 L859,701 L871,701 L883,702 L895,702 L908,702 L920,702 L932,702 L944,702 L956,702 L968,702 L980,702 L992,702 L1004,702 L1016,702 L1029,702 L1041,702 L1053,702 L1065,702 L1077,702 L1089,702 L1101,702 L1113,702 L1125,702 L1137,702 L1150,702 L1162,702 L1174,702 L1186,702 L1198,702 L1210,702 L1222,702 L1234,702 L1246,702 L1258,702 L1271,702 L1283,702 L1295,702 L1307,702 L1319,702 L1331,702 L1343,702 L1355,702 L1367,702 L1379,702 L1392,702 L1404,702 L1416,702 L1428,702 L1440,702"/></g>
+      <g class="gc gc2"><path d="M0,914 L12,914 L24,913 L36,913 L48,912 L61,911 L73,910 L85,909 L97,907 L109,906 L121,904 L133,903 L145,901 L157,899 L169,896 L182,894 L194,891 L206,888 L218,885 L230,882 L242,878 L254,874 L266,870 L278,865 L290,860 L303,855 L315,849 L327,844 L339,838 L351,831 L363,825 L375,818 L387,811 L399,804 L411,796 L424,788 L436,780 L448,773 L460,765 L472,756 L484,748 L496,740 L508,732 L520,724 L532,717 L545,709 L557,702 L569,695 L581,688 L593,682 L605,676 L617,671 L629,666 L641,662 L653,658 L666,655 L678,652 L690,650 L702,649 L714,648 L726,648 L738,649 L750,650 L762,652 L774,655 L787,658 L799,662 L811,666 L823,671 L835,676 L847,682 L859,688 L871,695 L883,702 L895,709 L908,717 L920,724 L932,732 L944,740 L956,748 L968,756 L980,765 L992,773 L1004,780 L1016,788 L1029,796 L1041,804 L1053,811 L1065,818 L1077,825 L1089,831 L1101,838 L1113,844 L1125,849 L1137,855 L1150,860 L1162,865 L1174,870 L1186,874 L1198,878 L1210,882 L1222,885 L1234,888 L1246,891 L1258,894 L1271,896 L1283,899 L1295,901 L1307,903 L1319,904 L1331,906 L1343,907 L1355,909 L1367,910 L1379,911 L1392,912 L1404,913 L1416,913 L1428,914 L1440,914"/></g>
+      <g class="gc gc3"><path d="M0,810 L12,810 L24,810 L36,810 L48,810 L61,810 L73,810 L85,810 L97,810 L109,810 L121,810 L133,810 L145,810 L157,810 L169,810 L182,810 L194,810 L206,810 L218,810 L230,810 L242,810 L254,810 L266,810 L278,810 L290,810 L303,810 L315,810 L327,810 L339,810 L351,810 L363,810 L375,810 L387,810 L399,810 L411,810 L424,810 L436,810 L448,810 L460,810 L472,810 L484,810 L496,810 L508,810 L520,810 L532,810 L545,809 L557,809 L569,809 L581,809 L593,808 L605,808 L617,807 L629,806 L641,805 L653,804 L666,803 L678,801 L690,798 L702,796 L714,793 L726,789 L738,785 L750,780 L762,774 L774,767 L787,760 L799,752 L811,743 L823,733 L835,723 L847,711 L859,699 L871,686 L883,673 L895,660 L908,646 L920,632 L932,619 L944,605 L956,593 L968,581 L980,571 L992,562 L1004,554 L1016,548 L1029,543 L1041,541 L1053,540 L1065,541 L1077,544 L1089,549 L1101,556 L1113,564 L1125,574 L1137,584 L1150,596 L1162,609 L1174,622 L1186,636 L1198,649 L1210,663 L1222,677 L1234,690 L1246,702 L1258,714 L1271,725 L1283,736 L1295,745 L1307,754 L1319,762 L1331,769 L1343,775 L1355,781 L1367,786 L1379,790 L1392,793 L1404,797 L1416,799 L1428,801 L1440,803"/></g>
+      <g class="gc gc4"><path d="M0,1075 L12,1075 L24,1074 L36,1074 L48,1073 L61,1072 L73,1071 L85,1070 L97,1069 L109,1068 L121,1067 L133,1065 L145,1064 L157,1062 L169,1061 L182,1059 L194,1057 L206,1055 L218,1052 L230,1050 L242,1047 L254,1045 L266,1042 L278,1039 L290,1035 L303,1032 L315,1028 L327,1024 L339,1020 L351,1016 L363,1012 L375,1007 L387,1002 L399,997 L411,992 L424,987 L436,981 L448,975 L460,969 L472,963 L484,957 L496,951 L508,945 L520,938 L532,932 L545,925 L557,919 L569,912 L581,906 L593,899 L605,893 L617,887 L629,880 L641,874 L653,868 L666,862 L678,857 L690,851 L702,846 L714,841 L726,837 L738,832 L750,828 L762,825 L774,822 L787,819 L799,816 L811,814 L823,812 L835,811 L847,810 L859,810 L871,810 L883,811 L895,811 L908,813 L920,815 L932,817 L944,819 L956,822 L968,826 L980,829 L992,833 L1004,838 L1016,842 L1029,847 L1041,852 L1053,858 L1065,863 L1077,869 L1089,875 L1101,881 L1113,888 L1125,894 L1137,901 L1150,907 L1162,914 L1174,920 L1186,927 L1198,933 L1210,940 L1222,946 L1234,952 L1246,959 L1258,965 L1271,971 L1283,976 L1295,982 L1307,988 L1319,993 L1331,998 L1343,1003 L1355,1008 L1367,1012 L1379,1017 L1392,1021 L1404,1025 L1416,1029 L1428,1033 L1440,1036"/></g>
+    </svg>
+  <div class="wrap hero-inner hero-grid">
+    <div>
+      <div class="sideline">Presented at OHBM 2026 <span style="opacity:.45">&middot;</span> <b>read the posters &darr;</b></div>
+      <h1 class="title">Go beyond the mean.<br>Model the <span class="accent">norm</span>.</h1>
+      <p class="subtitle">NormGAMLSS is a Python package for normative modeling with GAMLSS &mdash; fitting the full shape of your data (not just its average), transferring to new sites with minimal recalibration, and flagging true outliers with statistical rigor.</p>
+      <div class="cta-row">
+        <span class="status-pill"><span class="dot"></span> <span class="mono">pip install norm_gamlss</span> &mdash; releasing soon</span>
+        <a class="btn btn-dark" href="#features">See what it does &darr;</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img src="images/icon_hero_distribution.svg" alt="A distribution modeled in full, not reduced to a mean"/>
+    </div>
+  </div>
+</header>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><div class="num">5</div><div class="label">Modalities validated</div></div>
+    <div class="stat"><div class="num">100+</div><div class="label">Distribution families</div></div>
+    <div class="stat"><div class="num mono">μ σ ν τ</div><div class="label">Full shape modeled</div></div>
+    <div class="stat"><div class="num">6</div><div class="label">Publications in progress</div></div>
+  </div>
+</div>
+
+<section id="modalities" style="padding:56px 0 76px;">
+  <div class="wrap">
+    <div class="eyebrow">Validation</div>
+    <h2 class="section-title">One model, several modalities</h2>
+    <p class="section-sub">Developed and validated with the <a href="https://mhm-lab.github.io/" target="_blank" rel="noopener" style="color:var(--teal);">Laboratory for Mental Health Mapping</a> — each modality backed by its own publication below.</p>
+    <div class="modgrid">
+      <div class="modcard">
+        <div class="modicon"><img src="images/icon_mri.svg" alt=""/></div>
+        <div class="modname">Structural MRI</div>
+        <div class="moddesc">Cortical thickness</div>
+      </div>
+      <div class="modcard">
+        <div class="modicon"><img src="images/icon_fmri.svg" alt=""/></div>
+        <div class="modname">fMRI</div>
+        <div class="moddesc">Network dynamics</div>
+      </div>
+      <div class="modcard">
+        <div class="modicon"><img src="images/icon_eeg.svg" alt=""/></div>
+        <div class="modname">EEG</div>
+        <div class="moddesc">Spectral power</div>
+      </div>
+      <div class="modcard">
+        <div class="modicon"><img src="images/icon_csf.svg" alt=""/></div>
+        <div class="modname">CSF Dynamics</div>
+        <div class="moddesc">Glymphatic coupling</div>
+      </div>
+      <div class="modcard more">
+        <div class="modicon"><img src="images/icon_more.svg" alt=""/></div>
+        <div class="modname">In progress</div>
+        <div class="moddesc">Cognitive &amp; others, unpublished</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="features">
+  <div class="wrap">
+    <div class="eyebrow">Architecture</div>
+    <h2 class="section-title">Built for the real shape of your data</h2>
+    <p class="section-sub">Six of the things the package does, each shown with output from its own tutorial.</p>
+
+    <div class="fgrid">
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_distribution.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Model the full distribution</div>
+            <div class="fdesc">Location, scale, skew and kurtosis (μ, σ, ν, τ) fitted jointly as smooth functions of age, sex and site — not collapsed to a single mean trend.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_distribution.svg" alt="Model the full distribution"/></div>
+      </div>
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_centiles.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Reference curves &amp; outlier detection</div>
+            <div class="fdesc">Continuous, age-dependent centile bands plus an exact deviation (Z-)score per individual — outliers judged against a proper reference, not a fixed cutoff.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_reference.svg" alt="Reference curves &amp; outlier detection"/></div>
+      </div>
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_permutation.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Permutation testing</div>
+            <div class="fdesc">Non-parametric p-values that test whether a covariate genuinely improves the fit — not just whether AIC happened to move.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_permutation.svg" alt="Permutation testing"/></div>
+      </div>
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_brain.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Model comparison, mapped onto the brain</div>
+            <div class="fdesc">Run base-vs-target comparison across every parcel in parallel, then project the AIC differences straight onto a cortical surface.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_brain.png" alt="Model comparison, mapped onto the brain"/></div>
+      </div>
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_site_transfer.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Zero-shot site transfer</div>
+            <div class="fdesc">Recalibrate a reference model onto an entirely new scanner from a small calibration sample — the curves shift to the site, no full retrain.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_transfer.svg" alt="Zero-shot site transfer"/></div>
+      </div>
+      <div class="fcard">
+        <div class="fhead">
+          <div class="ficon"><img src="images/icon_diagnostics.svg" alt=""/></div>
+          <div>
+            <div class="ftitle">Diagnostics after every fit</div>
+            <div class="fdesc">Residual and Q–Q checks, worm plots, and per-parameter summaries, so you can see whether the fitted distribution actually describes your data.</div>
+          </div>
+        </div>
+        <div class="fig"><img src="images/fig_diagnostics.svg" alt="Diagnostics after every fit"/></div>
+      </div>
+    </div>
+
+    <div class="more-note">
+      <b>Beyond the highlights.</b> The package also handles data preprocessing and structuring, multiple-formula model comparison, evaluation metrics, continuous centiles with uncertainty, centile-position lookup, saving and reloading fitted models, transfer across several new sites at once, and parallel batch fitting with caching — each documented in full.
+    </div>
+  </div>
+</section>
+
+<section id="demo" style="background:var(--paper-2); border-top:1px solid var(--border-soft); border-bottom:1px solid var(--border-soft);">
+  <div class="wrap">
+    <div class="eyebrow">Example</div>
+    <h2 class="section-title">Fit, predict, flag — in a few lines</h2>
+    <p class="section-sub">The same workflow behind every figure on this page.</p>
+    <div style="display:flex; gap:24px; flex-wrap:wrap; align-items:stretch;">
+      <div style="flex:1.3 1 460px; min-width:0; background:#0c0c14; border-radius:12px; padding:24px 28px;">
+        <pre class="mono" style="margin:0; color:#d8d8e0; font-size:12.5px; line-height:1.8; white-space:pre; overflow-x:auto;"><span style="color:#7a7a94;"># fit — location, scale, skew, kurtosis jointly</span>
+model = Gamlss(<span style="color:#f0b46a;">"m1"</span>, [<span style="color:#a3d9c9;">"age"</span>,<span style="color:#a3d9c9;">"sex"</span>,<span style="color:#a3d9c9;">"site"</span>], <span style="color:#a3d9c9;">"thickness"</span>)
+model.fit(r_code=<span style="color:#a3d9c9;">"gamlss(y~pvc(age)+site, SHASH())"</span>,
+          data=train)
+
+<span style="color:#7a7a94;"># reference curves + deviation scores</span>
+z = model.z_score(test, train)
+model.plot_centiles(test, train)
+
+<span style="color:#7a7a94;"># adapt to a new scanner, no retraining</span>
+adj = site_transfer(model, train, new_site)</pre>
+      </div>
+      <div style="flex:0.9 1 300px; min-width:280px; background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px; display:flex; align-items:center; justify-content:center;">
+        <img src="images/demo_anim.svg" alt="Centile bands drawn, with one individual flagged" style="width:100%;height:auto;"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="papers">
+  <div class="wrap">
+    <div class="eyebrow">Publications — please cite</div>
+    <h2 class="section-title">Validated across five modalities</h2>
+    <p class="section-sub">Presented at OHBM 2026 (Jun 14–18). Status shown per paper — some are still in preparation.</p>
+
+    <div class="paper-grid">
+      <div class="paper-card">
+        <span class="tag tag-prep">In preparation</span><span class="tag tag-ohbm">OHBM #2032</span>
+        <div class="paper-title">Transferable and Conditional Norms: Profiling Cortico-Subcortical Individual-level Variation</div>
+        <div class="paper-meta">Sharma N. et al. · Main package paper</div>
+        <div class="paper-links">
+          <span>Paper in preparation</span>
+          <a href="https://drive.google.com/file/d/1r8XrgnYnO-utuMqDfXJWv0J0gT0tvG6u/view?usp=drive_link" target="_blank" rel="noopener">View poster ↗</a>
+        </div>
+      </div>
+
+      <div class="paper-card">
+        <span class="tag tag-prep">In preparation</span><span class="tag tag-ohbm">OHBM #2072</span>
+        <div class="paper-title">From Lifespan to Dayspan: Does Time-of-Day Play a Role in Normative Modeling of Brain Structure</div>
+        <div class="paper-meta">Dai S. et al. · Structural MRI · Site transfer methodology</div>
+        <div class="paper-links">
+          <span>Paper in preparation</span>
+          <a href="https://drive.google.com/file/d/15lnOCdeS6i96LvuDPQFtcBYvGI1gAN5h/view?usp=sharing" target="_blank" rel="noopener">View poster ↗</a>
+        </div>
+      </div>
+
+      <div class="paper-card">
+        <span class="tag tag-preprint">Preprint</span><span class="tag tag-ohbm">OHBM #2627</span>
+        <div class="paper-title">Characterizing Human Brain Network Dynamics Across Populations with NeuroLex</div>
+        <div class="paper-meta">Yang Y. et al. · fMRI · Brain network dynamics</div>
+        <div class="paper-links">
+          <a href="https://www.biorxiv.org/content/10.64898/2026.03.06.710057v1.abstract" target="_blank" rel="noopener">Preprint ↗</a>
+          <a href="https://drive.google.com/file/d/1dRLzhd9yPKkVK05vAcTWOzXGtgFaa4pB/view?usp=drive_link" target="_blank" rel="noopener">View poster ↗</a>
+        </div>
+      </div>
+
+      <div class="paper-card">
+        <span class="tag tag-preprint">Preprint</span><span class="tag tag-ohbm">OHBM #2415</span>
+        <div class="paper-title">A Lifespan Normative Reference for Spectral Signatures of Brain Activity</div>
+        <div class="paper-meta">Mallus F. et al. · EEG · Spectral biomarkers</div>
+        <div class="paper-links">
+          <a href="https://doi.org/10.21203/rs.3.rs-9544150/v1" target="_blank" rel="noopener">Preprint ↗</a>
+          <a href="https://drive.google.com/file/d/1qvBAidtEK13KQK1uvUecOZopx30iVXqh/view?usp=drive_link" target="_blank" rel="noopener">View poster ↗</a>
+        </div>
+      </div>
+
+      <div class="paper-card">
+        <span class="tag tag-prep">In preparation</span><span class="tag tag-ohbm">OHBM #2782</span>
+        <div class="paper-title">Normative Modelling of Glymphatic Dynamics: A Multi-Site fMRI Study of gBOLD-CSF Coupling</div>
+        <div class="paper-meta">Kand A. et al. · fMRI · Glymphatic dynamics</div>
+        <div class="paper-links">
+          <span>Paper in preparation</span>
+          <a href="https://drive.google.com/file/d/1HpSk7WjRPAjWs_tyk_dep4KummCraDKl/view?usp=drive_link" target="_blank" rel="noopener">View poster ↗</a>
+        </div>
+      </div>
+
+      <div class="paper-card">
+        <span class="tag tag-preprint">Preprint</span>
+        <div class="paper-title">Lamellar Normative Modelling of the Hippocampus Across the Human Lifespan</div>
+        <div class="paper-meta">Yang Y. et al. · Structural MRI · 27,000+ individuals · 158 sites</div>
+        <div class="paper-links">
+          <a href="https://www.biorxiv.org/content/10.64898/2026.05.02.722431v2.abstract" target="_blank" rel="noopener">Preprint ↗</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="eyebrow">Built on the shoulders of giants</div>
+    <div class="ack-grid">
+      <div class="ack-card">
+        <div class="ack-label">Statistical engine</div>
+        <div class="ack-body"><b>GAMLSS (R package)</b><br/>Rigby R.A. &amp; Stasinopoulos D.M. (2005). Generalized additive models for location, scale and shape. <i>Applied Statistics</i>.</div>
+        <a class="ack-link" href="https://www.gamlss.com" target="_blank" rel="noopener">gamlss.com ↗</a>
+      </div>
+      <div class="ack-card">
+        <div class="ack-label">R–Python bridge</div>
+        <div class="ack-body"><b>rpy2</b><br/>Fitting, prediction, centiles, and model saving all run inside R sessions managed transparently from Python.</div>
+        <a class="ack-link" href="https://rpy2.github.io" target="_blank" rel="noopener">rpy2.github.io ↗</a>
+      </div>
+      <div class="ack-card">
+        <div class="ack-label">Lab</div>
+        <div class="ack-body"><b>Laboratory for Mental Health Mapping</b><br/>Developed and validated across MRI, EEG, fMRI, PET, and cognitive data, multiple sites, clinical populations.</div>
+        <a class="ack-link" href="https://mhm-lab.github.io/" target="_blank" rel="noopener">mhm-lab.github.io ↗</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-logo"><img src="images/logo.png" alt="NormGAMLSS"/></div>
+    <div class="footer-links">
+      <a href="https://github.com/nsharma3150/norm_gamlss" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://mhm-lab.github.io/" target="_blank" rel="noopener">MHM-Lab</a>
+      <a href="#papers">Publications</a>
+    </div>
+    <div class="footer-note">Full API reference, tutorials and worked examples live in the documentation — link coming soon.</div>
+  </div>
+</footer>
+
+</body>
+</html>
